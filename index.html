@@ -640,6 +640,7 @@
             border-radius: 5px;
             margin-bottom: 4px;
             font-size: 12px;
+            flex-wrap: wrap;
         }
         .locked-pair-row select {
             flex: 1;
@@ -648,6 +649,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        .locked-pair-row .rule-select { flex-basis: 100%; font-weight: bold; }
         .locked-tag {
             font-size: 10px;
             background: #e0e7ff;
@@ -658,6 +660,11 @@
             margin-top: 2px;
             text-align: center;
         }
+        .hint { font-size: 11px; font-weight: normal; color: #64748b; margin-top: 4px; text-align: center; }
+        .rules-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 5px 8px; margin: 4px 0 8px 0; font-size: 12px; color: #78350f; }
+        .rules-box summary { cursor: pointer; font-weight: bold; }
+        .rules-box ul { margin: 6px 0 2px 0; padding-left: 18px; }
+        .rules-box li { margin-bottom: 3px; line-height: 1.35; }
     </style>
 </head>
 <body>
@@ -727,6 +734,23 @@
                     <div class="control-group">
                         <label for="roundsCount">Total Games</label>
                         <input type="number" id="roundsCount" min="1" max="20" value="2" onchange="renderLockedPairsList()">
+                    </div>
+
+                    <!-- Streamlined Odd-Player Gameplay Options -->
+                    <div class="control-group full-width">
+                        <label for="leftoverMode">When Players Don't Divide Evenly by 4</label>
+                        <select id="leftoverMode">
+                            <option value="rest" selected>😴 Standard Rest / Bench Rotation</option>
+                            <optgroup label="3 Players (2 vs 1 Match)">
+                                <option value="king">👑 King of the Court (Fast continuous rotation)</option>
+                                <option value="halfsolo">½ Half-Court Solo (Precision target drill)</option>
+                            </optgroup>
+                            <optgroup label="2 Players (Singles Match)">
+                                <option value="cross">↗️ Cross-Court Singles (Realistic padel geometry)</option>
+                                <option value="half">½ Half-Court Singles (Corridor down-the-line)</option>
+                            </optgroup>
+                        </select>
+                        <div class="hint">Allocates extra players to spare selected courts instead of benching them.</div>
                     </div>
 
                     <!-- Predetermined Partnerships Section -->
@@ -979,7 +1003,67 @@ function handleRequest() {
         let modalReservePlayers = [];     
         let lockedPartnerships = [];      
 
-        const MAX_SKILL_GAP_LIMIT = 2.5; 
+        const MAX_SKILL_GAP_LIMIT = 2.5;
+
+        const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); 
+
+        // Streamlined, distinct mini-game modes (No overlaps)
+        const GAME_MODES = {
+            king: { 
+                kind: 'trio', 
+                icon: '👑', 
+                label: 'King of the Court',
+                short: '1 King vs 2 Challengers - only the King scores.',
+                rules: [
+                    '1 King defends one side; 2 Challengers play as a pair on the other.',
+                    'King serves every rally. First team to hit a decisive winning shot wins the rally.',
+                    'If King wins: King scores 1 point and stays as King.',
+                    'If Challengers win: The challenger who made the winning shot crosses over to become the new King; the old King joins the challengers.',
+                    'First player to reach 7 points wins.'
+                ] 
+            },
+            halfsolo: { 
+                kind: 'trio', 
+                icon: '½', 
+                label: 'Half-Court Solo',
+                short: 'Solo defends one half-strip (2nd-bounce rule applied).',
+                rules: [
+                    'Solo player defends only one half-strip (e.g., deuce side).',
+                    'Pair must land all balls into the solo’s designated half (first bounce anywhere, second bounce must land inside that half).',
+                    'Solo can attack anywhere on the pair’s full court.',
+                    'Play a mini-tiebreak to 7 points, swapping halves after 4 points.'
+                ] 
+            },
+            cross: { 
+                kind: 'singles', 
+                icon: '↗️', 
+                label: 'Cross-Court Singles',
+                short: 'Pure diagonal rallies across the center net.',
+                rules: [
+                    'Both players must hit strictly cross-court on the agreed diagonal.',
+                    'Any shot bouncing into the parallel straight lane is immediately out.',
+                    'Simulates realistic padel angles, glass defense, and lobs.',
+                    'First to 7 points - switch diagonals at 4.'
+                ] 
+            },
+            half: { 
+                kind: 'singles', 
+                icon: '½', 
+                label: 'Half-Court Singles',
+                short: 'Both players play down the line within the same corridor.',
+                rules: [
+                    'Both players use the same longitudinal half-court strip.',
+                    'Any ball landing outside the corridor lane is out.',
+                    'Great for practicing wall rebounds and volleys without excessive lateral running.',
+                    'First to 7 points - switch sides at 4.'
+                ] 
+            }
+        };
+
+        function getLeftoverMode() {
+            const el = document.getElementById('leftoverMode');
+            return el ? el.value : 'rest';
+        }
 
         // ==========================================
         // HELPER FUNCTIONS & CALCULATIONS
@@ -1094,7 +1178,8 @@ function handleRequest() {
             lockedPartnerships.push({
                 id1: activeList[0].id,
                 id2: activeList[1].id,
-                round: "ALL"
+                round: "ALL",
+                type: "lock"
             });
             renderLockedPairsList();
         }
@@ -1106,6 +1191,12 @@ function handleRequest() {
 
         function updateLockedPair(index, field, value) {
             if (lockedPartnerships[index]) {
+                const other = field === 'id1' ? 'id2' : field === 'id2' ? 'id1' : null;
+                if (other && lockedPartnerships[index][other] === value) {
+                    alert("A player cannot be paired with themselves.");
+                    renderLockedPairsList();
+                    return;
+                }
                 lockedPartnerships[index][field] = value;
                 renderLockedPairsList();
             }
@@ -1117,10 +1208,11 @@ function handleRequest() {
             container.innerHTML = '';
 
             const activeList = players.filter(p => p.active);
+            lockedPartnerships = lockedPartnerships.filter(lp => activeList.some(p => p.id === lp.id1) && activeList.some(p => p.id === lp.id2));
             const rounds = parseInt(document.getElementById('roundsCount').value) || 1;
 
             if (lockedPartnerships.length === 0) {
-                container.innerHTML = `<div style="font-size: 11px; color: #94a3b8; font-style: italic; text-align: center; padding: 4px;">No locked pairs set. Partners will rotate freely.</div>`;
+                container.innerHTML = `<div style="font-size: 11px; color: #94a3b8; font-style: italic; text-align: center; padding: 4px;">No pair rules set. Partners will rotate freely.</div>`;
                 return;
             }
 
@@ -1133,10 +1225,14 @@ function handleRequest() {
                     roundOptions += `<option value="${r}" ${String(pair.round) === String(r) ? 'selected' : ''}>Game ${r}</option>`;
                 }
 
-                let p1Options = activeList.map(p => `<option value="${p.id}" ${p.id === pair.id1 ? 'selected' : ''}>${p.name}</option>`).join('');
-                let p2Options = activeList.map(p => `<option value="${p.id}" ${p.id === pair.id2 ? 'selected' : ''}>${p.name}</option>`).join('');
+                let p1Options = activeList.map(p => `<option value="${p.id}" ${p.id === pair.id1 ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
+                let p2Options = activeList.map(p => `<option value="${p.id}" ${p.id === pair.id2 ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
 
                 row.innerHTML = `
+                    <select class="rule-select" onchange="updateLockedPair(${idx}, 'type', this.value)">
+                        <option value="lock" ${pair.type !== 'avoid' ? 'selected' : ''}>🔒 Always partners</option>
+                        <option value="avoid" ${pair.type === 'avoid' ? 'selected' : ''}>🚫 Never partners</option>
+                    </select>
                     <select onchange="updateLockedPair(${idx}, 'id1', this.value)">${p1Options}</select>
                     <span>&</span>
                     <select onchange="updateLockedPair(${idx}, 'id2', this.value)">${p2Options}</select>
@@ -1157,7 +1253,6 @@ function handleRequest() {
             const activePlayersList = players.filter(p => p.active);
             const selectedCourtCBs = Array.from(document.querySelectorAll('.court-select-cb:checked'));
 
-            // Auto-calculate courts required based on active players (min 1)
             let autoCourtsCount = Math.max(1, Math.ceil(activePlayersList.length / 4));
             
             if (activePlayersList.length === 0 && selectedCourtCBs.length > 0) {
@@ -1165,7 +1260,6 @@ function handleRequest() {
             }
 
             document.getElementById('modalCourtsCount').value = autoCourtsCount;
-
             updateRosterConfigModal();
             document.getElementById('rosterConfigModal').style.display = 'flex';
         }
@@ -1182,9 +1276,7 @@ function handleRequest() {
             
             if (activePlayersList.length > totalCapacity) {
                 reservesContainer.style.display = 'block';
-                const playingCount = totalCapacity;
-                
-                modalReservePlayers = activePlayersList.slice(playingCount);
+                modalReservePlayers = activePlayersList.slice(totalCapacity);
                 renderModalReservesList();
             } else {
                 reservesContainer.style.display = 'none';
@@ -1204,16 +1296,14 @@ function handleRequest() {
                 item.dataset.index = idx;
 
                 item.innerHTML = `
-                    <span><b>R${idx + 1}:</b> ${p.name}</span>
+                    <span><b>R${idx + 1}:</b> ${esc(p.name)}</span>
                     <div class="reserve-buttons">
                         <button type="button" class="move-btn" onclick="moveReserveItem(${idx}, -1)">▲</button>
                         <button type="button" class="move-btn" onclick="moveReserveItem(${idx}, 1)">▼</button>
                     </div>
                 `;
 
-                item.addEventListener('dragstart', (e) => {
-                    e.dataTransfer.setData('text/plain', idx);
-                });
+                item.addEventListener('dragstart', (e) => e.dataTransfer.setData('text/plain', idx));
                 item.addEventListener('dragover', (e) => e.preventDefault());
                 item.addEventListener('drop', (e) => {
                     e.preventDefault();
@@ -1557,6 +1647,10 @@ function handleRequest() {
                     const data = await response.json();
                     if (data && Array.isArray(data.players)) {
                         players = data.players;
+                        try {
+                            const local = JSON.parse(localStorage.getItem('padelPlayers_v8') || '[]');
+                            players.forEach(p => { const l = local.find(x => x.id === p.id); if (l) p.active = l.active; });
+                        } catch (e) {}
                         isDemoLoaded = false;
                         localStorage.setItem('padelPlayers_v8', JSON.stringify(players));
                         commitBaselineState();
@@ -1599,12 +1693,14 @@ function handleRequest() {
                 localStorage.setItem('padelPlayers_v8', JSON.stringify(players));
                 const permanentRoster = players.filter(p => !isGuest(p));
 
-                await fetch(scriptUrl, {
+                const res = await fetch(scriptUrl, {
                     method: 'POST',
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ players: permanentRoster }),
                     redirect: 'follow'
                 });
+                const out = await res.json();
+                if (out.status !== 'success') throw new Error(out.message || 'Save failed');
 
                 commitBaselineState();
                 renderPlayers();
@@ -1618,11 +1714,10 @@ function handleRequest() {
                 }
             } catch (error) {
                 console.error(error);
-                commitBaselineState();
                 renderPlayers();
 
                 if (btn) {
-                    btn.innerText = "✅ Saved Locally";
+                    btn.innerText = "⚠️ Cloud save failed (kept locally)";
                     setTimeout(() => {
                         btn.disabled = false;
                         btn.innerText = "💾 Save to Cloud";
@@ -1712,7 +1807,7 @@ function handleRequest() {
                 title.innerText = "Match Priority Modes";
                 body.innerHTML = `
                     <p><b>🎯 Skill Matched:</b> Strict skill tiers. Court 1 always gets top 4 ranks; partners rotate standard round-robin.</p>
-                    <p><b>⚖️ Balanced (Default):</b> Balanced skill matches with <i>zero duplicate partnerships</i> and weighted partner variance penalizing wide skill gaps (>2.5).</p>
+                    <p><b>⚖️ Balanced (Default):</b> Balanced skill matches with <i>repeat partnerships avoided where possible</i> and weighted partner variance penalizing wide skill gaps (>2.5).</p>
                     <p><b>🔄 Max Mix:</b> Maximum social rotation across courts, ensuring a new partner every single game.</p>
                 `;
             }
@@ -1720,7 +1815,10 @@ function handleRequest() {
         }
 
         function closeInfo(e, modalId) { document.getElementById(modalId).style.display = 'none'; }
-        function savePlayers() { localStorage.setItem('padelPlayers_v8', JSON.stringify(players)); }
+        function savePlayers() {
+            if (isDemoLoaded) return;
+            localStorage.setItem('padelPlayers_v8', JSON.stringify(players));
+        }
 
         function syncTableInputsToMemory() {
             const rows = document.querySelectorAll('.player-row');
@@ -1868,7 +1966,7 @@ function handleRequest() {
                 row.dataset.id = player.id;
                 row.innerHTML = `
                     <input type="checkbox" ${isChecked} onchange="togglePlayerSelection('${player.id}', this.checked)">
-                    <input type="text" value="${player.name}" onchange="syncTableInputsToMemory(); renderPlayers();">
+                    <input type="text" value="${esc(player.name)}" onchange="syncTableInputsToMemory(); renderPlayers();">
                     <input type="number" value="${player.rank}" min="0" max="10" step="0.1" onchange="syncTableInputsToMemory(); renderPlayers();">
                     ${annotationHtml}
                     ${guestBtnHtml}
@@ -1962,14 +2060,15 @@ function handleRequest() {
             if (selectedCourtNumbers.length === 0) { alert("Please select at least one court above!"); return; }
 
             let activePlayers = players.filter(p => p.active);
-            if (activePlayers.length < 4) { alert("You need at least 4 playing members to generate a game."); return; }
+            const minPlayers = getLeftoverMode() === 'rest' ? 4 : 2;
+            if (activePlayers.length < minPlayers) { alert(`You need at least ${minPlayers} playing members to generate a game.`); return; }
 
             const maxCourtsPossible = Math.floor(activePlayers.length / 4);
             const actualCourtsToUse = selectedCourtNumbers.slice(0, maxCourtsPossible);
             const playersNeeded = actualCourtsToUse.length * 4;
             const extraCount = activePlayers.length - playersNeeded;
 
-            if (extraCount > 0) {
+            if (extraCount > 0 && actualCourtsToUse.length > 0) {
                 promptPerGameRestSelection(activePlayers, extraCount);
             } else {
                 roundRestPreferences = [];
@@ -1983,7 +2082,7 @@ function handleRequest() {
             const textEl = document.getElementById('restModalText');
             container.innerHTML = '';
             
-            textEl.innerText = `You have ${activePlayers.length} players for ${activePlayers.length - extraCount} playing spots (${extraCount} resting per game). Choose who rests in each game or leave as "Anyone":`;
+            textEl.innerText = `You have ${activePlayers.length} players for ${activePlayers.length - extraCount} playing spots (${extraCount} ${getLeftoverMode() === 'rest' ? 'resting' : 'stepping out to a side game or resting'} per game). Choose who steps out in each game or leave as "Anyone":`;
 
             for (let r = 0; r < rounds; r++) {
                 const card = document.createElement('div');
@@ -2062,11 +2161,12 @@ function handleRequest() {
             currentRoundsData.forEach((round, rIdx) => {
                 text += `*--- Game ${rIdx + 1} (${round.gameTime}) ---*\n`;
                 round.courts.forEach((c) => {
-                    const p1 = players.find(p => p.id === c.t1p1)?.name || "";
-                    const p2 = players.find(p => p.id === c.t1p2)?.name || "";
-                    const p3 = players.find(p => p.id === c.t2p1)?.name || "";
-                    const p4 = players.find(p => p.id === c.t2p2)?.name || "";
-                    text += `Court ${c.courtNum}: ${p1} & ${p2} 🆚 ${p3} & ${p4}\n`;
+                    const nm = id => players.find(p => p.id === id)?.name || "";
+                    const side = (a, b) => [a, b].filter(Boolean).map(nm).join(' & ');
+                    const md = c.rule ? GAME_MODES[c.rule] : null;
+                    const tag = md ? ` (${md.icon} ${md.label})` : '';
+                    text += `Court ${c.courtNum}${tag}: ${side(c.t1p1, c.t1p2)} 🆚 ${side(c.t2p1, c.t2p2)}\n`;
+                    if (md) text += `   ↳ ${md.short}\n`;
                 });
                 if (round.benched.length > 0) {
                     const bNames = round.benched.map(id => players.find(p => p.id === id)?.name).filter(Boolean).join(", ");
@@ -2106,6 +2206,7 @@ function handleRequest() {
         // ==========================================
 
         function generateTournament() {
+            window._rankingsApplied = false;
             syncTableInputsToMemory();
             const selectedCourtCBs = Array.from(document.querySelectorAll('.court-select-cb:checked'));
             const selectedCourtNumbers = selectedCourtCBs.map(cb => parseInt(cb.value)).sort((a, b) => a - b);
@@ -2116,8 +2217,9 @@ function handleRequest() {
             const startTimeStr = document.getElementById('startTime').value || "09:00";
             const gameDurationMin = parseInt(document.getElementById('gameDuration').value) || 30;
 
-            let activePlayers = players.filter(p => p.active).map(p => ({ ...p, gamesPlayed: 0 }));
-            if (activePlayers.length < 4) { alert("You need at least 4 playing members to generate a game."); return; }
+            let activePlayers = players.filter(p => p.active).map(p => ({ ...p, gamesPlayed: 0, restCount: 0 }));
+            const minPlayers = getLeftoverMode() === 'rest' ? 4 : 2;
+            if (activePlayers.length < minPlayers) { alert(`You need at least ${minPlayers} playing members to generate a game.`); return; }
 
             const maxCourtsPossible = Math.floor(activePlayers.length / 4);
             const actualCourtsToUse = selectedCourtNumbers.slice(0, maxCourtsPossible);
@@ -2129,6 +2231,7 @@ function handleRequest() {
             let currentGameMinutes = startH * 60 + startM;
 
             const previousPartnerships = new Set();
+            const coPlayCount = {};
             let courtConsecutiveMap = {}; 
 
             for (let r = 0; r < rounds; r++) {
@@ -2145,7 +2248,9 @@ function handleRequest() {
                     benchedThisRound = activePlayers.filter(p => explicitRestIds.includes(p.id));
                 }
 
-                let roundLockedPairs = lockedPartnerships.filter(lp => lp.round === 'ALL' || String(lp.round) === String(r + 1));
+                const roundRules = lockedPartnerships.filter(lp => lp.round === 'ALL' || String(lp.round) === String(r + 1));
+                let roundLockedPairs = roundRules.filter(lp => lp.type !== 'avoid');
+                const roundAvoidPairs = roundRules.filter(lp => lp.type === 'avoid');
 
                 let lockedPlayerIds = new Set();
                 roundLockedPairs.forEach(lp => {
@@ -2185,14 +2290,34 @@ function handleRequest() {
                     }
                 });
 
-                unassignedPlaying.sort(() => Math.random() - 0.5);
-                courtGroups.forEach(cg => {
-                    while (cg.length < 4 && unassignedPlaying.length > 0) {
-                        cg.push(unassignedPlaying.shift());
+                const fillGroups = (pool) => {
+                    const groups = courtGroups.map(g => [...g]);
+                    const q = [...pool];
+                    groups.forEach(g => { while (g.length < 4 && q.length) g.push(q.shift()); });
+                    return groups;
+                };
+                let pool = [...unassignedPlaying];
+                if (mixPriorityValue === 0) {
+                    pool.sort((a, b) => b.rank - a.rank);
+                } else {
+                    const tries = mixPriorityValue === 100 ? 300 : 1;
+                    let best = pool, bestScore = Infinity;
+                    for (let t = 0; t < tries; t++) {
+                        const cand = [...unassignedPlaying].sort(() => Math.random() - 0.5);
+                        let sc = 0;
+                        fillGroups(cand).forEach(g => {
+                            for (let i = 0; i < g.length; i++)
+                                for (let j = i + 1; j < g.length; j++)
+                                    sc += coPlayCount[getPairKey(g[i].id, g[j].id)] || 0;
+                        });
+                        if (sc < bestScore) { bestScore = sc; best = cand; }
                     }
-                });
+                    pool = best;
+                }
+                courtGroups = fillGroups(pool);
+                unassignedPlaying = [];
 
-                if (actualCourtsToUse.length > 1) {
+                if (actualCourtsToUse.length > 1 && mixPriorityValue !== 0) {
                     for (let c = 0; c < actualCourtsToUse.length; c++) {
                         const courtNum = actualCourtsToUse[c];
                         let overstayedPlayerIndices = [];
@@ -2268,7 +2393,13 @@ function handleRequest() {
                         let gap2 = Math.abs(p3.rank - p4.rank);
                         let gapPenalty = (gap1 > MAX_SKILL_GAP_LIMIT ? 5 : 0) + (gap2 > MAX_SKILL_GAP_LIMIT ? 5 : 0);
 
-                        let totalScore = teamDiff + repeatPenalty + gapPenalty + locksEnforcedPenalty;
+                        let avoidPenalty = 0;
+                        roundAvoidPairs.forEach(ap => {
+                            const ak = getPairKey(ap.id1, ap.id2);
+                            if (k1 === ak || k2 === ak) avoidPenalty += 500;
+                        });
+
+                        let totalScore = teamDiff + repeatPenalty + gapPenalty + locksEnforcedPenalty + avoidPenalty;
 
                         if (totalScore < minPairingScore) {
                             minPairingScore = totalScore;
@@ -2283,6 +2414,11 @@ function handleRequest() {
 
                     previousPartnerships.add(getPairKey(t1p1, t1p2));
                     previousPartnerships.add(getPairKey(t2p1, t2p2));
+                    const four = [t1p1, t1p2, t2p1, t2p2];
+                    for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) {
+                        const k = getPairKey(four[i], four[j]);
+                        coPlayCount[k] = (coPlayCount[k] || 0) + 1;
+                    }
 
                     [t1p1, t1p2, t2p1, t2p2].forEach(pId => {
                         currentRoundCourtAssignments[pId] = courtNum;
@@ -2290,6 +2426,32 @@ function handleRequest() {
 
                     roundCourts.push({ courtNum, t1p1, t1p2, t2p1, t2p2, scoreT1: "", scoreT2: "" });
                 }
+
+                // Side games for extra players (2 vs 1 or Singles)
+                const leftoverMode = getLeftoverMode();
+                const spareCourts = selectedCourtNumbers.filter(n => !actualCourtsToUse.includes(n));
+                if (leftoverMode !== 'rest' && benchedThisRound.length >= 2 && spareCourts.length > 0) {
+                    let sidePool = [...benchedThisRound].sort((a, b) => b.rank - a.rank);
+                    const sideGames = [];
+                    if (GAME_MODES[leftoverMode]?.kind === 'trio' && sidePool.length === 3) {
+                        sideGames.push({ format: 'trio', rule: leftoverMode, t1p1: sidePool[0].id, t1p2: "", t2p1: sidePool[1].id, t2p2: sidePool[2].id });
+                    } else {
+                        if (sidePool.length % 2 === 1) {
+                            const minRest = Math.min(...sidePool.map(p => p.restCount));
+                            sidePool.splice(sidePool.findIndex(p => p.restCount === minRest), 1);
+                        }
+                        for (let i = 0; i + 1 < sidePool.length; i += 2) {
+                            sideGames.push({ format: 'singles', rule: GAME_MODES[leftoverMode]?.kind === 'singles' ? leftoverMode : 'cross', t1p1: sidePool[i].id, t1p2: "", t2p1: sidePool[i + 1].id, t2p2: "" });
+                        }
+                    }
+                    const placedIds = new Set();
+                    sideGames.slice(0, spareCourts.length).forEach((sg, i) => {
+                        roundCourts.push({ courtNum: spareCourts[i], ...sg, scoreT1: "", scoreT2: "" });
+                        [sg.t1p1, sg.t1p2, sg.t2p1, sg.t2p2].filter(Boolean).forEach(id => placedIds.add(id));
+                    });
+                    benchedThisRound = benchedThisRound.filter(p => !placedIds.has(p.id));
+                }
+                benchedThisRound.forEach(p => p.restCount++);
 
                 players.forEach(p => {
                     const assignedCourt = currentRoundCourtAssignments[p.id];
@@ -2308,6 +2470,7 @@ function handleRequest() {
                 roundCourts.forEach(c => {
                     ['t1p1', 't1p2', 't2p1', 't2p2'].forEach(slot => {
                         let id = c[slot];
+                        if (!id) return;
                         if (seenInRound.has(id)) {
                             let replacement = activePlayers.find(p => !seenInRound.has(p.id) && !benchedThisRound.some(b => b.id === p.id));
                             if (replacement) {
@@ -2323,17 +2486,21 @@ function handleRequest() {
                 currentRoundsData.push({ gameTime: gameTimeString, courts: roundCourts, benched: benchedThisRound.map(p => p.id) });
             }
 
-            renderTournamentDisplay();
+            renderTournamentDisplay(true);
         }
 
         // ==========================================
         // RESULTS DISPLAY & RANKING UPDATES
         // ==========================================
 
-        function renderTournamentDisplay() {
+        function renderTournamentDisplay(scroll = false) {
             const resultsArea = document.getElementById('resultsArea');
             let fullHtml = `<button id="copyBtn" class="whatsapp-btn" onclick="copyToWhatsApp()">📋 Copy Match Schedule for WhatsApp</button>`;
             let activePlayerIds = players.filter(p => p.active).map(p => p.id);
+            const optHtml = (selId) => activePlayerIds.map(id => {
+                const o = players.find(p => p.id === id);
+                return `<option value="${id}" ${id === selId ? 'selected' : ''}>${esc(o?.name)} (${o?.rank})</option>`;
+            }).join('');
 
             currentRoundsData.forEach((round, rIdx) => {
                 let assignedCounts = {};
@@ -2361,38 +2528,45 @@ function handleRequest() {
                     const p3R = players.find(p => p.id === c.t2p1)?.rank || 0;
                     const p4R = players.find(p => p.id === c.t2p2)?.rank || 0;
                     
-                    const t1Eff = getEffectiveTeamRating(p1R, p2R);
-                    const t2Eff = getEffectiveTeamRating(p3R, p4R);
+                    const t1Eff = c.t1p2 ? getEffectiveTeamRating(p1R, p2R) : p1R;
+                    const t2Eff = c.t2p2 ? getEffectiveTeamRating(p3R, p4R) : p3R;
                     const diff = Math.abs(t1Eff - t2Eff).toFixed(1);
 
-                    const gap1 = Math.abs(p1R - p2R);
-                    const gap2 = Math.abs(p3R - p4R);
+                    const gap1 = c.t1p2 ? Math.abs(p1R - p2R) : 0;
+                    const gap2 = c.t2p2 ? Math.abs(p3R - p4R) : 0;
 
-                    let t1IsLocked = lockedPartnerships.some(lp => (lp.round === 'ALL' || String(lp.round) === String(rIdx + 1)) && getPairKey(c.t1p1, c.t1p2) === getPairKey(lp.id1, lp.id2));
-                    let t2IsLocked = lockedPartnerships.some(lp => (lp.round === 'ALL' || String(lp.round) === String(rIdx + 1)) && getPairKey(c.t2p1, c.t2p2) === getPairKey(lp.id1, lp.id2));
+                    let t1IsLocked = lockedPartnerships.some(lp => lp.type !== 'avoid' && (lp.round === 'ALL' || String(lp.round) === String(rIdx + 1)) && getPairKey(c.t1p1, c.t1p2) === getPairKey(lp.id1, lp.id2));
+                    let t2IsLocked = lockedPartnerships.some(lp => lp.type !== 'avoid' && (lp.round === 'ALL' || String(lp.round) === String(rIdx + 1)) && getPairKey(c.t2p1, c.t2p2) === getPairKey(lp.id1, lp.id2));
+
+                    const md = c.rule ? GAME_MODES[c.rule] : null;
+                    const modeLabel = md ? ` - ${md.icon} ${md.label}` : '';
+                    const rulesHtml = md ? `<details class="rules-box"><summary>📖 Rules: ${esc(md.short)}</summary><ul>${md.rules.map(r => `<li>${esc(r)}</li>`).join('')}</ul></details>` : '';
 
                     fullHtml += `
                         <div class="court">
-                            <h3 class="court-title">Court ${c.courtNum}</h3>
+                            <h3 class="court-title">Court ${c.courtNum}${modeLabel}</h3>
+                            ${rulesHtml}
                             <div class="balance-summary">⚖️ T1 Rating: ${t1Eff.toFixed(1)} | T2 Rating: ${t2Eff.toFixed(1)} (Diff: ${diff})</div>
                             <div class="team-box">
                                 <select class="${getSelectClass(c.t1p1, 'player-select')}" onchange="handlePlayerSwap(${rIdx}, ${cIdx}, 't1p1', this.value)">
-                                    ${activePlayerIds.map(id => `<option value="${id}" ${id === c.t1p1 ? 'selected' : ''}>${players.find(p=>p.id===id)?.name} (${players.find(p=>p.id===id)?.rank})</option>`).join('')}
+                                    ${optHtml(c.t1p1)}
                                 </select>
-                                <select class="${getSelectClass(c.t1p2, 'player-select')}" onchange="handlePlayerSwap(${rIdx}, ${cIdx}, 't1p2', this.value)">
-                                    ${activePlayerIds.map(id => `<option value="${id}" ${id === c.t1p2 ? 'selected' : ''}>${players.find(p=>p.id===id)?.name} (${players.find(p=>p.id===id)?.rank})</option>`).join('')}
-                                </select>
+                                ${c.t1p2 ? `<select class="${getSelectClass(c.t1p2, 'player-select')}" onchange="handlePlayerSwap(${rIdx},${cIdx}, 't1p2', this.value)">
+                                    ${optHtml(c.t1p2)}
+                                </select>` : ''}
+                                ${c.format === 'trio' ? `<div class="locked-tag">${c.rule === 'king' ? '👑 King' : '🧍 Solo'}</div>` : ''}
                                 ${t1IsLocked ? `<div class="locked-tag">🔒 Predetermined Pair</div>` : ''}
                                 ${gap1 > MAX_SKILL_GAP_LIMIT ? `<div class="gap-warning-badge">⚠️ Large Skill Gap (${gap1.toFixed(1)})</div>` : ''}
                             </div>
                             <div class="vs">VS</div>
                             <div class="team-box">
                                 <select class="${getSelectClass(c.t2p1, 'player-select team-two-select')}" onchange="handlePlayerSwap(${rIdx}, ${cIdx}, 't2p1', this.value)">
-                                    ${activePlayerIds.map(id => `<option value="${id}" ${id === c.t2p1 ? 'selected' : ''}>${players.find(p=>p.id===id)?.name} (${players.find(p=>p.id===id)?.rank})</option>`).join('')}
+                                    ${optHtml(c.t2p1)}
                                 </select>
-                                <select class="${getSelectClass(c.t2p2, 'player-select team-two-select')}" onchange="handlePlayerSwap(${rIdx}, ${cIdx}, 't2p2', this.value)">
-                                    ${activePlayerIds.map(id => `<option value="${id}" ${id === c.t2p2 ? 'selected' : ''}>${players.find(p=>p.id===id)?.name} (${players.find(p=>p.id===id)?.rank})</option>`).join('')}
-                                </select>
+                                ${c.t2p2 ? `<select class="${getSelectClass(c.t2p2, 'player-select team-two-select')}" onchange="handlePlayerSwap(${rIdx},${cIdx}, 't2p2', this.value)">
+                                    ${optHtml(c.t2p2)}
+                                </select>` : ''}
+                                ${c.format === 'trio' ? `<div class="locked-tag">${c.rule === 'king' ? 'Challengers' : 'Pair'}</div>` : ''}
                                 ${t2IsLocked ? `<div class="locked-tag">🔒 Predetermined Pair</div>` : ''}
                                 ${gap2 > MAX_SKILL_GAP_LIMIT ? `<div class="gap-warning-badge">⚠️ Large Skill Gap (${gap2.toFixed(1)})</div>` : ''}
                             </div>
@@ -2426,10 +2600,7 @@ function handleRequest() {
                             ${round.benched.map((benchedId, bIdx) => {
                                 return `
                                 <select class="${getSelectClass(benchedId, 'player-select bench-select')}" onchange="handleBenchedSwap(${rIdx},${bIdx}, this.value)">
-                                    ${activePlayerIds.map(id => {
-                                        const pObj = players.find(p => p.id === id);
-                                        return `<option value="${id}" ${id === benchedId ? 'selected' : ''}>${pObj?.name} (${pObj?.rank})</option>`;
-                                    }).join('')}
+                                    ${optHtml(benchedId)}
                                 </select>`;
                             }).join('')}
                         </div>
@@ -2440,10 +2611,12 @@ function handleRequest() {
 
             fullHtml += `<button type="button" class="secondary" onclick="applyScoreRankings()">Update Rankings & Finish Session</button>`;
             resultsArea.innerHTML = fullHtml;
-            setTimeout(() => { resultsArea.scrollIntoView({ behavior: 'smooth' }); }, 100);
+            if (scroll) setTimeout(() => { resultsArea.scrollIntoView({ behavior: 'smooth' }); }, 100);
         }
 
         window.applyScoreRankings = function() {
+            if (window._rankingsApplied && !confirm("Rankings were already updated for these games. Apply again?")) return;
+            window._rankingsApplied = true;
             let adjustments = {};
             currentRoundsData.forEach(round => {
                 round.courts.forEach(c => {
@@ -2452,8 +2625,8 @@ function handleRequest() {
                         let winners = s1 > s2 ? [c.t1p1, c.t1p2] : [c.t2p1, c.t2p2];
                         let losers = s1 > s2 ? [c.t2p1, c.t2p2] : [c.t1p1, c.t1p2];
                         let delta = Math.min(Math.abs(s1 - s2), 4) * 0.05;
-                        winners.forEach(id => { adjustments[id] = (adjustments[id] || 0) + delta; });
-                        losers.forEach(id => { adjustments[id] = (adjustments[id] || 0) - delta; });
+                        winners.forEach(id => { if (id) adjustments[id] = (adjustments[id] || 0) + delta; });
+                        losers.forEach(id => { if (id) adjustments[id] = (adjustments[id] || 0) - delta; });
                     }
                 });
             });
