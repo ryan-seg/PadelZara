@@ -736,7 +736,7 @@
                         <input type="number" id="roundsCount" min="1" max="20" value="2" onchange="renderLockedPairsList()">
                     </div>
 
-                    <!-- Streamlined Odd-Player Gameplay Options -->
+                    <!-- Odd-Player Gameplay Options -->
                     <div class="control-group full-width">
                         <label for="leftoverMode">When Players Don't Divide Evenly by 4</label>
                         <select id="leftoverMode">
@@ -876,9 +876,20 @@
                 <div id="modalCapacitySummary" style="font-size: 12px; color: #64748b; margin-top: 4px; text-align: center;"></div>
             </div>
 
+            <!-- Optional Group Guidelines / Drop-out Policy -->
+            <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 8px 10px; margin-bottom: 12px;">
+                <label style="font-size: 12px; font-weight: bold; color: #92400e; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                    <input type="checkbox" id="includeGuidelinesOption" checked>
+                    Include Session Guidelines / Drop-out Rules
+                </label>
+                <div style="font-size: 11px; color: #78350f; margin-top: 3px; line-height: 1.35;">
+                    Appends a polite reminder: pairings posted Thursdays, Friday cancellations need a replacement or court share, 1-hour reserve response window, and co-hosting invite.
+                </div>
+            </div>
+
             <div id="modalReservesContainer" style="display: none;">
-                <h4 style="margin: 8px 0 4px 0; font-size: 14px; color: #0f172a;">Order Reserve Players:</h4>
-                <p style="font-size: 11px; color: #64748b; margin-top: 0;">Drag or use arrows to adjust reserve positions (1st reserve, 2nd reserve, etc.):</p>
+                <h4 style="margin: 8px 0 4px 0; font-size: 14px; color: #0f172a;">Order Reserve Players (Most Recent Sign-Ups):</h4>
+                <p style="font-size: 11px; color: #64748b; margin-top: 0;">Drag or use arrows to adjust reserve positions if needed:</p>
                 <div id="reservesList" style="max-height: 180px; overflow-y: auto; padding-right: 2px;"></div>
             </div>
 
@@ -1007,7 +1018,6 @@ function handleRequest() {
 
         const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); 
 
-        // Streamlined, distinct mini-game modes (No overlaps)
         const GAME_MODES = {
             king: { 
                 kind: 'trio', 
@@ -1170,7 +1180,7 @@ function handleRequest() {
         // ==========================================
 
         function addLockedPairRow() {
-            const activeList = players.filter(p => p.active);
+            const activeList = getChronologicalActivePlayers();
             if (activeList.length < 2) {
                 alert("You need at least 2 active players to create a locked partnership.");
                 return;
@@ -1207,7 +1217,7 @@ function handleRequest() {
             if (!container) return;
             container.innerHTML = '';
 
-            const activeList = players.filter(p => p.active);
+            const activeList = getChronologicalActivePlayers();
             lockedPartnerships = lockedPartnerships.filter(lp => activeList.some(p => p.id === lp.id1) && activeList.some(p => p.id === lp.id2));
             const rounds = parseInt(document.getElementById('roundsCount').value) || 1;
 
@@ -1247,10 +1257,25 @@ function handleRequest() {
         // PRE-MATCH SIGN-UP LIST SETUP & EXPORT
         // ==========================================
 
+        /**
+         * Returns active players sorted strictly by the time they signed up / checked active.
+         * Earliest signups come first, latest signups come last.
+         */
+        function getChronologicalActivePlayers() {
+            return players
+                .filter(p => p.active)
+                .sort((a, b) => {
+                    const timeA = a.selectedAt || 0;
+                    const timeB = b.selectedAt || 0;
+                    if (timeA !== timeB) return timeA - timeB;
+                    return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+                });
+        }
+
         function openRosterConfigModal() {
             syncTableInputsToMemory();
 
-            const activePlayersList = players.filter(p => p.active);
+            const activePlayersList = getChronologicalActivePlayers();
             const selectedCourtCBs = Array.from(document.querySelectorAll('.court-select-cb:checked'));
 
             let autoCourtsCount = Math.max(1, Math.ceil(activePlayersList.length / 4));
@@ -1267,7 +1292,7 @@ function handleRequest() {
         function updateRosterConfigModal() {
             const courtsCount = Math.max(1, parseInt(document.getElementById('modalCourtsCount').value) || 1);
             const totalCapacity = courtsCount * 4;
-            const activePlayersList = players.filter(p => p.active);
+            const activePlayersList = getChronologicalActivePlayers();
 
             const summaryEl = document.getElementById('modalCapacitySummary');
             summaryEl.innerText = `${activePlayersList.length} active players for ${totalCapacity} court spots (${courtsCount} court${courtsCount > 1 ? 's' : ''} x 4).`;
@@ -1339,11 +1364,13 @@ function handleRequest() {
             const finishTime = document.getElementById('finishTime').value;
             const cost = document.getElementById('costPerPerson').value;
             const includeCash = document.getElementById('includeCashLabel').checked;
+            const includeGuidelines = document.getElementById('includeGuidelinesOption').checked;
 
             const courtsCount = Math.max(1, parseInt(document.getElementById('modalCourtsCount').value) || 1);
             const totalCapacity = courtsCount * 4;
 
-            const activePlayersList = players.filter(p => p.active);
+            // Sort chronologically by sign-up timestamp
+            const activePlayersList = getChronologicalActivePlayers();
             const mainPlayingList = activePlayersList.slice(0, totalCapacity);
 
             let headerTitle = location ? `🎾 Padel @ ${location} 🎾` : `🎾 Padel Session 🎾`;
@@ -1367,20 +1394,35 @@ function handleRequest() {
                 text += `€${cost}${includeCash ? ' cash' : ''}\n\n`;
             }
 
+            // Numbered playing spots strictly in order of sign-up
             for (let i = 1; i <= totalCapacity; i++) {
                 const player = mainPlayingList[i - 1];
                 if (player) {
                     text += `${i}.) ${player.name}\n`;
                 } else {
-                    text += `${i}.)🎾\n`;
+                    text += `${i}.) 🎾\n`;
                 }
             }
 
+            // Guaranteed Reserves section
+            text += `\n*Reserves:*\n`;
             if (modalReservePlayers.length > 0) {
-                text += `\n*Reserves:*\n`;
                 modalReservePlayers.forEach((p, idx) => {
                     text += `${idx + 1}.) ${p.name}\n`;
                 });
+            } else {
+                text += `1.) 🎾 (Available)\n2.) 🎾 (Available)\n`;
+            }
+
+            // Optional Session Guidelines & Drop-out Policy
+            if (includeGuidelines) {
+                text += `\n-------------------\n`;
+                text += `📌 *Guidelines & Drop-out Policy:*\n`;
+                text += `• *Thursday Mix-In Sheet:* Pairings & schedule are posted on Thursdays.\n`;
+                text += `• *Friday Drop-Outs:* If pulling out on Friday, please find a replacement player or cover your court share so no one misses out.\n`;
+                text += `• *Reserves:* 1st reserve has 1 hour to confirm before moving to the next player, so we aren't chasing last-minute.\n`;
+                text += `• *Payment:* Pay-on-the-day cash.\n`;
+                text += `• *Help Welcome:* If anyone would like to co-host or help run the sessions, just send a message! 🙌\n`;
             }
 
             const btn = document.getElementById('copyListBtn');
@@ -1486,7 +1528,7 @@ function handleRequest() {
 
             savedState.forEach(s => {
                 if (!players.some(p => p.id === s.id)) {
-                    players.push({ id: s.id, name: s.name, rank: s.rank, active: true });
+                    players.push({ id: s.id, name: s.name, rank: s.rank, active: true, selectedAt: Date.now() });
                 }
             });
 
@@ -1649,7 +1691,13 @@ function handleRequest() {
                         players = data.players;
                         try {
                             const local = JSON.parse(localStorage.getItem('padelPlayers_v8') || '[]');
-                            players.forEach(p => { const l = local.find(x => x.id === p.id); if (l) p.active = l.active; });
+                            players.forEach(p => { 
+                                const l = local.find(x => x.id === p.id); 
+                                if (l) {
+                                    p.active = l.active;
+                                    p.selectedAt = l.selectedAt || (p.active ? Date.now() : null);
+                                }
+                            });
                         } catch (e) {}
                         isDemoLoaded = false;
                         localStorage.setItem('padelPlayers_v8', JSON.stringify(players));
@@ -1733,23 +1781,24 @@ function handleRequest() {
 
             isDemoLoaded = true;
 
+            const now = Date.now();
             players = [
-                { id: "demo_1",  name: "Quasimodo",         rank: 9.6, active: true },
-                { id: "demo_2",  name: "Esmeralda",         rank: 9.1, active: true },
-                { id: "demo_3",  name: "Phoebus",           rank: 8.2, active: true },
-                { id: "demo_4",  name: "Taran",             rank: 6.2, active: true },
-                { id: "demo_5",  name: "Gurgi",             rank: 7.4, active: true },
-                { id: "demo_6",  name: "Horned King",       rank: 8.9, active: true },
-                { id: "demo_7",  name: "Tod",               rank: 8.4, active: true },
-                { id: "demo_8",  name: "Copper",            rank: 8.0, active: true },
-                { id: "demo_9",  name: "Baloo",             rank: 4.5, active: true },
-                { id: "demo_10", name: "Bagheera",          rank: 9.3, active: true },
-                { id: "demo_11", name: "Mowgli",            rank: 7.1, active: true },
-                { id: "demo_12", name: "King Louie",        rank: 8.7, active: true },
-                { id: "demo_13", name: "Ariel",             rank: 6.5, active: true },
-                { id: "demo_14", name: "Tigger",            rank: 9.4, active: true },
-                { id: "demo_15", name: "Rapunzel",          rank: 8.5, active: true },
-                { id: "demo_16", name: "Genie",             rank: 9.8, active: true }
+                { id: "demo_1",  name: "Quasimodo",         rank: 9.6, active: true, selectedAt: now + 10 },
+                { id: "demo_2",  name: "Esmeralda",         rank: 9.1, active: true, selectedAt: now + 20 },
+                { id: "demo_3",  name: "Phoebus",           rank: 8.2, active: true, selectedAt: now + 30 },
+                { id: "demo_4",  name: "Taran",             rank: 6.2, active: true, selectedAt: now + 40 },
+                { id: "demo_5",  name: "Gurgi",             rank: 7.4, active: true, selectedAt: now + 50 },
+                { id: "demo_6",  name: "Horned King",       rank: 8.9, active: true, selectedAt: now + 60 },
+                { id: "demo_7",  name: "Tod",               rank: 8.4, active: true, selectedAt: now + 70 },
+                { id: "demo_8",  name: "Copper",            rank: 8.0, active: true, selectedAt: now + 80 },
+                { id: "demo_9",  name: "Baloo",             rank: 4.5, active: true, selectedAt: now + 90 },
+                { id: "demo_10", name: "Bagheera",          rank: 9.3, active: true, selectedAt: now + 100 },
+                { id: "demo_11", name: "Mowgli",            rank: 7.1, active: true, selectedAt: now + 110 },
+                { id: "demo_12", name: "King Louie",        rank: 8.7, active: true, selectedAt: now + 120 },
+                { id: "demo_13", name: "Ariel",             rank: 6.5, active: true, selectedAt: now + 130 },
+                { id: "demo_14", name: "Tigger",            rank: 9.4, active: true, selectedAt: now + 140 },
+                { id: "demo_15", name: "Rapunzel",          rank: 8.5, active: true, selectedAt: now + 150 },
+                { id: "demo_16", name: "Genie",             rank: 9.8, active: true, selectedAt: now + 160 }
             ];
 
             commitBaselineState();
@@ -1776,7 +1825,8 @@ function handleRequest() {
                 id: Date.now().toString(),
                 name: guestLabel,
                 rank: host.rank,
-                active: true
+                active: true,
+                selectedAt: Date.now()
             });
 
             renderPlayers();
@@ -1784,7 +1834,10 @@ function handleRequest() {
         }
 
         function uncheckAllPlayers() {
-            players.forEach(p => p.active = false);
+            players.forEach(p => {
+                p.active = false;
+                p.selectedAt = null;
+            });
             savePlayers();
             renderPlayers();
             renderLockedPairsList();
@@ -1794,6 +1847,7 @@ function handleRequest() {
             let player = players.find(p => p.id === id);
             if (player) {
                 player.active = isChecked;
+                player.selectedAt = isChecked ? Date.now() : null;
                 savePlayers();
                 updatePlayerCounter();
                 renderLockedPairsList();
@@ -1836,6 +1890,11 @@ function handleRequest() {
                     let player = players.find(p => p.id === playerId);
                     if (player) {
                         player.rank = isNaN(rankVal) ? 5.0 : rankVal;
+                        if (!player.active && isChecked) {
+                            player.selectedAt = Date.now();
+                        } else if (!isChecked) {
+                            player.selectedAt = null;
+                        }
                         player.active = isChecked;
                         player.name = nameVal;
                     }
@@ -1878,7 +1937,7 @@ function handleRequest() {
 
         function exportData() {
             syncTableInputsToMemory();
-            const exportList = players.map(p => ({ id: p.id, name: p.name, rank: p.rank, active: p.active }));
+            const exportList = players.map(p => ({ id: p.id, name: p.name, rank: p.rank, active: p.active, selectedAt: p.selectedAt }));
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportList, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
@@ -1900,7 +1959,8 @@ function handleRequest() {
                                 id: p.id || Date.now().toString(),
                                 name: p.name || "Player",
                                 rank: parseFloat(p.rank) || 5.0,
-                                active: p.active !== undefined ? p.active : true
+                                active: p.active !== undefined ? p.active : true,
+                                selectedAt: p.selectedAt || (p.active ? Date.now() : null)
                             }));
                             isDemoLoaded = false;
                             commitBaselineState();
@@ -1919,6 +1979,7 @@ function handleRequest() {
 
             const searchTerm = (document.getElementById('rosterSearch')?.value || '').toLowerCase();
 
+            // Main roster list remains strictly alphabetical across all view tabs
             players.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
 
             let filteredPlayers = players.filter(p => {
@@ -1989,7 +2050,7 @@ function handleRequest() {
             if (newName === "") return;
             syncTableInputsToMemory();
 
-            players.push({ id: Date.now().toString(), name: newName, rank: newRank, active: true });
+            players.push({ id: Date.now().toString(), name: newName, rank: newRank, active: true, selectedAt: Date.now() });
             renderPlayers();
             renderLockedPairsList();
 
