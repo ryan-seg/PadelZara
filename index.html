@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>try{var _t=localStorage.getItem("padelTheme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",_t)}catch(e){}</script>
     <title>Padel Organiser Pro</title>
     <style>
         :root {
@@ -11,11 +12,11 @@
             --accent: #3b82f6;
             --wa-green: #25D366;
             --wa-dark: #128C7E;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
+            --bg: var(--bg-f8fafc);
+            --card-bg: var(--bg-ffffff);
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --border: #e2e8f0;
+            --border: var(--bg-e2e8f0);
         }
 
         body {
@@ -27,17 +28,17 @@
             font-size: 14px; 
         }
 
-        h1 { text-align: center; font-size: 24px; margin: 8px 0 12px 0; color: #0f172a; }
+        h1 { text-align: center; font-size: 24px; margin: 8px 0 12px 0; color: var(--fg-0f172a); }
         
         .personal-note {
             text-align: center;
             font-size: 14px;
-            color: #d6336c;
-            background: #fff0f6;
+            color: var(--fg-d6336c);
+            background: var(--bg-fff0f6);
             padding: 8px 12px;
             border-radius: 8px;
             margin-bottom: 12px;
-            border: 2px dashed #ff87ab;
+            border: 2px dashed var(--bd-ff87ab);
             line-height: 1.4;
         }
 
@@ -67,7 +68,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 12px;
-            background: #f1f5f9;
+            background: var(--bg-f1f5f9);
             padding: 12px;
             border-radius: 8px;
         }
@@ -77,7 +78,7 @@
             flex-direction: column;
             font-weight: 600;
             font-size: 12px;
-            color: #334155;
+            color: var(--fg-334155);
         }
         .control-group label {
             display: flex;
@@ -90,11 +91,11 @@
             font-size: 13px;
             width: 100%;
             box-sizing: border-box;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--bd-cbd5e1);
             border-radius: 6px;
             text-align: center;
-            background: white;
-            color: #1e293b;
+            background: var(--bg-ffffff);
+            color: var(--fg-1e293b);
         }
 
         .full-width { grid-column: span 2; }
@@ -102,7 +103,7 @@
         .priority-segmented {
             display: flex;
             width: 100%;
-            background: #cbd5e1;
+            background: var(--bg-cbd5e1);
             border-radius: 6px;
             padding: 2px;
             box-sizing: border-box;
@@ -114,7 +115,7 @@
             padding: 7px 4px;
             font-size: 11px;
             font-weight: bold;
-            color: #475569;
+            color: var(--fg-475569);
             cursor: pointer;
             border-radius: 5px;
             transition: all 0.2s ease;
@@ -127,10 +128,10 @@
 
         .court-selection-box {
             grid-column: span 2;
-            background: white;
+            background: var(--bg-ffffff);
             padding: 10px;
             border-radius: 6px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--bd-cbd5e1);
             box-sizing: border-box;
         }
         .court-selection-title {
@@ -138,7 +139,7 @@
             font-size: 12px;
             font-weight: bold;
             margin-bottom: 6px;
-            color: #475569;
+            color: var(--fg-475569);
         }
         .court-checkboxes {
             display: flex;
@@ -150,10 +151,10 @@
             display: flex;
             align-items: center;
             gap: 3px;
-            background: #f1f5f9;
+            background: var(--bg-f1f5f9);
             padding: 4px 7px;
             border-radius: 16px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--bd-cbd5e1);
             font-size: 11px;
             cursor: pointer;
             font-weight: bold;
@@ -181,7 +182,7 @@
             box-sizing: border-box;
         }
         .modal-card {
-            background: white;
+            background: var(--bg-ffffff);
             border-radius: 12px;
             padding: 18px;
             max-width: 520px;
@@ -192,15 +193,15 @@
         }
         .modal-card h3 {
             margin-top: 0;
-            color: #0f172a;
+            color: var(--fg-0f172a);
             font-size: 16px;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid var(--bd-e2e8f0);
             padding-bottom: 6px;
         }
         .modal-card p, .modal-card ol {
             font-size: 13px;
             line-height: 1.4;
-            color: #475569;
+            color: var(--fg-475569);
             margin: 8px 0;
         }
         .code-block {
@@ -249,8 +250,8 @@
         }
 
         .sync-section {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: var(--bg-f8fafc);
+            border: 1px solid var(--bd-e2e8f0);
             border-radius: 8px;
             padding: 10px;
         }
@@ -265,14 +266,14 @@
             margin-bottom: 6px;
         }
         .sync-badge.cloud-mode {
-            background: #e0f2fe;
-            color: #0369a1;
-            border: 1px solid #bae6fd;
+            background: var(--bg-e0f2fe);
+            color: var(--fg-0369a1);
+            border: 1px solid var(--bd-bae6fd);
         }
         .sync-badge.local-mode {
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #cbd5e1;
+            background: var(--bg-f1f5f9);
+            color: var(--fg-475569);
+            border: 1px solid var(--bd-cbd5e1);
         }
         
         .sync-btn-row {
@@ -305,14 +306,14 @@
             display: flex;
             gap: 6px;
             margin-bottom: 10px;
-            background: #f8fafc;
+            background: var(--bg-f8fafc);
             padding: 8px;
             border-radius: 6px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--bd-e2e8f0);
             align-items: center;
         }
-        .add-player-bar input[type="text"] { flex-grow: 1; padding: 7px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
-        .add-player-bar input[type="number"] { width: 65px; padding: 7px 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; text-align: center; }
+        .add-player-bar input[type="text"] { flex-grow: 1; padding: 7px 8px; border: 1px solid var(--bd-cccccc); border-radius: 4px; font-size: 13px; }
+        .add-player-bar input[type="number"] { width: 65px; padding: 7px 4px; border: 1px solid var(--bd-cccccc); border-radius: 4px; font-size: 13px; text-align: center; }
         .add-player-bar button { background-color: var(--accent); color: white; border: none; padding: 7px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; white-space: nowrap; }
 
         .roster-toolbar {
@@ -324,7 +325,7 @@
         .search-input {
             width: 100%;
             padding: 7px 8px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--bd-cbd5e1);
             border-radius: 6px;
             font-size: 13px;
             box-sizing: border-box;
@@ -332,8 +333,8 @@
         .filter-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
         .filter-tab {
             padding: 3px 8px;
-            background: #e2e8f0;
-            color: #475569;
+            background: var(--bg-e2e8f0);
+            color: var(--fg-475569);
             border: none;
             border-radius: 12px;
             font-size: 11px;
@@ -342,11 +343,11 @@
         }
         .filter-tab.active { background: var(--accent); color: white; }
 
-        .roster-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; color: #475569; }
+        .roster-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; color: var(--fg-475569); }
         .roster-controls { display: flex; align-items: center; gap: 4px; }
         .uncheck-btn { 
-            background: #cbd5e1; 
-            color: #334155; 
+            background: var(--bg-cbd5e1); 
+            color: var(--fg-334155); 
             border: none; 
             padding: 3px 7px; 
             border-radius: 10px; 
@@ -354,7 +355,7 @@
             font-weight: bold; 
             cursor: pointer; 
         }
-        .uncheck-btn:hover { background: #94a3b8; color: white; }
+        .uncheck-btn:hover { background: var(--bg-94a3b8); color: white; }
 
         .bottom-revision-bar {
             display: flex;
@@ -380,17 +381,17 @@
             margin-left: 2px;
         }
         .player-counter {
-            background: #e2e8f0;
+            background: var(--bg-e2e8f0);
             padding: 2px 7px;
             border-radius: 10px;
             font-size: 11px;
-            color: #1e293b;
+            color: var(--fg-1e293b);
             font-weight: bold;
         }
         .player-counter.counter-invalid {
-            color: #dc2626 !important;
-            background: #fee2e2 !important;
-            border: 1px solid #fca5a5;
+            color: var(--fg-dc2626) !important;
+            background: var(--bg-fee2e2) !important;
+            border: 1px solid var(--bd-fca5a5);
         }
         .counter-badge {
             font-size: 10px;
@@ -401,15 +402,15 @@
         }
         .counter-badge.warn-needed {
             display: inline-block;
-            background: #fef3c7;
-            color: #b45309;
+            background: var(--bg-fef3c7);
+            color: var(--fg-b45309);
             border: 1px solid #fcd34d;
         }
         .counter-badge.warn-excess {
             display: inline-block;
-            background: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #fca5a5;
+            background: var(--bg-fee2e2);
+            color: var(--fg-b91c1c);
+            border: 1px solid var(--bd-fca5a5);
         }
 
         .roster-wrapper {
@@ -422,9 +423,9 @@
             flex-grow: 1;
             height: 380px; 
             overflow-y: scroll;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--bd-cbd5e1);
             border-radius: 6px;
-            background: white;
+            background: var(--bg-ffffff);
             position: relative;
             scroll-behavior: smooth;
         }
@@ -435,8 +436,8 @@
             align-items: center;
             width: 24px;
             height: 380px; 
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
+            background: var(--bg-f1f5f9);
+            border: 1px solid var(--bd-cbd5e1);
             border-radius: 6px;
             padding: 4px 0;
             box-sizing: border-box;
@@ -446,7 +447,7 @@
         .alpha-letter {
             font-size: 10px;
             font-weight: bold;
-            color: #475569;
+            color: var(--fg-475569);
             cursor: pointer;
             line-height: 1;
             width: 100%;
@@ -460,7 +461,7 @@
         .alpha-letter:hover, .alpha-letter:active {
             color: var(--accent);
             font-size: 12px;
-            background: #dbeafe;
+            background: var(--bg-dbeafe);
             border-radius: 3px;
         }
         
@@ -471,18 +472,18 @@
             font-weight: bold; color: var(--accent); z-index: 10;
         }
 
-        .player-row { display: flex; align-items: center; padding: 5px 8px; border-bottom: 1px solid #f1f5f9; gap: 4px; }
+        .player-row { display: flex; align-items: center; padding: 5px 8px; border-bottom: 1px solid var(--bd-f1f5f9); gap: 4px; }
         .player-row:last-child { border-bottom: none; }
         .player-row input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; }
         .player-row input[type="text"] { flex-grow: 1; border: 1px solid transparent; background: transparent; font-size: 13px; padding: 3px; border-radius: 4px; min-width: 70px; }
-        .player-row input[type="text"]:focus { border-color: var(--accent); background: white; }
+        .player-row input[type="text"]:focus { border-color: var(--accent); background: var(--bg-ffffff); }
         .player-row input[type="number"] { width: 45px; border: 1px solid transparent; background: transparent; font-size: 13px; text-align: center; padding: 3px; border-radius: 4px; flex-shrink: 0; }
-        .player-row input[type="number"]:focus { border-color: var(--accent); background: white; }
+        .player-row input[type="number"]:focus { border-color: var(--accent); background: var(--bg-ffffff); }
 
-        .player-row.modified-row { background-color: #fef9c3; }
+        .player-row.modified-row { background-color: var(--bg-fef9c3); }
         .change-annotation {
-            background-color: #fef08a;
-            color: #854d0e;
+            background-color: var(--bg-fef08a);
+            color: var(--fg-854d0e);
             font-size: 9px;
             font-weight: bold;
             padding: 1px 4px;
@@ -499,13 +500,13 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
-        .status-pill.playing { background: #dcfce7; color: #15803d; }
-        .status-pill.reserve { background: #fef3c7; color: #b45309; }
+        .status-pill.playing { background: var(--bg-dcfce7); color: var(--fg-15803d); }
+        .status-pill.reserve { background: var(--bg-fef3c7); color: var(--fg-b45309); }
 
         .add-guest-btn {
-            background: #e2e8f0;
-            color: #334155;
-            border: 1px solid #cbd5e1;
+            background: var(--bg-e2e8f0);
+            color: var(--fg-334155);
+            border: 1px solid var(--bd-cbd5e1);
             font-size: 10px;
             font-weight: bold;
             padding: 2px 5px;
@@ -515,7 +516,7 @@
             flex-shrink: 0;
         }
 
-        .delete-btn { background: transparent; color: #ef4444; border: none; font-size: 15px; cursor: pointer; font-weight: bold; padding: 1px 4px; flex-shrink: 0; }
+        .delete-btn { background: transparent; color: var(--fg-ef4444); border: none; font-size: 15px; cursor: pointer; font-weight: bold; padding: 1px 4px; flex-shrink: 0; }
         
         button.primary { display: block; width: 100%; padding: 12px; background-color: var(--primary); color: white; border: none; border-radius: 7px; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 8px; }
         button.primary:hover { background-color: var(--primary-dark); }
@@ -548,32 +549,30 @@
         .hub-btn.rules-variant { background-color: #4f46e5; }
         .hub-btn.rules-variant:hover { background-color: #4338ca; }
 
-        .round-container { border: 2px solid #333; border-radius: 8px; padding: 10px; margin-bottom: 12px; background: #fff; }
+        .round-container { border: 2px solid #333; border-radius: 8px; padding: 10px; margin-bottom: 12px; background: var(--bg-ffffff); }
         .round-title { background: #333; color: white; padding: 6px; margin: -10px -10px 10px -10px; border-radius: 5px 5px 0 0; text-align: center; font-size: 15px; }
         .courts-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
         @media (min-width: 900px) {
             .courts-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
         }
-        .court { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 7px; padding: 8px; }
-        .court-title { color: #0f172a; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; font-size: 14px; text-align: center; }
-        .balance-summary { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 3px; border-radius: 5px; font-size: 11px; text-align: center; margin-bottom: 6px; font-weight: 600; }
+        .court { background: var(--bg-f8fafc); border: 1px solid var(--bd-cbd5e1); border-radius: 7px; padding: 8px; }
+        .court-title { color: var(--fg-0f172a); margin-top: 0; border-bottom: 2px solid var(--bd-e2e8f0); padding-bottom: 4px; font-size: 14px; text-align: center; }
+        .balance-summary { background: var(--bg-f0fdf4); border: 1px solid var(--bd-bbf7d0); color: var(--fg-166534); padding: 3px; border-radius: 5px; font-size: 11px; text-align: center; margin-bottom: 6px; font-weight: 600; }
         .team-box { display: flex; flex-direction: column; gap: 4px; margin: 4px 0; }
-        .player-select { padding: 5px; border-radius: 5px; border: 1px solid #cbd5e1; background: #e0f2fe; font-size: 13px; font-weight: 500; width: 100%; }
-        .team-two-select { background: #fce7f3; }
-        .bench-select { background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; }
-        .player-select.duplicate-error { border: 2px solid #ef4444 !important; background-color: #fee2e2 !important; color: #991b1b !important; font-weight: bold; }
-        .score-row { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #cbd5e1; font-size: 12px; }
-        .score-row input { width: 45px; padding: 3px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-        .vs { text-align: center; font-weight: bold; color: #94a3b8; font-size: 11px; }
-        .warning-banner { background: #fee2e2; border: 1px solid #f87171; color: #991b1b; padding: 6px; border-radius: 5px; font-size: 11px; text-align: center; margin-bottom: 8px; font-weight: bold; }
-        .gap-warning-badge { background: #fef3c7; border: 1px solid #fcd34d; color: #b45309; padding: 2px 4px; border-radius: 4px; font-size: 10px; font-weight: bold; text-align: center; margin-top: 2px; }
-        .benched { background: #fef3c7; color: #92400e; padding: 8px; border-radius: 5px; margin-top: 8px; font-size: 12px; }
+        .player-select { padding: 5px; border-radius: 5px; border: 1px solid var(--bd-cbd5e1); background: var(--bg-e0f2fe); font-size: 13px; font-weight: 500; width: 100%; }
+        .team-two-select { background: var(--bg-fce7f3); }
+        .bench-select { background: var(--bg-fef3c7); border: 1px solid #fcd34d; color: var(--fg-92400e); }
+        .player-select.duplicate-error { border: 2px solid #ef4444 !important; background-color: var(--bg-fee2e2) !important; color: var(--fg-991b1b) !important; font-weight: bold; }
+        .vs { text-align: center; font-weight: bold; color: var(--fg-94a3b8); font-size: 11px; }
+        .warning-banner { background: var(--bg-fee2e2); border: 1px solid var(--bd-f87171); color: var(--fg-991b1b); padding: 6px; border-radius: 5px; font-size: 11px; text-align: center; margin-bottom: 8px; font-weight: bold; }
+        .gap-warning-badge { background: var(--bg-fef3c7); border: 1px solid #fcd34d; color: var(--fg-b45309); padding: 2px 4px; border-radius: 4px; font-size: 10px; font-weight: bold; text-align: center; margin-top: 2px; }
+        .benched { background: var(--bg-fef3c7); color: var(--fg-92400e); padding: 8px; border-radius: 5px; margin-top: 8px; font-size: 12px; }
         .benched-title { font-weight: bold; text-align: center; margin-bottom: 4px; }
         .benched-grid { display: flex; flex-direction: column; gap: 4px; }
 
         .game-rest-card {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
+            background: var(--bg-f8fafc);
+            border: 1px solid var(--bd-cbd5e1);
             border-radius: 8px;
             padding: 10px;
             margin-bottom: 8px;
@@ -581,9 +580,9 @@
         .game-rest-title {
             font-size: 12px;
             font-weight: bold;
-            color: #1e293b;
+            color: var(--fg-1e293b);
             margin-bottom: 4px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid var(--bd-e2e8f0);
             padding-bottom: 3px;
         }
         .resting-modal-select {
@@ -591,16 +590,16 @@
             padding: 6px;
             font-size: 12px;
             border-radius: 6px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--bd-cbd5e1);
             margin-top: 2px;
             margin-bottom: 4px;
-            background: #fff;
+            background: var(--bg-ffffff);
         }
 
         .list-section-header {
             font-size: 12px;
             font-weight: bold;
-            color: #0f172a;
+            color: var(--fg-0f172a);
             margin: 8px 0 4px 0;
             display: flex;
             justify-content: space-between;
@@ -610,38 +609,38 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #fff;
+            background: var(--bg-ffffff);
             padding: 5px 8px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--bd-cbd5e1);
             border-radius: 5px;
             margin-bottom: 4px;
             font-size: 12px;
         }
         .manage-player-item.is-reserve {
-            background: #fffbeb;
-            border-color: #fde68a;
+            background: var(--bg-fffbeb);
+            border-color: var(--bd-fde68a);
         }
         .player-actions {
             display: flex;
             gap: 3px;
         }
         .action-chip-btn {
-            background: #e2e8f0;
-            border: 1px solid #cbd5e1;
+            background: var(--bg-e2e8f0);
+            border: 1px solid var(--bd-cbd5e1);
             border-radius: 4px;
             font-size: 10px;
             font-weight: bold;
             padding: 2px 5px;
             cursor: pointer;
-            color: #1e293b;
+            color: var(--fg-1e293b);
         }
-        .action-chip-btn:hover { background: #cbd5e1; }
-        .action-chip-btn.danger { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+        .action-chip-btn:hover { background: var(--bg-cbd5e1); }
+        .action-chip-btn.danger { background: var(--bg-fee2e2); color: var(--fg-b91c1c); border-color: var(--bd-fca5a5); }
 
         .locked-pairs-box {
             grid-column: span 2;
-            background: #fff;
-            border: 1px solid #cbd5e1;
+            background: var(--bg-ffffff);
+            border: 1px solid var(--bd-cbd5e1);
             border-radius: 6px;
             padding: 10px;
             margin-top: 4px;
@@ -649,7 +648,7 @@
         .locked-pairs-title {
             font-size: 12px;
             font-weight: bold;
-            color: #475569;
+            color: var(--fg-475569);
             margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
@@ -659,8 +658,8 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: var(--bg-f8fafc);
+            border: 1px solid var(--bd-e2e8f0);
             padding: 6px;
             border-radius: 5px;
             margin-bottom: 4px;
@@ -671,22 +670,22 @@
             flex: 1;
             padding: 4px;
             font-size: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--bd-cccccc);
             border-radius: 4px;
         }
         .locked-pair-row .rule-select { flex-basis: 100%; font-weight: bold; }
         .locked-tag {
             font-size: 10px;
-            background: #e0e7ff;
-            color: #3730a3;
+            background: var(--bg-e0e7ff);
+            color: var(--fg-3730a3);
             padding: 2px 4px;
             border-radius: 4px;
             font-weight: bold;
             margin-top: 2px;
             text-align: center;
         }
-        .hint { font-size: 11px; font-weight: normal; color: #64748b; margin-top: 4px; text-align: center; }
-        .rules-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 6px 9px; margin: 4px 0 8px 0; font-size: 12px; color: #78350f; }
+        .hint { font-size: 11px; font-weight: normal; color: var(--fg-64748b); margin-top: 4px; text-align: center; }
+        .rules-box { background: var(--bg-fffbeb); border: 1px solid var(--bd-fde68a); border-radius: 6px; padding: 6px 9px; margin: 4px 0 8px 0; font-size: 12px; color: var(--fg-78350f); }
         .rules-box summary { cursor: pointer; font-weight: bold; }
         .rules-box ul { margin: 6px 0 4px 0; padding-left: 18px; }
         .rules-box li { margin-bottom: 3px; line-height: 1.35; }
@@ -748,11 +747,32 @@
             z-index: 2000;
             display: none;
         }
+        .redo-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; border-radius: 4px; margin-left: 8px; cursor: pointer; font-size: 13px; padding: 2px 7px; }
+        .summary-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 6px; }
+        .summary-table th, .summary-table td { padding: 3px 4px; border-bottom: 1px solid var(--bd-fde68a); text-align: center; }
+        .summary-table th:first-child, .summary-table td:first-child { text-align: left; }
+
+        :root { --bd-bae6fd:#bae6fd;--bd-bbf7d0:#bbf7d0;--bd-cbd5e1:#cbd5e1;--bd-cccccc:#cccccc;--bd-e2e8f0:#e2e8f0;--bd-f1f5f9:#f1f5f9;--bd-f87171:#f87171;--bd-fca5a5:#fca5a5;--bd-fde68a:#fde68a;--bd-ff87ab:#ff87ab;--bg-94a3b8:#94a3b8;--bg-cbd5e1:#cbd5e1;--bg-dbeafe:#dbeafe;--bg-dcfce7:#dcfce7;--bg-e0e7ff:#e0e7ff;--bg-e0f2fe:#e0f2fe;--bg-e2e8f0:#e2e8f0;--bg-f0fdf4:#f0fdf4;--bg-f1f5f9:#f1f5f9;--bg-f8fafc:#f8fafc;--bg-fce7f3:#fce7f3;--bg-fee2e2:#fee2e2;--bg-fef08a:#fef08a;--bg-fef3c7:#fef3c7;--bg-fef9c3:#fef9c3;--bg-fff0f6:#fff0f6;--bg-fffbeb:#fffbeb;--bg-ffffff:#ffffff;--fg-0369a1:#0369a1;--fg-0f172a:#0f172a;--fg-15803d:#15803d;--fg-166534:#166534;--fg-1e293b:#1e293b;--fg-334155:#334155;--fg-3730a3:#3730a3;--fg-475569:#475569;--fg-64748b:#64748b;--fg-78350f:#78350f;--fg-854d0e:#854d0e;--fg-92400e:#92400e;--fg-94a3b8:#94a3b8;--fg-991b1b:#991b1b;--fg-b45309:#b45309;--fg-b91c1c:#b91c1c;--fg-d6336c:#d6336c;--fg-dc2626:#dc2626;--fg-ef4444:#ef4444 }
+        html[data-theme="dark"] { color-scheme: dark; --text-main:#e5e7eb;--text-muted:#9ca3af;--bd-bae6fd:#0d5276;--bd-bbf7d0:#166f35;--bd-cbd5e1:#344152;--bd-cccccc:#454545;--bd-e2e8f0:#2e3d50;--bd-f1f5f9:#283d51;--bd-f87171:#821111;--bd-fca5a5:#7a0e0e;--bd-fde68a:#81690d;--bd-ff87ab:#830b2f;--bg-94a3b8:#171b21;--bg-cbd5e1:#161b22;--bg-dbeafe:#072041;--bg-dcfce7:#0a3d1c;--bg-e0e7ff:#061547;--bg-e0f2fe:#082c45;--bg-e2e8f0:#18202a;--bg-f0fdf4:#0f4921;--bg-f1f5f9:#1c2b3a;--bg-f8fafc:#1f2f3f;--bg-fce7f3:#430e2c;--bg-fee2e2:#460808;--bg-fef08a:#332e05;--bg-fef3c7:#332a05;--bg-fef9c3:#332f05;--bg-fff0f6:#530725;--bg-fffbeb:#504106;--bg-ffffff:#333333;--fg-0369a1:#5ec4fc;--fg-0f172a:#c1cde9;--fg-15803d:#7ce9a5;--fg-166534:#92e7b2;--fg-1e293b:#b8c5db;--fg-334155:#a6b4c9;--fg-3730a3:#6c65d2;--fg-475569:#98a6b9;--fg-64748b:#8291a5;--fg-78350f:#efa981;--fg-854d0e:#f1b776;--fg-92400e:#f19f6c;--fg-94a3b8:#7e90aa;--fg-991b1b:#e56a6a;--fg-b45309:#f69951;--fg-b91c1c:#e55151;--fg-d6336c:#db4d7e;--fg-dc2626:#e14747;--fg-ef4444:#ee3a3a }
+        input, select, textarea, button { color: inherit; touch-action: manipulation; }
+        html[data-theme="dark"] a { color: #7dd3fc; }
+        .whatsapp-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; margin-bottom: 10px; background: var(--wa-green); color: #fff; border: none; border-radius: 7px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .theme-btn { background: transparent; border: 1px solid currentColor; border-radius: 50%; width: 36px; height: 36px; font-size: 17px; cursor: pointer; vertical-align: middle; margin-left: 8px; padding: 0; }
+
+        @media (pointer: coarse) {
+            input[type="text"], input[type="number"], input[type="date"], input[type="time"], select, textarea { font-size: 16px !important; }
+            button { min-height: 40px; }
+            .player-row input[type="checkbox"], .court-chip input { width: 22px; height: 22px; }
+            .court-chip { padding: 7px 10px; }
+            .delete-btn { padding: 6px 10px; font-size: 18px; }
+            .alphabet-bar { width: 32px; }
+            .filter-tab, .uncheck-btn, .move-btn, .add-guest-btn, .redo-btn, .info-btn { min-height: 34px; padding-left: 10px; padding-right: 10px; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>🎾 Padel Organizer</h1>
+    <h1>🎾 Padel Organiser <button type="button" id="themeBtn" class="theme-btn" onclick="toggleTheme()" title="Toggle dark mode">🌙</button></h1>
 
     <div class="personal-note">
         <strong>You're amazing Zara, very proud of you.</strong><br>
@@ -821,7 +841,7 @@
 
                     <!-- Odd-Player Gameplay Options -->
                     <div class="control-group full-width">
-                        <label for="leftoverMode">When Players Don't Divide Evenly by 4</label>
+                        <label for="leftoverMode">When Players Do Not Divide Evenly by 4</label>
                         <div class="leftover-row">
                             <select id="leftoverMode">
                                 <option value="rest" selected>😴 Standard Rest / Bench Rotation</option>
@@ -932,7 +952,7 @@
                 <!-- WhatsApp Messaging Hub -->
                 <div class="whatsapp-hub">
                     <button type="button" id="copyListBtn" class="hub-btn" onclick="openRosterConfigModal()">📋 Configure & Copy Sign-Up List</button>
-                    <button type="button" id="copyPolicyBtn" class="hub-btn policy-variant" onclick="copySessionPolicyToWhatsApp()">📜 Copy Session Policy & Rules</button>
+                    <button type="button" id="copyPolicyBtn" class="hub-btn policy-variant" onclick="openPolicyModal()">📜 Session Guidelines & Drop-Out Rules</button>
                     <button type="button" id="copyHubRulesBtn" class="hub-btn rules-variant" onclick="copyGameRulesToWhatsApp()">📖 Copy Odd-Player Game Rules</button>
                 </div>
 
@@ -957,16 +977,58 @@
         </div>
     </div>
 
+    <!-- Policy Customisation & Share Modal -->
+    <div id="policyModal" class="modal-overlay" onclick="closeInfo(event, 'policyModal')">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <h3>📜 Session Guidelines & Drop-Out Policy</h3>
+            <p style="margin-top: 2px;">Customise the group rules below before copying to WhatsApp:</p>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;">
+                <div>
+                    <label style="font-weight: 600; font-size: 11px; display: block; margin-bottom: 2px;">Sheet Publication Day:</label>
+                    <input type="text" id="policyPostDay" value="Thursday" style="width: 100%; padding: 6px; border: 1px solid var(--bd-cbd5e1); border-radius: 6px;">
+                </div>
+                <div>
+                    <label style="font-weight: 600; font-size: 11px; display: block; margin-bottom: 2px;">Late Cancellation Deadline:</label>
+                    <input type="text" id="policyCancelCutoff" value="Friday" style="width: 100%; padding: 6px; border: 1px solid var(--bd-cbd5e1); border-radius: 6px;">
+                </div>
+                <div>
+                    <label style="font-weight: 600; font-size: 11px; display: block; margin-bottom: 2px;">Reserve Response Window:</label>
+                    <input type="text" id="policyReserveWindow" value="1 hour" style="width: 100%; padding: 6px; border: 1px solid var(--bd-cbd5e1); border-radius: 6px;">
+                </div>
+                <div>
+                    <label style="font-weight: 600; font-size: 11px; display: block; margin-bottom: 2px;">Accepted Payment Method:</label>
+                    <input type="text" id="policyPaymentMethod" value="Pay-on-the-day cash at the courts" style="width: 100%; padding: 6px; border: 1px solid var(--bd-cbd5e1); border-radius: 6px;">
+                </div>
+                <div style="background: var(--bg-f8fafc); border: 1px solid var(--bd-cbd5e1); border-radius: 6px; padding: 8px;">
+                    <label style="font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <input type="checkbox" id="policyIncludeCohost" onchange="toggleCohostField()" checked> 
+                        Include Co-Hosting / Succession Notice
+                    </label>
+                    <div id="cohostTextContainer" style="margin-top: 6px;">
+                        <label style="font-weight: 600; font-size: 11px; display: block; margin-bottom: 2px; color: var(--fg-475569);">Invitation Wording:</label>
+                        <textarea id="policyCohostCustomText" rows="2" style="width: 100%; padding: 6px; border: 1px solid var(--bd-cbd5e1); border-radius: 6px; font-size: 12px; font-family: inherit; box-sizing: border-box; resize: vertical;">If anyone would like to co-host, help organise, or take over running the sessions in future, you are very welcome—just send me a message!</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button type="button" class="modal-close" onclick="closeInfo(event, 'policyModal')">Cancel</button>
+                <button type="button" class="modal-save" onclick="saveAndCopyPolicy()">Copy Policy to WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Host Sign-Up & Reserve Manager Modal -->
     <div id="rosterConfigModal" class="modal-overlay" onclick="closeInfo(event, 'rosterConfigModal')">
         <div class="modal-card" onclick="event.stopPropagation()">
             <h3>📋 Host Sign-Up & Reserve Manager</h3>
             <p style="margin-top: 2px;">Manage court capacity, promote/demote reserves, or handle drop-outs:</p>
             
-            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+            <div style="background: var(--bg-f8fafc); border: 1px solid var(--bd-cbd5e1); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
                 <label style="font-weight: bold; font-size: 12px; display: block; margin-bottom: 3px;">Courts Available:</label>
-                <input type="number" id="modalCourtsCount" min="1" max="20" value="1" onchange="updateRosterConfigModal(true)" style="width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; text-align: center;">
-                <div id="modalCapacitySummary" style="font-size: 11px; color: #64748b; margin-top: 4px; text-align: center;"></div>
+                <input type="number" id="modalCourtsCount" min="1" max="20" value="1" onchange="updateRosterConfigModal(true)" style="width: 100%; padding: 6px; border-radius: 6px; border: 1px solid var(--bd-cccccc); font-size: 13px; text-align: center;">
+                <div id="modalCapacitySummary" style="font-size: 11px; color: var(--fg-64748b); margin-top: 4px; text-align: center;"></div>
             </div>
 
             <!-- Playing spots list -->
@@ -1007,7 +1069,7 @@
     <div id="cloudModal" class="modal-overlay" onclick="closeInfo(event, 'cloudModal')">
         <div class="modal-card" onclick="event.stopPropagation()">
             <h3>📊 Google Apps Script Setup Guide</h3>
-            <p>Sync player rosters live using Google Sheets (100% free, zero login for app users).</p>
+            <p>Sync player rosters live using Google Sheets (free, no sign-in required for participants).</p>
             
             <ol>
                 <li>Open <a href="https://sheets.new" target="_blank">sheets.new</a>. Set Row 1 headers to: <b>ID</b>, <b>Name</b>, <b>Rank</b>, <b>Active</b>, <b>SelectedAt</b>. Rename the bottom tab to <b>Roster</b>.</li>
@@ -1021,7 +1083,15 @@
  * @OnlyCurrentDoc
  */
 
+// Optional: set a password here and enter the same key in the app. Leave "" to disable.
+var SECRET = "";
+
+function denied() {
+  return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "Access key rejected" })).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doGet(e) {
+  if (SECRET && (!e || !e.parameter || e.parameter.key !== SECRET)) return denied();
   return handleRequest();
 }
 
@@ -1033,6 +1103,7 @@ function doPost(e) {
     }
     if (rawData) {
       var data = JSON.parse(rawData);
+      if (SECRET && data.key !== SECRET) return denied();
       if (data.players && Array.isArray(data.players)) {
         var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Roster");
         if (!sheet) { sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet("Roster"); }
@@ -1074,11 +1145,14 @@ function handleRequest() {
             <ol start="4" style="margin-top: 10px;">
                 <li>Click <b>Deploy > New deployment</b> (or Manage deployments). Select <b>Web app</b>.</li>
                 <li>Set <i>Execute as</i>: <b>Me</b> and <i>Who has access</i>: <b>Anyone</b>.</li>
-                <li>Click <b>Deploy</b>, authorize permissions, copy the Web App URL, and paste it below.</li>
+                <li>Click <b>Deploy</b>, authorise permissions, copy the Web App URL, and paste it below.</li>
+                <li>Optional: set <b>SECRET</b> in the script to a password and enter the same key below. After any edit, redeploy via <b>Manage deployments > Edit > New version</b>.</li>
             </ol>
 
             <label style="margin-top:10px; display:block; font-weight:bold;">Apps Script Web App URL:</label>
             <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
+            <label style="margin-top:6px; display:block; font-weight:bold;">Access key (optional):</label>
+            <input type="text" id="scriptKeyInput" placeholder="Same value as SECRET in the script" autocomplete="off">
             
             <div class="modal-buttons">
                 <button type="button" class="modal-close" onclick="closeInfo(event, 'cloudModal')">Cancel</button>
@@ -1100,7 +1174,10 @@ function handleRequest() {
         let rosterFilter = 'all';         
         let isDemoLoaded = false;         
         let roundRestPreferences = [];    
-        let lockedPartnerships = [];      
+        let lockedPartnerships = [];
+        let scheduleRestored = false;
+        let scriptKey = localStorage.getItem('padel_script_key') || '';
+        const SCHEDULE_KEY = 'padelSchedule_v1';      
 
         let hostPlayingList = [];
         let hostReserveList = [];
@@ -1136,11 +1213,11 @@ function handleRequest() {
                 kind: 'singles', 
                 icon: '↗️', 
                 label: 'Cross-Court Singles',
-                short: 'Pure diagonal rallies across the center net.',
+                short: 'Pure diagonal rallies across the centre net.',
                 rules: [
                     'Both players must hit strictly cross-court on the agreed diagonal.',
                     'Any shot bouncing into the parallel straight lane is immediately out.',
-                    'Simulates realistic padel angles, glass defense, and lobs.',
+                    'Simulates realistic padel angles, glass defence, and lobs.',
                     'First to 7 points - switch diagonals at 4.'
                 ] 
             },
@@ -1152,7 +1229,7 @@ function handleRequest() {
                 rules: [
                     'Both players use the same longitudinal half-court strip.',
                     'Any ball landing outside the corridor lane is out.',
-                    'Great for practicing wall rebounds and volleys without excessive lateral running.',
+                    'Great for practising wall rebounds and volleys without excessive lateral running.',
                     'First to 7 points - switch sides at 4.'
                 ] 
             }
@@ -1178,37 +1255,63 @@ function handleRequest() {
                 text += `${idx + 1}.) ${rule}\n`;
             });
 
-            const btn = document.getElementById('copyGameRulesBtn');
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => showToast(`${mode.label} rules copied!`));
-            } else {
-                fallbackCopyTextToClipboard(text, btn);
-            }
+            copyText(text, `${mode.label} rules copied!`);
         }
 
-        function copySessionPolicyToWhatsApp() {
+        function toggleCohostField() {
+            const isChecked = document.getElementById('policyIncludeCohost').checked;
+            const container = document.getElementById('cohostTextContainer');
+            if (container) container.style.display = isChecked ? 'block' : 'none';
+        }
+
+        function openPolicyModal() {
+            try {
+                const p = JSON.parse(localStorage.getItem('padelPolicy_v1') || '{}');
+                if (p.postDay) document.getElementById('policyPostDay').value = p.postDay;
+                if (p.cutoff) document.getElementById('policyCancelCutoff').value = p.cutoff;
+                if (p.window) document.getElementById('policyReserveWindow').value = p.window;
+                if (p.payment) document.getElementById('policyPaymentMethod').value = p.payment;
+                if (p.cohost !== undefined) document.getElementById('policyIncludeCohost').checked = p.cohost;
+                if (p.cohostText) document.getElementById('policyCohostCustomText').value = p.cohostText;
+            } catch (e) {}
+            toggleCohostField();
+            document.getElementById('policyModal').style.display = 'flex';
+        }
+
+        function saveAndCopyPolicy() {
+            const postDay = document.getElementById('policyPostDay').value.trim() || "Thursday";
+            const cutoff = document.getElementById('policyCancelCutoff').value.trim() || "Friday";
+            const reserveWindow = document.getElementById('policyReserveWindow').value.trim() || "1 hour";
+            const payment = document.getElementById('policyPaymentMethod').value.trim() || "Pay-on-the-day cash at the courts";
+            const includeCohost = document.getElementById('policyIncludeCohost').checked;
+            const cohostCustomText = document.getElementById('policyCohostCustomText').value.trim() || 
+                "If anyone would like to co-host, help organise, or take over running the sessions in future, you are very welcome—just send me a message!";
+
+            try {
+                localStorage.setItem('padelPolicy_v1', JSON.stringify({
+                    postDay, cutoff, window: reserveWindow, payment, cohost: includeCohost, cohostText: cohostCustomText
+                }));
+            } catch (e) {}
+
+            document.getElementById('policyModal').style.display = 'none';
+
             let text = `🎾 *Saturday Padel Mix-In: Guidelines & Rules* 🎾\n\n`;
             text += `Hey everyone! To keep our sessions running smoothly, fairly, and fun for all of us, please take note of our group guidelines:\n\n`;
-            text += `📌 *1. Thursday Mix-In Sheet*\n`;
-            text += `The mix-in sheet and court pairings are posted every Thursday.\n\n`;
-            text += `📌 *2. Friday Cancellations*\n`;
-            text += `Finding replacement players at short notice for Saturday morning is tough. If you pull out on Friday, you will need to find a replacement player or cover your court share so no one misses out.\n\n`;
+            text += `📌 *1. ${postDay} Mix-In Sheet*\n`;
+            text += `The mix-in sheet and court pairings are posted every ${postDay}.\n\n`;
+            text += `📌 *2. ${cutoff} Cancellations*\n`;
+            text += `Finding replacement players at short notice for Saturday morning is tough. If you pull out on ${cutoff}, you will need to find a replacement player or cover your court share so no one misses out.\n\n`;
             text += `📌 *3. Reserve Response Window*\n`;
-            text += `If a spot opens up, the next reserve has *1 hour* to confirm before we move on to the next person, so nobody is left waiting late into Friday.\n\n`;
+            text += `If a spot opens up, the next reserve has *${reserveWindow}* to confirm before we move on to the next person, so nobody is left waiting late into ${cutoff}.\n\n`;
             text += `📌 *4. Payments*\n`;
-            text += `Pay-on-the-day cash at the courts.\n\n`;
-            text += `📌 *5. Co-Hosting / Organising*\n`;
-            text += `If anyone would like to co-host or help run the sessions, you are very welcome—just drop me a message!\n\n`;
+            text += `${payment}.\n\n`;
+            if (includeCohost && cohostCustomText) {
+                text += `📌 *5. Co-Hosting / Organising*\n`;
+                text += `${cohostCustomText}\n\n`;
+            }
             text += `Thanks so much for helping keep our games fun and well-organised! 🙌🎾`;
 
-            const btn = document.getElementById('copyPolicyBtn');
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast("Session guidelines copied!");
-                });
-            } else {
-                fallbackCopyTextToClipboard(text, btn);
-            }
+            copyText(text, "Session guidelines copied to clipboard!");
         }
 
         function getEffectiveTeamRating(r1, r2) {
@@ -1351,7 +1454,7 @@ function handleRequest() {
             const rounds = parseInt(document.getElementById('roundsCount').value) || 1;
 
             if (lockedPartnerships.length === 0) {
-                container.innerHTML = `<div style="font-size: 11px; color: #94a3b8; font-style: italic; text-align: center; padding: 4px;">No pair rules set. Partners will rotate freely.</div>`;
+                container.innerHTML = `<div style="font-size: 11px; color: var(--fg-94a3b8); font-style: italic; text-align: center; padding: 4px;">No pair rules set. Partners will rotate freely.</div>`;
                 return;
             }
 
@@ -1443,7 +1546,7 @@ function handleRequest() {
             reserveContainer.innerHTML = '';
 
             if (hostPlayingList.length === 0) {
-                playingContainer.innerHTML = `<div style="font-size: 11px; color: #94a3b8; font-style: italic; padding: 4px;">No players confirmed yet.</div>`;
+                playingContainer.innerHTML = `<div style="font-size: 11px; color: var(--fg-94a3b8); font-style: italic; padding: 4px;">No players confirmed yet.</div>`;
             } else {
                 hostPlayingList.forEach((p, idx) => {
                     const row = document.createElement('div');
@@ -1460,7 +1563,7 @@ function handleRequest() {
             }
 
             if (hostReserveList.length === 0) {
-                reserveContainer.innerHTML = `<div style="font-size: 11px; color: #94a3b8; font-style: italic; padding: 4px;">No reserve players currently queued.</div>`;
+                reserveContainer.innerHTML = `<div style="font-size: 11px; color: var(--fg-94a3b8); font-style: italic; padding: 4px;">No reserve players currently queued.</div>`;
             } else {
                 hostReserveList.forEach((p, idx) => {
                     const row = document.createElement('div');
@@ -1570,12 +1673,7 @@ function handleRequest() {
                 text += `1.) 🎾 (Available)\n2.) 🎾 (Available)\n`;
             }
 
-            const btn = document.getElementById('copyListBtn');
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => showToast("Sign-up list copied to clipboard!"));
-            } else {
-                fallbackCopyTextToClipboard(text, btn);
-            }
+            copyText(text, "Sign-up list copied to clipboard!");
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -1614,6 +1712,7 @@ function handleRequest() {
                 } catch (e) { players = []; }
                 commitBaselineState();
                 renderPlayers();
+                restoreSchedule();
             }
             updateModeBadge();
 
@@ -1759,25 +1858,21 @@ function handleRequest() {
 
         function copyAppsScriptCode(btn) {
             const codeText = document.getElementById('scriptCodeBlock').innerText;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(codeText).then(() => {
-                    btn.innerText = "✅ Copied!";
-                    setTimeout(() => btn.innerText = "📋 Copy Script", 2000);
-                });
-            } else {
-                fallbackCopyTextToClipboard(codeText, btn);
-            }
+            copyText(codeText, "Script copied!");
         }
 
         function openCloudSettings() {
             document.getElementById('scriptUrlInput').value = scriptUrl;
+            document.getElementById('scriptKeyInput').value = scriptKey;
             updateModeBadge();
             document.getElementById('cloudModal').style.display = 'flex';
         }
 
         function saveCloudSettings() {
             scriptUrl = document.getElementById('scriptUrlInput').value.trim();
+            scriptKey = document.getElementById('scriptKeyInput').value.trim();
             localStorage.setItem('padel_script_url', scriptUrl);
+            localStorage.setItem('padel_script_key', scriptKey);
             document.getElementById('cloudModal').style.display = 'none';
             updateModeBadge();
             if (scriptUrl) {
@@ -1792,6 +1887,8 @@ function handleRequest() {
             if (confirm("Disconnect from Google Sheet script? The app will return to offline mode.")) {
                 scriptUrl = "";
                 localStorage.removeItem('padel_script_url');
+                localStorage.removeItem('padel_script_key');
+                scriptKey = "";
                 document.getElementById('cloudModal').style.display = 'none';
                 updateModeBadge();
                 showToast("Disconnected from Cloud.");
@@ -1812,9 +1909,10 @@ function handleRequest() {
             document.getElementById('loadingOverlay').style.display = 'flex';
 
             try {
-                const response = await fetch(scriptUrl);
+                const response = await fetch(scriptUrl + (scriptKey ? (scriptUrl.includes('?') ? '&' : '?') + 'key=' + encodeURIComponent(scriptKey) : ''));
                 if (response.ok) {
                     const data = await response.json();
+                    if (data && data.status === 'error') showToast("Cloud: " + data.message);
                     if (data && Array.isArray(data.players)) {
                         players = data.players;
                         try {
@@ -1842,6 +1940,7 @@ function handleRequest() {
             document.getElementById('loadingOverlay').style.display = 'none';
             renderPlayers();
             renderLockedPairsList();
+            restoreSchedule();
         }
 
         async function saveToCloud() {
@@ -1872,7 +1971,7 @@ function handleRequest() {
                 const res = await fetch(scriptUrl, {
                     method: 'POST',
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({ players: permanentRoster }),
+                    body: JSON.stringify({ players: permanentRoster, key: scriptKey }),
                     redirect: 'follow'
                 });
                 const out = await res.json();
@@ -1990,7 +2089,7 @@ function handleRequest() {
                 title.innerText = "Match Priority Modes";
                 body.innerHTML = `
                     <p><b>🎯 Skill Matched:</b> Strict skill tiers. Court 1 always gets top 4 ranks; partners rotate standard round-robin.</p>
-                    <p><b>⚖️ Balanced (Default):</b> Balanced skill matches with <i>repeat partnerships avoided where possible</i> and weighted partner variance penalizing wide skill gaps (>2.5).</p>
+                    <p><b>⚖️ Balanced (Default):</b> Balanced skill matches with <i>repeat partnerships avoided where possible</i> and weighted partner variance penalising wide skill gaps (>2.5).</p>
                     <p><b>🔄 Max Mix:</b> Maximum social rotation across courts, ensuring a new partner every single game.</p>
                 `;
             }
@@ -2217,36 +2316,35 @@ function handleRequest() {
             }
         };
 
-        window.handlePlayerSwap = function(roundIdx, courtIdx, slotKey, selectedPlayerId) {
-            currentRoundsData[roundIdx].courts[courtIdx][slotKey] = selectedPlayerId;
+        function locateInRound(round, id) {
+            for (let c = 0; c < round.courts.length; c++)
+                for (const slot of ['t1p1', 't1p2', 't2p1', 't2p2'])
+                    if (round.courts[c][slot] === id) return { c, slot };
+            const i = round.benched.indexOf(id);
+            return i >= 0 ? { bench: i } : null;
+        }
+
+        function placeInRound(round, loc, id) {
+            if (!loc || !id) return;
+            if (loc.bench !== undefined) round.benched[loc.bench] = id;
+            else round.courts[loc.c][loc.slot] = id;
+        }
+
+        window.handlePlayerSwap = function(roundIdx, courtIdx, slotKey, newId) {
+            const round = currentRoundsData[roundIdx];
+            const oldId = round.courts[courtIdx][slotKey];
+            const loc = locateInRound(round, newId);
+            round.courts[courtIdx][slotKey] = newId;
+            placeInRound(round, loc, oldId);
             renderTournamentDisplay();
         };
 
-        window.handleBenchedSwap = function(roundIdx, benchedIdx, selectedPlayerId) {
-            const oldBenchedId = currentRoundsData[roundIdx].benched[benchedIdx];
-
-            let foundCourt = null;
-            let foundSlot = null;
-
-            for (let c = 0; c < currentRoundsData[roundIdx].courts.length; c++) {
-                const court = currentRoundsData[roundIdx].courts[c];
-                for (let slot of ['t1p1', 't1p2', 't2p1', 't2p2']) {
-                    if (court[slot] === selectedPlayerId) {
-                        foundCourt = c;
-                        foundSlot = slot;
-                        break;
-                    }
-                }
-                if (foundSlot) break;
-            }
-
-            if (foundSlot !== null && oldBenchedId) {
-                currentRoundsData[roundIdx].courts[foundCourt][foundSlot] = oldBenchedId;
-                currentRoundsData[roundIdx].benched[benchedIdx] = selectedPlayerId;
-            } else {
-                currentRoundsData[roundIdx].benched[benchedIdx] = selectedPlayerId;
-            }
-
+        window.handleBenchedSwap = function(roundIdx, benchIdx, newId) {
+            const round = currentRoundsData[roundIdx];
+            const oldId = round.benched[benchIdx];
+            const loc = locateInRound(round, newId);
+            round.benched[benchIdx] = newId;
+            placeInRound(round, loc, oldId);
             renderTournamentDisplay();
         };
 
@@ -2343,7 +2441,7 @@ function handleRequest() {
             generateTournament();
         }
 
-        window.copyToWhatsApp = function() {
+        function buildScheduleText() {
             const location = document.getElementById('sessionLocation').value.trim();
             const rawDate = document.getElementById('sessionDate').value;
             const startTime = document.getElementById('startTime').value;
@@ -2377,13 +2475,26 @@ function handleRequest() {
                 text += `\n`;
             });
 
-            const btn = document.getElementById('copyBtn');
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => showToast("Match schedule copied!"));
-            } else { fallbackCopyTextToClipboard(text, btn); }
+            return text;
+        }
+
+        window.copyToWhatsApp = () => copyText(buildScheduleText(), "Match schedule copied!");
+        window.shareSchedule = function() {
+            const text = buildScheduleText();
+            if (navigator.share) navigator.share({ text }).catch(() => {});
+            else copyText(text, "Match schedule copied!");
         };
 
-        function fallbackCopyTextToClipboard(text, btn) {
+        function copyText(text, msg) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => showToast(msg || "Copied!")).catch(() => fallbackCopyTextToClipboard(text));
+            } else {
+                fallbackCopyTextToClipboard(text);
+                if (msg) showToast(msg);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
             const helper = document.getElementById('clipboardHelper');
             helper.value = text; helper.style.display = 'block'; helper.focus(); helper.select();
             try {
@@ -2393,12 +2504,155 @@ function handleRequest() {
             helper.style.display = 'none';
         }
 
+        window.regenerateRound = (i) => generateTournament(i);
+
+        function syncThemeIcon() {
+            const b = document.getElementById('themeBtn');
+            if (b) b.innerText = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+        }
+        window.toggleTheme = function() {
+            const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            try { localStorage.setItem('padelTheme', next); } catch (e) {}
+            syncThemeIcon();
+        };
+        syncThemeIcon();
+
+        function persistSchedule() {
+            try {
+                const roster = {};
+                currentRoundsData.forEach(rd => {
+                    [...rd.courts.flatMap(c => [c.t1p1, c.t1p2, c.t2p1, c.t2p2]), ...rd.benched].filter(Boolean).forEach(id => {
+                        const p = players.find(x => x.id === id);
+                        if (p) roster[id] = { name: p.name, rank: p.rank };
+                    });
+                });
+                localStorage.setItem(SCHEDULE_KEY, JSON.stringify({ rounds: currentRoundsData, roster }));
+            } catch (e) {}
+        }
+
+        function restoreSchedule() {
+            if (scheduleRestored) return;
+            scheduleRestored = true;
+            try {
+                const d = JSON.parse(localStorage.getItem(SCHEDULE_KEY) || 'null');
+                if (!d || !Array.isArray(d.rounds) || d.rounds.length === 0) return;
+                currentRoundsData = d.rounds;
+                Object.entries(d.roster || {}).forEach(([id, o]) => {
+                    if (!players.some(p => p.id === id) && isGuest(o)) players.push({ id, name: o.name, rank: o.rank, active: false });
+                });
+                commitBaselineState();
+                renderPlayers();
+                renderTournamentDisplay(false);
+                showToast("Restored your last schedule");
+            } catch (e) {}
+        }
+
+        window.clearSchedule = function() {
+            if (!confirm("Clear the generated schedule?")) return;
+            currentRoundsData = [];
+            try { localStorage.removeItem(SCHEDULE_KEY); } catch (e) {}
+            document.getElementById('resultsArea').innerHTML = '';
+        };
+
+        function buildSessionSummary() {
+            if (!currentRoundsData.length) return '';
+            const st = {};
+            const get = id => st[id] || (st[id] = { played: 0, rested: 0, partners: {} });
+            currentRoundsData.forEach(rd => {
+                rd.courts.forEach(c => {
+                    [[c.t1p1, c.t1p2], [c.t2p1, c.t2p2]].forEach(([a, b]) => {
+                        [a, b].filter(Boolean).forEach(id => get(id).played++);
+                        if (a && b) {
+                            get(a).partners[b] = (get(a).partners[b] || 0) + 1;
+                            get(b).partners[a] = (get(b).partners[a] || 0) + 1;
+                        }
+                    });
+                });
+                rd.benched.forEach(id => get(id).rested++);
+            });
+            const rows = Object.keys(st).map(id => {
+                const v = Object.values(st[id].partners);
+                return { name: players.find(p => p.id === id)?.name || '', played: st[id].played, rested: st[id].rested, uniq: v.length, repeats: v.filter(n => n > 1).length };
+            }).sort((a, b) => a.name.localeCompare(b.name));
+            const totalRepeats = rows.reduce((t, r) => t + r.repeats, 0) / 2;
+            const head = totalRepeats ? `${totalRepeats} repeat partnership${totalRepeats > 1 ? 's' : ''}` : 'no repeat partners 🎉';
+            return `<details class="rules-box" style="margin-top:12px"><summary>📊 Session summary - ${head}</summary>
+                <table class="summary-table"><tr><th>Player</th><th>Played</th><th>Rested</th><th>Partners</th></tr>
+                ${rows.map(r => `<tr><td>${esc(r.name)}</td><td>${r.played}</td><td>${r.rested}</td><td>${r.uniq}${r.repeats ? ` (${r.repeats} repeat)` : ''}</td></tr>`).join('')}
+                </table></details>`;
+        }
+
+        function optimiseRound(playing, courtNums, H) {
+            const nCourts = Math.min(courtNums.length, Math.floor(playing.length / 4));
+            if (nCourts === 0) return [];
+            const mode = mixPriorityValue;
+            const cnt = (m, a, b) => m[getPairKey(a.id, b.id)] || 0;
+            const stay = (p, courtNum) => {
+                const h = H.consecutive[p.id];
+                return h && h.courtNum === courtNum && h.count >= 2 ? 4 : 0;
+            };
+            const present = lp => playing.some(p => p.id === lp.id1) && playing.some(p => p.id === lp.id2);
+            const locked = H.locked.filter(present);
+
+            const costOf = (order) => {
+                let total = 0;
+                const mates = new Set();
+                for (let c = 0; c < nCourts; c++) {
+                    const [a, b, x, y] = order.slice(c * 4, c * 4 + 4);
+                    mates.add(getPairKey(a.id, b.id)); mates.add(getPairKey(x.id, y.id));
+                    total += Math.abs(getEffectiveTeamRating(a.rank, b.rank) - getEffectiveTeamRating(x.rank, y.rank)) * (mode === 100 ? 1.5 : 3);
+                    if (Math.abs(a.rank - b.rank) > MAX_SKILL_GAP_LIMIT) total += 5;
+                    if (Math.abs(x.rank - y.rank) > MAX_SKILL_GAP_LIMIT) total += 5;
+                    total += 10 * (cnt(H.partner, a, b) + cnt(H.partner, x, y));
+                    total += 2 * (cnt(H.opponent, a, x) + cnt(H.opponent, a, y) + cnt(H.opponent, b, x) + cnt(H.opponent, b, y));
+                    if (mode === 100) total += 3 * [[a, b], [a, x], [a, y], [b, x], [b, y], [x, y]].reduce((t, [p, q]) => t + cnt(H.coPlay, p, q), 0);
+                    if (mode === 0) { const r = [a, b, x, y].map(p => p.rank); total += (Math.max(...r) - Math.min(...r)) * 4; }
+                    if (nCourts > 1) total += [a, b, x, y].reduce((t, p) => t + stay(p, courtNums[c]), 0);
+                }
+                locked.forEach(lp => { if (!mates.has(getPairKey(lp.id1, lp.id2))) total += 500; });
+                H.avoid.forEach(ap => { if (mates.has(getPairKey(ap.id1, ap.id2))) total += 500; });
+                return total;
+            };
+
+            const pool0 = playing.slice(0, nCourts * 4);
+            const startOrder = () => {
+                const pool = [...pool0].sort(() => Math.random() - 0.5);
+                const seated = [], used = new Set();
+                locked.forEach(lp => {
+                    const p = pool.find(x => x.id === lp.id1), q = pool.find(x => x.id === lp.id2);
+                    if (p && q && !used.has(p.id) && !used.has(q.id)) { seated.push(p, q); used.add(p.id); used.add(q.id); }
+                });
+                return [...seated, ...pool.filter(p => !used.has(p.id))];
+            };
+
+            let best = null, bestCost = Infinity;
+            const deadline = Date.now() + 120;
+            for (let r = 0; r < 6 && (r === 0 || Date.now() < deadline); r++) {
+                const cur = startOrder();
+                let curCost = costOf(cur);
+                for (let i = 0; i < pool0.length * 30; i++) {
+                    const a = Math.floor(Math.random() * cur.length), b = Math.floor(Math.random() * cur.length);
+                    if (a === b) continue;
+                    [cur[a], cur[b]] = [cur[b], cur[a]];
+                    const nc = costOf(cur);
+                    if (nc <= curCost) curCost = nc; else [cur[a], cur[b]] = [cur[b], cur[a]];
+                }
+                if (curCost < bestCost) { bestCost = curCost; best = [...cur]; }
+            }
+            const courts = [];
+            for (let c = 0; c < nCourts; c++) courts.push(best.slice(c * 4, c * 4 + 4));
+            const avg = g => g.reduce((t, p) => t + p.rank, 0) / 4;
+            if (mode === 0) courts.sort((p, q) => avg(q) - avg(p));
+            return courts;
+        }
+
         function getPairKey(p1, p2) {
             return [p1, p2].sort().join('-');
         }
 
-        function generateTournament() {
-            window._rankingsApplied = false;
+        function generateTournament(onlyRound = null) {
+            scheduleRestored = true;
             syncTableInputsToMemory();
             const selectedCourtCBs = Array.from(document.querySelectorAll('.court-select-cb:checked'));
             const selectedCourtNumbers = selectedCourtCBs.map(cb => parseInt(cb.value)).sort((a, b) => a - b);
@@ -2418,19 +2672,37 @@ function handleRequest() {
             const playersNeeded = actualCourtsToUse.length * 4;
             const extraCount = activePlayers.length - playersNeeded;
 
-            currentRoundsData = [];
+            const prevRounds = (onlyRound !== null && currentRoundsData[onlyRound]) ? currentRoundsData : null;
+            if (!prevRounds) { currentRoundsData = []; onlyRound = null; }
             let [startH, startM] = startTimeStr.split(':').map(Number);
-            let currentGameMinutes = startH * 60 + startM;
+            
+            const partnerCount = {}, opponentCount = {}, coPlayCount = {};
+            const bump = (m, a, b) => { const k = getPairKey(a, b); m[k] = (m[k] || 0) + 1; };
+            let courtConsecutiveMap = {};
 
-            const previousPartnerships = new Set();
-            const coPlayCount = {};
-            let courtConsecutiveMap = {}; 
+            if (prevRounds) {
+                prevRounds.forEach((rd, i) => {
+                    if (i === onlyRound) return;
+                    rd.courts.forEach(c => {
+                        [[c.t1p1, c.t1p2], [c.t2p1, c.t2p2]].forEach(([a, b]) => { if (a && b) bump(partnerCount, a, b); });
+                        [c.t1p1, c.t1p2].forEach(p => [c.t2p1, c.t2p2].forEach(q => { if (p && q) bump(opponentCount, p, q); }));
+                        const ids = [c.t1p1, c.t1p2, c.t2p1, c.t2p2].filter(Boolean);
+                        for (let x = 0; x < ids.length; x++) for (let y = x + 1; y < ids.length; y++) {
+                            const k = getPairKey(ids[x], ids[y]);
+                            coPlayCount[k] = (coPlayCount[k] || 0) + 1;
+                        }
+                        if (!c.format) ids.forEach(id => { const p = activePlayers.find(x => x.id === id); if (p) p.gamesPlayed++; });
+                    });
+                    rd.benched.forEach(id => { const p = activePlayers.find(x => x.id === id); if (p) p.restCount++; });
+                });
+            }
 
-            for (let r = 0; r < rounds; r++) {
-                let h = Math.floor(currentGameMinutes / 60) % 24;
-                let m = currentGameMinutes % 60;
+            for (let r = 0; r < (prevRounds ? prevRounds.length : rounds); r++) {
+                if (prevRounds && r !== onlyRound) continue;
+                const gm = startH * 60 + startM + r * gameDurationMin;
+                let h = Math.floor(gm / 60) % 24;
+                let m = gm % 60;
                 let gameTimeString = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-                currentGameMinutes += gameDurationMin;
 
                 let explicitRestIds = (roundRestPreferences[r] || []);
                 let benchedThisRound = [];
@@ -2466,158 +2738,25 @@ function handleRequest() {
                 playingThisRound = activePlayers.filter(p => !benchedThisRound.some(b => b.id === p.id)).slice(0, playersNeeded);
                 playingThisRound.forEach(p => p.gamesPlayed++);
 
-                let courtGroups = Array.from({ length: actualCourtsToUse.length }, () => []);
-                let unassignedPlaying = [...playingThisRound];
-
-                roundLockedPairs.forEach(lp => {
-                    let p1 = unassignedPlaying.find(p => p.id === lp.id1);
-                    let p2 = unassignedPlaying.find(p => p.id === lp.id2);
-
-                    if (p1 && p2) {
-                        let targetCourtIdx = courtGroups.findIndex(cg => cg.length <= 2);
-                        if (targetCourtIdx !== -1) {
-                            courtGroups[targetCourtIdx].push(p1, p2);
-                            unassignedPlaying = unassignedPlaying.filter(p => p.id !== p1.id && p.id !== p2.id);
-                        }
-                    }
-                });
-
-                const fillGroups = (pool) => {
-                    const groups = courtGroups.map(g => [...g]);
-                    const q = [...pool];
-                    groups.forEach(g => { while (g.length < 4 && q.length) g.push(q.shift()); });
-                    return groups;
-                };
-                let pool = [...unassignedPlaying];
-                if (mixPriorityValue === 0) {
-                    pool.sort((a, b) => b.rank - a.rank);
-                } else {
-                    const tries = mixPriorityValue === 100 ? Math.min(250, actualCourtsToUse.length * 50) : 1;
-                    let best = pool, bestScore = Infinity;
-                    for (let t = 0; t < tries; t++) {
-                        const cand = [...unassignedPlaying].sort(() => Math.random() - 0.5);
-                        let sc = 0;
-                        fillGroups(cand).forEach(g => {
-                            for (let i = 0; i < g.length; i++)
-                                for (let j = i + 1; j < g.length; j++)
-                                    sc += coPlayCount[getPairKey(g[i].id, g[j].id)] || 0;
-                        });
-                        if (sc < bestScore) { bestScore = sc; best = cand; }
-                    }
-                    pool = best;
-                }
-                courtGroups = fillGroups(pool);
-                unassignedPlaying = [];
-
-                if (actualCourtsToUse.length > 1 && mixPriorityValue !== 0) {
-                    for (let c = 0; c < actualCourtsToUse.length; c++) {
-                        const courtNum = actualCourtsToUse[c];
-                        let overstayedPlayerIndices = [];
-
-                        courtGroups[c].forEach((p, pIdx) => {
-                            if (courtConsecutiveMap[p.id] && courtConsecutiveMap[p.id].courtNum === courtNum && courtConsecutiveMap[p.id].count >= 2) {
-                                overstayedPlayerIndices.push(pIdx);
-                            }
-                        });
-
-                        overstayedPlayerIndices.forEach(pIdx => {
-                            const pToMove = courtGroups[c][pIdx];
-                            let isPartOfLockedPair = roundLockedPairs.some(lp => lp.id1 === pToMove.id || lp.id2 === pToMove.id);
-                            if (isPartOfLockedPair) return;
-
-                            const targetCourtIdx = (c + 1) % actualCourtsToUse.length;
-                            const swapCandidateIdx = courtGroups[targetCourtIdx].findIndex(tp => {
-                                let tpLocked = roundLockedPairs.some(lp => lp.id1 === tp.id || lp.id2 === tp.id);
-                                if (tpLocked) return false;
-                                return !(courtConsecutiveMap[tp.id] && courtConsecutiveMap[tp.id].courtNum === courtNum && courtConsecutiveMap[tp.id].count >= 2);
-                            });
-
-                            if (swapCandidateIdx !== -1) {
-                                const tempPlayer = courtGroups[c][pIdx];
-                                courtGroups[c][pIdx] = courtGroups[targetCourtIdx][swapCandidateIdx];
-                                courtGroups[targetCourtIdx][swapCandidateIdx] = tempPlayer;
-                            }
-                        });
-                    }
-                }
-
                 let roundCourts = [];
                 let currentRoundCourtAssignments = {};
 
-                for (let c = 0; c < actualCourtsToUse.length; c++) {
+                const grouped = optimiseRound(playingThisRound, actualCourtsToUse, {
+                    partner: partnerCount, opponent: opponentCount, coPlay: coPlayCount,
+                    consecutive: courtConsecutiveMap, locked: roundLockedPairs, avoid: roundAvoidPairs
+                });
+                grouped.forEach((grp, c) => {
                     const courtNum = actualCourtsToUse[c];
-                    let courtPlayers = courtGroups[c];
-                    courtPlayers.sort((a, b) => b.rank - a.rank);
-
-                    let t1p1, t1p2, t2p1, t2p2;
-
-                    let possiblePairings = [
-                        { t1: [0, 3], t2: [1, 2] },
-                        { t1: [0, 2], t2: [1, 3] },
-                        { t1: [0, 1], t2: [2, 3] }
-                    ];
-
-                    let bestPairing = possiblePairings[0];
-                    let minPairingScore = Infinity;
-
-                    for (let pOption of possiblePairings) {
-                        const p1 = courtPlayers[pOption.t1[0]], p2 = courtPlayers[pOption.t1[1]];
-                        const p3 = courtPlayers[pOption.t2[0]], p4 = courtPlayers[pOption.t2[1]];
-
-                        let k1 = getPairKey(p1.id, p2.id);
-                        let k2 = getPairKey(p3.id, p4.id);
-                        let repeatPenalty = ((previousPartnerships.has(k1) ? 1 : 0) + (previousPartnerships.has(k2) ? 1 : 0)) * 10;
-
-                        let locksEnforcedPenalty = 0;
-                        roundLockedPairs.forEach(lp => {
-                            let inThisCourt = courtPlayers.some(cp => cp.id === lp.id1) && courtPlayers.some(cp => cp.id === lp.id2);
-                            if (inThisCourt) {
-                                let pairedTogether = (k1 === getPairKey(lp.id1, lp.id2)) || (k2 === getPairKey(lp.id1, lp.id2));
-                                if (!pairedTogether) locksEnforcedPenalty += 500;
-                            }
-                        });
-
-                        let t1Eff = getEffectiveTeamRating(p1.rank, p2.rank);
-                        let t2Eff = getEffectiveTeamRating(p3.rank, p4.rank);
-                        let teamDiff = Math.abs(t1Eff - t2Eff);
-
-                        let gap1 = Math.abs(p1.rank - p2.rank);
-                        let gap2 = Math.abs(p3.rank - p4.rank);
-                        let gapPenalty = (gap1 > MAX_SKILL_GAP_LIMIT ? 5 : 0) + (gap2 > MAX_SKILL_GAP_LIMIT ? 5 : 0);
-
-                        let avoidPenalty = 0;
-                        roundAvoidPairs.forEach(ap => {
-                            const ak = getPairKey(ap.id1, ap.id2);
-                            if (k1 === ak || k2 === ak) avoidPenalty += 500;
-                        });
-
-                        let totalScore = teamDiff + repeatPenalty + gapPenalty + locksEnforcedPenalty + avoidPenalty;
-
-                        if (totalScore < minPairingScore) {
-                            minPairingScore = totalScore;
-                            bestPairing = pOption;
-                        }
-                    }
-
-                    t1p1 = courtPlayers[bestPairing.t1[0]].id; 
-                    t1p2 = courtPlayers[bestPairing.t1[1]].id; 
-                    t2p1 = courtPlayers[bestPairing.t2[0]].id; 
-                    t2p2 = courtPlayers[bestPairing.t2[1]].id;
-
-                    previousPartnerships.add(getPairKey(t1p1, t1p2));
-                    previousPartnerships.add(getPairKey(t2p1, t2p2));
+                    const t1 = grp.slice(0, 2).sort((p, q) => q.rank - p.rank);
+                    const t2 = grp.slice(2, 4).sort((p, q) => q.rank - p.rank);
+                    const [t1p1, t1p2, t2p1, t2p2] = [t1[0].id, t1[1].id, t2[0].id, t2[1].id];
+                    bump(partnerCount, t1p1, t1p2); bump(partnerCount, t2p1, t2p2);
+                    [t1p1, t1p2].forEach(p => [t2p1, t2p2].forEach(q => bump(opponentCount, p, q)));
                     const four = [t1p1, t1p2, t2p1, t2p2];
-                    for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) {
-                        const k = getPairKey(four[i], four[j]);
-                        coPlayCount[k] = (coPlayCount[k] || 0) + 1;
-                    }
-
-                    [t1p1, t1p2, t2p1, t2p2].forEach(pId => {
-                        currentRoundCourtAssignments[pId] = courtNum;
-                    });
-
-                    roundCourts.push({ courtNum, t1p1, t1p2, t2p1, t2p2, scoreT1: "", scoreT2: "" });
-                }
+                    for (let x = 0; x < 4; x++) for (let y = x + 1; y < 4; y++) bump(coPlayCount, four[x], four[y]);
+                    four.forEach(id => { currentRoundCourtAssignments[id] = courtNum; });
+                    roundCourts.push({ courtNum, t1p1, t1p2, t2p1, t2p2 });
+                });
 
                 const leftoverMode = getLeftoverMode();
                 const spareCourts = selectedCourtNumbers.filter(n => !actualCourtsToUse.includes(n));
@@ -2637,7 +2776,7 @@ function handleRequest() {
                     }
                     const placedIds = new Set();
                     sideGames.slice(0, spareCourts.length).forEach((sg, i) => {
-                        roundCourts.push({ courtNum: spareCourts[i], ...sg, scoreT1: "", scoreT2: "" });
+                        roundCourts.push({ courtNum: spareCourts[i], ...sg });
                         [sg.t1p1, sg.t1p2, sg.t2p1, sg.t2p2].filter(Boolean).forEach(id => placedIds.add(id));
                     });
                     benchedThisRound = benchedThisRound.filter(p => !placedIds.has(p.id));
@@ -2657,32 +2796,17 @@ function handleRequest() {
                     }
                 });
 
-                let seenInRound = new Set();
-                roundCourts.forEach(c => {
-                    ['t1p1', 't1p2', 't2p1', 't2p2'].forEach(slot => {
-                        let id = c[slot];
-                        if (!id) return;
-                        if (seenInRound.has(id)) {
-                            let replacement = activePlayers.find(p => !seenInRound.has(p.id) && !benchedThisRound.some(b => b.id === p.id));
-                            if (replacement) {
-                                c[slot] = replacement.id;
-                                seenInRound.add(replacement.id);
-                            }
-                        } else {
-                            seenInRound.add(id);
-                        }
-                    });
-                });
-
-                currentRoundsData.push({ gameTime: gameTimeString, courts: roundCourts, benched: benchedThisRound.map(p => p.id) });
+                const roundObj = { gameTime: prevRounds ? prevRounds[r].gameTime : gameTimeString, courts: roundCourts, benched: benchedThisRound.map(p => p.id) };
+                if (prevRounds) currentRoundsData[r] = roundObj; else currentRoundsData.push(roundObj);
             }
 
-            renderTournamentDisplay(true);
+            renderTournamentDisplay(!prevRounds);
         }
 
         function renderTournamentDisplay(scroll = false) {
             const resultsArea = document.getElementById('resultsArea');
             let fullHtml = `<button id="copyBtn" class="whatsapp-btn" onclick="copyToWhatsApp()">📋 Copy Match Schedule for WhatsApp</button>`;
+            if (navigator.share) fullHtml += `<button type="button" class="secondary" style="margin:0 0 10px 0" onclick="shareSchedule()">📤 Share Schedule</button>`;
             let activePlayerIds = players.filter(p => p.active).map(p => p.id);
             const optHtml = (selId) => activePlayerIds.map(id => {
                 const o = players.find(p => p.id === id);
@@ -2706,7 +2830,7 @@ function handleRequest() {
                     }
                 });
 
-                fullHtml += `<div class="round-container"><h2 class="round-title">Game ${rIdx + 1} (${round.gameTime})</h2><div class="courts-grid">`;
+                fullHtml += `<div class="round-container"><h2 class="round-title">Game ${rIdx + 1} (${round.gameTime}) <button type="button" class="redo-btn" onclick="regenerateRound(${rIdx})" title="Redo just this game">🔄</button></h2><div class="courts-grid">`;
 
                 round.courts.forEach((c, cIdx) => {
                     const getSelectClass = (id, baseClass) => (assignedCounts[id] > 1) ? `${baseClass} duplicate-error` : baseClass;
@@ -2762,12 +2886,6 @@ function handleRequest() {
                                 ${t2IsLocked ? `<div class="locked-tag">🔒 Predetermined Pair</div>` : ''}
                                 ${gap2 > MAX_SKILL_GAP_LIMIT ? `<div class="gap-warning-badge">⚠️ Large Skill Gap (${gap2.toFixed(1)})</div>` : ''}
                             </div>
-                            <div class="score-row">
-                                <span>Score:</span>
-                                <input type="number" placeholder="T1" value="${c.scoreT1}" onchange="currentRoundsData[${rIdx}].courts[${cIdx}].scoreT1 = this.value">
-                                <span>-</span>
-                                <input type="number" placeholder="T2" value="${c.scoreT2}" onchange="currentRoundsData[${rIdx}].courts[${cIdx}].scoreT2 = this.value">
-                            </div>
                         </div>`;
                 });
 
@@ -2801,47 +2919,12 @@ function handleRequest() {
                 fullHtml += `</div>`;
             });
 
-            fullHtml += `<button type="button" class="secondary" onclick="applyScoreRankings()">Update Rankings & Finish Session</button>`;
+            fullHtml += buildSessionSummary();
+            fullHtml += `<button type="button" class="secondary" onclick="clearSchedule()">🗑️ Clear Schedule</button>`;
             resultsArea.innerHTML = fullHtml;
+            persistSchedule();
             if (scroll) setTimeout(() => { resultsArea.scrollIntoView({ behavior: 'smooth' }); }, 100);
         }
-
-        window.applyScoreRankings = function() {
-            if (window._rankingsApplied && !confirm("Rankings were already updated for these games. Apply again?")) return;
-            window._rankingsApplied = true;
-            let adjustments = {};
-            currentRoundsData.forEach(round => {
-                round.courts.forEach(c => {
-                    let s1 = parseInt(c.scoreT1), s2 = parseInt(c.scoreT2);
-                    if (!isNaN(s1) && !isNaN(s2) && s1 !== s2) {
-                        let winners = s1 > s2 ? [c.t1p1, c.t1p2] : [c.t2p1, c.t2p2];
-                        let losers = s1 > s2 ? [c.t2p1, c.t2p2] : [c.t1p1, c.t1p2];
-                        let delta = Math.min(Math.abs(s1 - s2), 4) * 0.05;
-                        winners.forEach(id => { if (id) adjustments[id] = (adjustments[id] || 0) + delta; });
-                        losers.forEach(id => { if (id) adjustments[id] = (adjustments[id] || 0) - delta; });
-                    }
-                });
-            });
-
-            let updatedCount = 0;
-            for (let id in adjustments) {
-                let p = players.find(x => x.id === id);
-                if (p) {
-                    p.rank = Math.min(10, Math.max(0, parseFloat((p.rank + adjustments[id]).toFixed(1))));
-                    updatedCount++;
-                }
-            }
-            
-            if (scriptUrl) {
-                saveToCloud();
-            } else {
-                savePlayers();
-            }
-            
-            commitBaselineState();
-            renderPlayers();
-            showToast(`Rankings updated for ${updatedCount} players!`);
-        };
 
         window.openRosterConfigModal = openRosterConfigModal;
         window.updateRosterConfigModal = updateRosterConfigModal;
@@ -2872,7 +2955,9 @@ function handleRequest() {
         window.confirmRestSelection = confirmRestSelection;
         window.copyAppsScriptCode = copyAppsScriptCode;
         window.copyGameRulesToWhatsApp = copyGameRulesToWhatsApp;
-        window.copySessionPolicyToWhatsApp = copySessionPolicyToWhatsApp;
+        window.openPolicyModal = openPolicyModal;
+        window.saveAndCopyPolicy = saveAndCopyPolicy;
+        window.toggleCohostField = toggleCohostField;
     </script>
 </body>
 </html>
