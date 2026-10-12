@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Padel Organizer Pro</title>
+    <title>Padel Organiser Pro</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -665,38 +665,6 @@
         .rules-box summary { cursor: pointer; font-weight: bold; }
         .rules-box ul { margin: 6px 0 2px 0; padding-left: 18px; }
         .rules-box li { margin-bottom: 3px; line-height: 1.35; }
-
-        .leftover-row {
-            display: flex;
-            gap: 6px;
-            width: 100%;
-            align-items: center;
-            margin-top: 4px;
-        }
-        .leftover-row select {
-            flex-grow: 1;
-            margin-top: 0 !important;
-        }
-        .copy-rules-btn {
-            background-color: #25D366;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 10px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            height: 35px;
-            box-sizing: border-box;
-            flex-shrink: 0;
-        }
-        .copy-rules-btn:hover {
-            background-color: #1ebd5a;
-        }
     </style>
 </head>
 <body>
@@ -768,23 +736,20 @@
                         <input type="number" id="roundsCount" min="1" max="20" value="2" onchange="renderLockedPairsList()">
                     </div>
 
-                    <!-- Odd-Player Gameplay Options with Copy Rules Button -->
+                    <!-- Odd-Player Gameplay Options -->
                     <div class="control-group full-width">
                         <label for="leftoverMode">When Players Don't Divide Evenly by 4</label>
-                        <div class="leftover-row">
-                            <select id="leftoverMode">
-                                <option value="rest" selected>😴 Standard Rest / Bench Rotation</option>
-                                <optgroup label="3 Players (2 vs 1 Match)">
-                                    <option value="king">👑 King of the Court (Fast continuous rotation)</option>
-                                    <option value="halfsolo">½ Half-Court Solo (Precision target drill)</option>
-                                </optgroup>
-                                <optgroup label="2 Players (Singles Match)">
-                                    <option value="cross">↗️ Cross-Court Singles (Realistic padel geometry)</option>
-                                    <option value="half">½ Half-Court Singles (Corridor down-the-line)</option>
-                                </optgroup>
-                            </select>
-                            <button type="button" id="copyGameRulesBtn" class="copy-rules-btn" onclick="copyGameRulesToWhatsApp()" title="Copy rules of selected game mode for WhatsApp">📋 Copy Rules</button>
-                        </div>
+                        <select id="leftoverMode">
+                            <option value="rest" selected>😴 Standard Rest / Bench Rotation</option>
+                            <optgroup label="3 Players (2 vs 1 Match)">
+                                <option value="king">👑 King of the Court (Fast continuous rotation)</option>
+                                <option value="halfsolo">½ Half-Court Solo (Precision target drill)</option>
+                            </optgroup>
+                            <optgroup label="2 Players (Singles Match)">
+                                <option value="cross">↗️ Cross-Court Singles (Realistic padel geometry)</option>
+                                <option value="half">½ Half-Court Singles (Corridor down-the-line)</option>
+                            </optgroup>
+                        </select>
                         <div class="hint">Allocates extra players to spare selected courts instead of benching them.</div>
                     </div>
 
@@ -903,23 +868,12 @@
     <div id="rosterConfigModal" class="modal-overlay" onclick="closeInfo(event, 'rosterConfigModal')">
         <div class="modal-card" onclick="event.stopPropagation()">
             <h3>📋 Configure Pre-Match Sign-Up List</h3>
-            <p>Court capacity is calculated from selected players, or you can override it:</p>
+            <p>Players are sorted chronologically by when they signed up. You can adjust court capacity or reorder reserves:</p>
             
             <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin-bottom: 12px;">
                 <label style="font-weight: bold; font-size: 13px; display: block; margin-bottom: 4px;">Number of Courts Available:</label>
                 <input type="number" id="modalCourtsCount" min="1" max="20" value="1" onchange="updateRosterConfigModal()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; text-align: center;">
                 <div id="modalCapacitySummary" style="font-size: 12px; color: #64748b; margin-top: 4px; text-align: center;"></div>
-            </div>
-
-            <!-- Optional Group Guidelines / Drop-out Policy -->
-            <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 8px 10px; margin-bottom: 12px;">
-                <label style="font-size: 12px; font-weight: bold; color: #92400e; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                    <input type="checkbox" id="includeGuidelinesOption" checked>
-                    Include Session Guidelines / Drop-out Rules
-                </label>
-                <div style="font-size: 11px; color: #78350f; margin-top: 3px; line-height: 1.35;">
-                    Appends a polite reminder: pairings posted Thursdays, Friday cancellations need a replacement or court share, 1-hour reserve response window, and co-hosting invite.
-                </div>
             </div>
 
             <div id="modalReservesContainer" style="display: none;">
@@ -1053,6 +1007,7 @@ function handleRequest() {
 
         const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); 
 
+        // Streamlined, distinct mini-game modes (No overlaps)
         const GAME_MODES = {
             king: { 
                 kind: 'trio', 
@@ -1108,42 +1063,6 @@ function handleRequest() {
         function getLeftoverMode() {
             const el = document.getElementById('leftoverMode');
             return el ? el.value : 'rest';
-        }
-
-        // ==========================================
-        // COPY GAME RULES FOR WHATSAPP
-        // ==========================================
-
-        function copyGameRulesToWhatsApp() {
-            const modeKey = getLeftoverMode();
-            if (modeKey === 'rest' || !GAME_MODES[modeKey]) {
-                alert("Please select one of the 2-player or 3-player game modes from the drop-down to copy its rules!");
-                return;
-            }
-
-            const mode = GAME_MODES[modeKey];
-            let text = `🎾 *Padel Game Rules: ${mode.icon} ${mode.label}* 🎾\n\n`;
-            text += `ℹ️ *Summary:* ${mode.short}\n\n`;
-            text += `*Rules & How to Play:*\n`;
-            mode.rules.forEach((rule, idx) => {
-                text += `${idx + 1}.) ${rule}\n`;
-            });
-
-            const btn = document.getElementById('copyGameRulesBtn');
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => showRulesCopySuccess(btn)).catch(() => fallbackCopyTextToClipboard(text, btn));
-            } else {
-                fallbackCopyTextToClipboard(text, btn);
-            }
-        }
-
-        function showRulesCopySuccess(btn) {
-            btn.innerHTML = "✅ Copied!";
-            btn.style.backgroundColor = "#128C7E";
-            setTimeout(() => {
-                btn.innerHTML = "📋 Copy Rules";
-                btn.style.backgroundColor = "#25D366";
-            }, 2000);
         }
 
         // ==========================================
@@ -1328,6 +1247,10 @@ function handleRequest() {
         // PRE-MATCH SIGN-UP LIST SETUP & EXPORT
         // ==========================================
 
+        /**
+         * Returns active players sorted strictly by the time they signed up / checked active.
+         * Earliest signups come first, latest signups come last.
+         */
         function getChronologicalActivePlayers() {
             return players
                 .filter(p => p.active)
@@ -1368,6 +1291,7 @@ function handleRequest() {
             
             if (activePlayersList.length > totalCapacity) {
                 reservesContainer.style.display = 'block';
+                // Most recent signups become the reserves
                 modalReservePlayers = activePlayersList.slice(totalCapacity);
                 renderModalReservesList();
             } else {
@@ -1431,11 +1355,11 @@ function handleRequest() {
             const finishTime = document.getElementById('finishTime').value;
             const cost = document.getElementById('costPerPerson').value;
             const includeCash = document.getElementById('includeCashLabel').checked;
-            const includeGuidelines = document.getElementById('includeGuidelinesOption').checked;
 
             const courtsCount = Math.max(1, parseInt(document.getElementById('modalCourtsCount').value) || 1);
             const totalCapacity = courtsCount * 4;
 
+            // Sort chronologically by sign-up timestamp
             const activePlayersList = getChronologicalActivePlayers();
             const mainPlayingList = activePlayersList.slice(0, totalCapacity);
 
@@ -1460,32 +1384,22 @@ function handleRequest() {
                 text += `€${cost}${includeCash ? ' cash' : ''}\n\n`;
             }
 
+            // Numbered spots populated strictly in order of sign-up
             for (let i = 1; i <= totalCapacity; i++) {
                 const player = mainPlayingList[i - 1];
                 if (player) {
                     text += `${i}.) ${player.name}\n`;
                 } else {
-                    text += `${i}.) 🎾\n`;
+                    text += `${i}.)🎾\n`;
                 }
             }
 
-            text += `\n*Reserves:*\n`;
+            // Append Reserve list populated strictly in order of most recent sign-ups
             if (modalReservePlayers.length > 0) {
+                text += `\n*Reserves:*\n`;
                 modalReservePlayers.forEach((p, idx) => {
                     text += `${idx + 1}.) ${p.name}\n`;
                 });
-            } else {
-                text += `1.) 🎾 (Available)\n2.) 🎾 (Available)\n`;
-            }
-
-            if (includeGuidelines) {
-                text += `\n-------------------\n`;
-                text += `📌 *Guidelines & Drop-out Policy:*\n`;
-                text += `• *Thursday Mix-In Sheet:* Pairings & schedule are posted on Thursdays.\n`;
-                text += `• *Friday Drop-Outs:* If pulling out on Friday, please find a replacement player or cover your court share so no one misses out.\n`;
-                text += `• *Reserves:* 1st reserve has 1 hour to confirm before moving to the next player, so we aren't chasing last-minute.\n`;
-                text += `• *Payment:* Pay-on-the-day cash.\n`;
-                text += `• *Help Welcome:* If anyone would like to co-host or help run the sessions, just send a message! 🙌\n`;
             }
 
             const btn = document.getElementById('copyListBtn');
@@ -1910,7 +1824,7 @@ function handleRequest() {
             let player = players.find(p => p.id === id);
             if (player) {
                 player.active = isChecked;
-                player.selectedAt = isChecked ? Date.now() : null;
+                player.selectedAt = isChecked ? Date.now() : null; // Record sign-up timestamp
                 savePlayers();
                 updatePlayerCounter();
                 renderLockedPairsList();
@@ -2042,7 +1956,17 @@ function handleRequest() {
 
             const searchTerm = (document.getElementById('rosterSearch')?.value || '').toLowerCase();
 
-            players.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+            // When viewing active players, sort by sign-up timestamp; otherwise alphabetical
+            if (rosterFilter === 'active') {
+                players.sort((a, b) => {
+                    const timeA = a.selectedAt || 0;
+                    const timeB = b.selectedAt || 0;
+                    if (timeA !== timeB) return timeA - timeB;
+                    return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+                });
+            } else {
+                players.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+            }
 
             let filteredPlayers = players.filter(p => {
                 const matchesSearch = p.name.toLowerCase().includes(searchTerm);
@@ -2800,7 +2724,6 @@ function handleRequest() {
         window.closeInfo = closeInfo;
         window.confirmRestSelection = confirmRestSelection;
         window.copyAppsScriptCode = copyAppsScriptCode;
-        window.copyGameRulesToWhatsApp = copyGameRulesToWhatsApp;
     </script>
 </body>
 </html>
