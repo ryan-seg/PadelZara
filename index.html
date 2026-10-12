@@ -665,6 +665,38 @@
         .rules-box summary { cursor: pointer; font-weight: bold; }
         .rules-box ul { margin: 6px 0 2px 0; padding-left: 18px; }
         .rules-box li { margin-bottom: 3px; line-height: 1.35; }
+
+        .leftover-row {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            align-items: center;
+            margin-top: 4px;
+        }
+        .leftover-row select {
+            flex-grow: 1;
+            margin-top: 0 !important;
+        }
+        .copy-rules-btn {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 35px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+        .copy-rules-btn:hover {
+            background-color: #1ebd5a;
+        }
     </style>
 </head>
 <body>
@@ -736,20 +768,23 @@
                         <input type="number" id="roundsCount" min="1" max="20" value="2" onchange="renderLockedPairsList()">
                     </div>
 
-                    <!-- Odd-Player Gameplay Options -->
+                    <!-- Odd-Player Gameplay Options with Copy Rules Button -->
                     <div class="control-group full-width">
                         <label for="leftoverMode">When Players Don't Divide Evenly by 4</label>
-                        <select id="leftoverMode">
-                            <option value="rest" selected>😴 Standard Rest / Bench Rotation</option>
-                            <optgroup label="3 Players (2 vs 1 Match)">
-                                <option value="king">👑 King of the Court (Fast continuous rotation)</option>
-                                <option value="halfsolo">½ Half-Court Solo (Precision target drill)</option>
-                            </optgroup>
-                            <optgroup label="2 Players (Singles Match)">
-                                <option value="cross">↗️ Cross-Court Singles (Realistic padel geometry)</option>
-                                <option value="half">½ Half-Court Singles (Corridor down-the-line)</option>
-                            </optgroup>
-                        </select>
+                        <div class="leftover-row">
+                            <select id="leftoverMode">
+                                <option value="rest" selected>😴 Standard Rest / Bench Rotation</option>
+                                <optgroup label="3 Players (2 vs 1 Match)">
+                                    <option value="king">👑 King of the Court (Fast continuous rotation)</option>
+                                    <option value="halfsolo">½ Half-Court Solo (Precision target drill)</option>
+                                </optgroup>
+                                <optgroup label="2 Players (Singles Match)">
+                                    <option value="cross">↗️ Cross-Court Singles (Realistic padel geometry)</option>
+                                    <option value="half">½ Half-Court Singles (Corridor down-the-line)</option>
+                                </optgroup>
+                            </select>
+                            <button type="button" id="copyGameRulesBtn" class="copy-rules-btn" onclick="copyGameRulesToWhatsApp()" title="Copy rules of selected game mode for WhatsApp">📋 Copy Rules</button>
+                        </div>
                         <div class="hint">Allocates extra players to spare selected courts instead of benching them.</div>
                     </div>
 
@@ -1076,6 +1111,42 @@ function handleRequest() {
         }
 
         // ==========================================
+        // COPY GAME RULES FOR WHATSAPP
+        // ==========================================
+
+        function copyGameRulesToWhatsApp() {
+            const modeKey = getLeftoverMode();
+            if (modeKey === 'rest' || !GAME_MODES[modeKey]) {
+                alert("Please select one of the 2-player or 3-player game modes from the drop-down to copy its rules!");
+                return;
+            }
+
+            const mode = GAME_MODES[modeKey];
+            let text = `🎾 *Padel Game Rules: ${mode.icon} ${mode.label}* 🎾\n\n`;
+            text += `ℹ️ *Summary:* ${mode.short}\n\n`;
+            text += `*Rules & How to Play:*\n`;
+            mode.rules.forEach((rule, idx) => {
+                text += `${idx + 1}.) ${rule}\n`;
+            });
+
+            const btn = document.getElementById('copyGameRulesBtn');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => showRulesCopySuccess(btn)).catch(() => fallbackCopyTextToClipboard(text, btn));
+            } else {
+                fallbackCopyTextToClipboard(text, btn);
+            }
+        }
+
+        function showRulesCopySuccess(btn) {
+            btn.innerHTML = "✅ Copied!";
+            btn.style.backgroundColor = "#128C7E";
+            setTimeout(() => {
+                btn.innerHTML = "📋 Copy Rules";
+                btn.style.backgroundColor = "#25D366";
+            }, 2000);
+        }
+
+        // ==========================================
         // HELPER FUNCTIONS & CALCULATIONS
         // ==========================================
 
@@ -1257,10 +1328,6 @@ function handleRequest() {
         // PRE-MATCH SIGN-UP LIST SETUP & EXPORT
         // ==========================================
 
-        /**
-         * Returns active players sorted strictly by the time they signed up / checked active.
-         * Earliest signups come first, latest signups come last.
-         */
         function getChronologicalActivePlayers() {
             return players
                 .filter(p => p.active)
@@ -1369,7 +1436,6 @@ function handleRequest() {
             const courtsCount = Math.max(1, parseInt(document.getElementById('modalCourtsCount').value) || 1);
             const totalCapacity = courtsCount * 4;
 
-            // Sort chronologically by sign-up timestamp
             const activePlayersList = getChronologicalActivePlayers();
             const mainPlayingList = activePlayersList.slice(0, totalCapacity);
 
@@ -1394,7 +1460,6 @@ function handleRequest() {
                 text += `€${cost}${includeCash ? ' cash' : ''}\n\n`;
             }
 
-            // Numbered playing spots strictly in order of sign-up
             for (let i = 1; i <= totalCapacity; i++) {
                 const player = mainPlayingList[i - 1];
                 if (player) {
@@ -1404,7 +1469,6 @@ function handleRequest() {
                 }
             }
 
-            // Guaranteed Reserves section
             text += `\n*Reserves:*\n`;
             if (modalReservePlayers.length > 0) {
                 modalReservePlayers.forEach((p, idx) => {
@@ -1414,7 +1478,6 @@ function handleRequest() {
                 text += `1.) 🎾 (Available)\n2.) 🎾 (Available)\n`;
             }
 
-            // Optional Session Guidelines & Drop-out Policy
             if (includeGuidelines) {
                 text += `\n-------------------\n`;
                 text += `📌 *Guidelines & Drop-out Policy:*\n`;
@@ -1979,7 +2042,6 @@ function handleRequest() {
 
             const searchTerm = (document.getElementById('rosterSearch')?.value || '').toLowerCase();
 
-            // Main roster list remains strictly alphabetical across all view tabs
             players.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
 
             let filteredPlayers = players.filter(p => {
@@ -2738,6 +2800,7 @@ function handleRequest() {
         window.closeInfo = closeInfo;
         window.confirmRestSelection = confirmRestSelection;
         window.copyAppsScriptCode = copyAppsScriptCode;
+        window.copyGameRulesToWhatsApp = copyGameRulesToWhatsApp;
     </script>
 </body>
 </html>
