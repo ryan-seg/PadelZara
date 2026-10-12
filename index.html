@@ -1248,11 +1248,11 @@ function handleRequest() {
             }
 
             const mode = GAME_MODES[modeKey];
-            let text = `🎾 *Padel Game Rules: ${mode.icon} ${mode.label}* 🎾\n\n`;
+            let text = `🎾 *Padel Game Rules: ${mode.icon}${mode.label}* 🎾\n\n`;
             text += `ℹ️ *Summary:* ${mode.short}\n\n`;
             text += `*Rules & How to Play:*\n`;
             mode.rules.forEach((rule, idx) => {
-                text += `${idx + 1}.) ${rule}\n`;
+                text += `${idx + 1}.)${rule}\n`;
             });
 
             copyText(text, `${mode.label} rules copied!`);
@@ -1302,7 +1302,7 @@ function handleRequest() {
             text += `📌 *2. ${cutoff} Cancellations*\n`;
             text += `Finding replacement players at short notice for Saturday morning is tough. If you pull out on ${cutoff}, you will need to find a replacement player or cover your court share so no one misses out.\n\n`;
             text += `📌 *3. Reserve Response Window*\n`;
-            text += `If a spot opens up, the next reserve has *${reserveWindow}* to confirm before we move on to the next person, so nobody is left waiting late into ${cutoff}.\n\n`;
+            text += `If a spot opens up, the next reserve has *${reserveWindow}* to confirm before we move on to the next person, so nobody is left waiting late into${cutoff}.\n\n`;
             text += `📌 *4. Payments*\n`;
             text += `${payment}.\n\n`;
             if (includeCohost && cohostCustomText) {
@@ -1399,7 +1399,7 @@ function handleRequest() {
             const weekday = localDate.toLocaleDateString('en-GB', { weekday: 'long' });
             const dayNum = localDate.getDate();
             const monthName = localDate.toLocaleDateString('en-GB', { month: 'long' });
-            return `${weekday} ${dayNum}${getOrdinalSuffix(dayNum)} ${monthName}`;
+            return `${weekday}${dayNum}${getOrdinalSuffix(dayNum)}${monthName}`;
         }
 
         function format12HourTime(timeStr) {
@@ -1464,7 +1464,7 @@ function handleRequest() {
 
                 let roundOptions = `<option value="ALL" ${pair.round === 'ALL' ? 'selected' : ''}>All Games</option>`;
                 for (let r = 1; r <= rounds; r++) {
-                    roundOptions += `<option value="${r}" ${String(pair.round) === String(r) ? 'selected' : ''}>Game ${r}</option>`;
+                    roundOptions += `<option value="${r}" ${String(pair.round) === String(r) ? 'selected' : ''}>Game${r}</option>`;
                 }
 
                 let p1Options = activeList.map(p => `<option value="${p.id}" ${p.id === pair.id1 ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
@@ -1531,9 +1531,9 @@ function handleRequest() {
 
             const totalConfirmed = hostPlayingList.length + hostReserveList.length;
             const summaryEl = document.getElementById('modalCapacitySummary');
-            summaryEl.innerText = `${totalConfirmed} active players | ${totalCapacity} court spots (${courtsCount} court${courtsCount > 1 ? 's' : ''} x 4).`;
+            summaryEl.innerText = `${totalConfirmed} active players \vert{}${totalCapacity} court spots (${courtsCount} court${courtsCount > 1 ? 's' : ''} x 4).`;
 
-            document.getElementById('playingCountBadge').innerText = `${hostPlayingList.length} / ${totalCapacity}`;
+            document.getElementById('playingCountBadge').innerText = `${hostPlayingList.length} /${totalCapacity}`;
             document.getElementById('reservesCountBadge').innerText = `${hostReserveList.length}`;
 
             renderHostManagerLists();
@@ -1552,7 +1552,7 @@ function handleRequest() {
                     const row = document.createElement('div');
                     row.className = 'manage-player-item';
                     row.innerHTML = `
-                        <span><b>${idx + 1}.)</b> ${esc(p.name)}</span>
+                        <span><b>${idx + 1}.)</b>${esc(p.name)}</span>
                         <div class="player-actions">
                             <button type="button" class="action-chip-btn" onclick="hostMoveToReserve(${idx})" title="Move to reserves">⬇️ Reserve</button>
                             <button type="button" class="action-chip-btn danger" onclick="hostDropOut('${p.id}')" title="Drop out player">❌ Drop Out</button>
@@ -1644,7 +1644,7 @@ function handleRequest() {
             if (formattedDate) {
                 text += `${formattedDate}`;
                 if (formattedStart && formattedFinish) {
-                    text += ` at ${formattedStart} - ${formattedFinish}`;
+                    text += ` at ${formattedStart} -${formattedFinish}`;
                 } else if (formattedStart) {
                     text += ` at ${formattedStart}`;
                 }
@@ -1658,7 +1658,7 @@ function handleRequest() {
             for (let i = 1; i <= totalCapacity; i++) {
                 const player = hostPlayingList[i - 1];
                 if (player) {
-                    text += `${i}.) ${player.name}\n`;
+                    text += `${i}.)${player.name}\n`;
                 } else {
                     text += `${i}.) 🎾\n`;
                 }
@@ -1667,7 +1667,7 @@ function handleRequest() {
             text += `\n*Reserves:*\n`;
             if (hostReserveList.length > 0) {
                 hostReserveList.forEach((p, idx) => {
-                    text += `${idx + 1}.) ${p.name}\n`;
+                    text += `${idx + 1}.)${p.name}\n`;
                 });
             } else {
                 text += `1.) 🎾 (Available)\n2.) 🎾 (Available)\n`;
@@ -2043,7 +2043,7 @@ function handleRequest() {
             const baseHostName = host.name.trim();
             const existingGuests = players.filter(p => p.name.startsWith(`${baseHostName} (Guest`));
             const guestNumber = existingGuests.length + 1;
-            const guestLabel = `${baseHostName} (Guest ${guestNumber})`;
+            const guestLabel = `${baseHostName} (Guest${guestNumber})`;
 
             syncTableInputsToMemory();
 
@@ -2142,7 +2142,7 @@ function handleRequest() {
             const targetCount = selectedCourtsCount * 4;
 
             if (counterEl) {
-                counterEl.innerText = `${active} / ${total} playing`;
+                counterEl.innerText = `${active} /${total} playing`;
 
                 if (selectedCourtsCount > 0 && active !== targetCount) {
                     counterEl.classList.add('counter-invalid');
@@ -2276,8 +2276,7 @@ function handleRequest() {
                     <input type="text" value="${esc(player.name)}" onchange="syncTableInputsToMemory(); renderPlayers();">
                     <input type="number" value="${player.rank}" min="0" max="10" step="0.1" onchange="syncTableInputsToMemory(); renderPlayers();">
                     ${statusBadgeHtml}
-                    ${annotationHtml}
-                    ${guestBtnHtml}
+                    ${annotationHtml}${guestBtnHtml}
                     <button type="button" class="delete-btn" onclick="removePlayer('${player.id}')" title="Delete">✖</button>
                 `;
                 container.appendChild(row);
@@ -2386,7 +2385,7 @@ function handleRequest() {
             const textEl = document.getElementById('restModalText');
             container.innerHTML = '';
             
-            textEl.innerText = `You have ${activePlayers.length} players for ${activePlayers.length - extraCount} playing spots (${extraCount} ${getLeftoverMode() === 'rest' ? 'resting' : 'stepping out to a side game or resting'} per game). Choose who steps out in each game or leave as "Anyone":`;
+            textEl.innerText = `You have ${activePlayers.length} players for${activePlayers.length - extraCount} playing spots (${extraCount}${getLeftoverMode() === 'rest' ? 'resting' : 'stepping out to a side game or resting'} per game). Choose who steps out in each game or leave as "Anyone":`;
 
             for (let r = 0; r < rounds; r++) {
                 const card = document.createElement('div');
@@ -2454,7 +2453,7 @@ function handleRequest() {
             let text = "🎾 *Padel Match Schedule* 🎾\n";
             if (location) text += `📍 *Location:* ${location}\n`;
             if (formattedDate) text += `📅 *Date:* ${formattedDate}\n`;
-            if (startTime && finishTime) text += `⏰ *Time:* ${startTime} - ${finishTime}\n`;
+            if (startTime && finishTime) text += `⏰ *Time:* ${startTime} -${finishTime}\n`;
             if (cost) text += `💶 *Cost:* €${cost}${includeCash ? ' cash' : ''} per person\n`;
             text += `\n-------------------\n\n`;
 
@@ -2464,7 +2463,7 @@ function handleRequest() {
                     const nm = id => players.find(p => p.id === id)?.name || "";
                     const side = (a, b) => [a, b].filter(Boolean).map(nm).join(' & ');
                     const md = c.rule ? GAME_MODES[c.rule] : null;
-                    const tag = md ? ` (${md.icon} ${md.label})` : '';
+                    const tag = md ? ` (${md.icon}${md.label})` : '';
                     text += `Court ${c.courtNum}${tag}: ${side(c.t1p1, c.t1p2)} 🆚 ${side(c.t2p1, c.t2p2)}\n`;
                     if (md) text += `   ↳ ${md.short}\n`;
                 });
@@ -2577,387 +2576,4 @@ function handleRequest() {
             }).sort((a, b) => a.name.localeCompare(b.name));
             const totalRepeats = rows.reduce((t, r) => t + r.repeats, 0) / 2;
             const head = totalRepeats ? `${totalRepeats} repeat partnership${totalRepeats > 1 ? 's' : ''}` : 'no repeat partners 🎉';
-            return `<details class="rules-box" style="margin-top:12px"><summary>📊 Session summary - ${head}</summary>
-                <table class="summary-table"><tr><th>Player</th><th>Played</th><th>Rested</th><th>Partners</th></tr>
-                ${rows.map(r => `<tr><td>${esc(r.name)}</td><td>${r.played}</td><td>${r.rested}</td><td>${r.uniq}${r.repeats ? ` (${r.repeats} repeat)` : ''}</td></tr>`).join('')}
-                </table></details>`;
-        }
-
-        function optimiseRound(playing, courtNums, H) {
-            const nCourts = Math.min(courtNums.length, Math.floor(playing.length / 4));
-            if (nCourts === 0) return [];
-            const mode = mixPriorityValue;
-            const cnt = (m, a, b) => m[getPairKey(a.id, b.id)] || 0;
-            const stay = (p, courtNum) => {
-                const h = H.consecutive[p.id];
-                return h && h.courtNum === courtNum && h.count >= 2 ? 4 : 0;
-            };
-            const present = lp => playing.some(p => p.id === lp.id1) && playing.some(p => p.id === lp.id2);
-            const locked = H.locked.filter(present);
-
-            const costOf = (order) => {
-                let total = 0;
-                const mates = new Set();
-                for (let c = 0; c < nCourts; c++) {
-                    const [a, b, x, y] = order.slice(c * 4, c * 4 + 4);
-                    mates.add(getPairKey(a.id, b.id)); mates.add(getPairKey(x.id, y.id));
-                    total += Math.abs(getEffectiveTeamRating(a.rank, b.rank) - getEffectiveTeamRating(x.rank, y.rank)) * (mode === 100 ? 1.5 : 3);
-                    if (Math.abs(a.rank - b.rank) > MAX_SKILL_GAP_LIMIT) total += 5;
-                    if (Math.abs(x.rank - y.rank) > MAX_SKILL_GAP_LIMIT) total += 5;
-                    total += 10 * (cnt(H.partner, a, b) + cnt(H.partner, x, y));
-                    total += 2 * (cnt(H.opponent, a, x) + cnt(H.opponent, a, y) + cnt(H.opponent, b, x) + cnt(H.opponent, b, y));
-                    if (mode === 100) total += 3 * [[a, b], [a, x], [a, y], [b, x], [b, y], [x, y]].reduce((t, [p, q]) => t + cnt(H.coPlay, p, q), 0);
-                    if (mode === 0) { const r = [a, b, x, y].map(p => p.rank); total += (Math.max(...r) - Math.min(...r)) * 4; }
-                    if (nCourts > 1) total += [a, b, x, y].reduce((t, p) => t + stay(p, courtNums[c]), 0);
-                }
-                locked.forEach(lp => { if (!mates.has(getPairKey(lp.id1, lp.id2))) total += 500; });
-                H.avoid.forEach(ap => { if (mates.has(getPairKey(ap.id1, ap.id2))) total += 500; });
-                return total;
-            };
-
-            const pool0 = playing.slice(0, nCourts * 4);
-            const startOrder = () => {
-                const pool = [...pool0].sort(() => Math.random() - 0.5);
-                const seated = [], used = new Set();
-                locked.forEach(lp => {
-                    const p = pool.find(x => x.id === lp.id1), q = pool.find(x => x.id === lp.id2);
-                    if (p && q && !used.has(p.id) && !used.has(q.id)) { seated.push(p, q); used.add(p.id); used.add(q.id); }
-                });
-                return [...seated, ...pool.filter(p => !used.has(p.id))];
-            };
-
-            let best = null, bestCost = Infinity;
-            const deadline = Date.now() + 120;
-            for (let r = 0; r < 6 && (r === 0 || Date.now() < deadline); r++) {
-                const cur = startOrder();
-                let curCost = costOf(cur);
-                for (let i = 0; i < pool0.length * 30; i++) {
-                    const a = Math.floor(Math.random() * cur.length), b = Math.floor(Math.random() * cur.length);
-                    if (a === b) continue;
-                    [cur[a], cur[b]] = [cur[b], cur[a]];
-                    const nc = costOf(cur);
-                    if (nc <= curCost) curCost = nc; else [cur[a], cur[b]] = [cur[b], cur[a]];
-                }
-                if (curCost < bestCost) { bestCost = curCost; best = [...cur]; }
-            }
-            const courts = [];
-            for (let c = 0; c < nCourts; c++) courts.push(best.slice(c * 4, c * 4 + 4));
-            const avg = g => g.reduce((t, p) => t + p.rank, 0) / 4;
-            if (mode === 0) courts.sort((p, q) => avg(q) - avg(p));
-            return courts;
-        }
-
-        function getPairKey(p1, p2) {
-            return [p1, p2].sort().join('-');
-        }
-
-        function generateTournament(onlyRound = null) {
-            scheduleRestored = true;
-            syncTableInputsToMemory();
-            const selectedCourtCBs = Array.from(document.querySelectorAll('.court-select-cb:checked'));
-            const selectedCourtNumbers = selectedCourtCBs.map(cb => parseInt(cb.value)).sort((a, b) => a - b);
-
-            if (selectedCourtNumbers.length === 0) { alert("Please select at least one court above!"); return; }
-
-            const rounds = parseInt(document.getElementById('roundsCount').value) || 1;
-            const startTimeStr = document.getElementById('startTime').value || "09:00";
-            const gameDurationMin = parseInt(document.getElementById('gameDuration').value) || 30;
-
-            let activePlayers = players.filter(p => p.active).map(p => ({ ...p, gamesPlayed: 0, restCount: 0 }));
-            const minPlayers = getLeftoverMode() === 'rest' ? 4 : 2;
-            if (activePlayers.length < minPlayers) { alert(`You need at least ${minPlayers} playing members to generate a game.`); return; }
-
-            const maxCourtsPossible = Math.floor(activePlayers.length / 4);
-            const actualCourtsToUse = selectedCourtNumbers.slice(0, maxCourtsPossible);
-            const playersNeeded = actualCourtsToUse.length * 4;
-            const extraCount = activePlayers.length - playersNeeded;
-
-            const prevRounds = (onlyRound !== null && currentRoundsData[onlyRound]) ? currentRoundsData : null;
-            if (!prevRounds) { currentRoundsData = []; onlyRound = null; }
-            let [startH, startM] = startTimeStr.split(':').map(Number);
-            
-            const partnerCount = {}, opponentCount = {}, coPlayCount = {};
-            const bump = (m, a, b) => { const k = getPairKey(a, b); m[k] = (m[k] || 0) + 1; };
-            let courtConsecutiveMap = {};
-
-            if (prevRounds) {
-                prevRounds.forEach((rd, i) => {
-                    if (i === onlyRound) return;
-                    rd.courts.forEach(c => {
-                        [[c.t1p1, c.t1p2], [c.t2p1, c.t2p2]].forEach(([a, b]) => { if (a && b) bump(partnerCount, a, b); });
-                        [c.t1p1, c.t1p2].forEach(p => [c.t2p1, c.t2p2].forEach(q => { if (p && q) bump(opponentCount, p, q); }));
-                        const ids = [c.t1p1, c.t1p2, c.t2p1, c.t2p2].filter(Boolean);
-                        for (let x = 0; x < ids.length; x++) for (let y = x + 1; y < ids.length; y++) {
-                            const k = getPairKey(ids[x], ids[y]);
-                            coPlayCount[k] = (coPlayCount[k] || 0) + 1;
-                        }
-                        if (!c.format) ids.forEach(id => { const p = activePlayers.find(x => x.id === id); if (p) p.gamesPlayed++; });
-                    });
-                    rd.benched.forEach(id => { const p = activePlayers.find(x => x.id === id); if (p) p.restCount++; });
-                });
-            }
-
-            for (let r = 0; r < (prevRounds ? prevRounds.length : rounds); r++) {
-                if (prevRounds && r !== onlyRound) continue;
-                const gm = startH * 60 + startM + r * gameDurationMin;
-                let h = Math.floor(gm / 60) % 24;
-                let m = gm % 60;
-                let gameTimeString = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-
-                let explicitRestIds = (roundRestPreferences[r] || []);
-                let benchedThisRound = [];
-                let playingThisRound = [];
-
-                if (explicitRestIds.length > 0) {
-                    benchedThisRound = activePlayers.filter(p => explicitRestIds.includes(p.id));
-                }
-
-                const roundRules = lockedPartnerships.filter(lp => lp.round === 'ALL' || String(lp.round) === String(r + 1));
-                let roundLockedPairs = roundRules.filter(lp => lp.type !== 'avoid');
-                const roundAvoidPairs = roundRules.filter(lp => lp.type === 'avoid');
-
-                let lockedPlayerIds = new Set();
-                roundLockedPairs.forEach(lp => {
-                    lockedPlayerIds.add(lp.id1);
-                    lockedPlayerIds.add(lp.id2);
-                });
-
-                let unassignedPlayers = activePlayers.filter(p => !benchedThisRound.some(b => b.id === p.id));
-                unassignedPlayers.sort((a, b) => {
-                    let aLocked = lockedPlayerIds.has(a.id) ? 1 : 0;
-                    let bLocked = lockedPlayerIds.has(b.id) ? 1 : 0;
-                    if (aLocked !== bLocked) return aLocked - bLocked;
-                    return (b.gamesPlayed + Math.random() * 0.1) - (a.gamesPlayed + Math.random() * 0.1);
-                });
-
-                while (benchedThisRound.length < extraCount && unassignedPlayers.length > 0) {
-                    let restedPlayer = unassignedPlayers.shift();
-                    benchedThisRound.push(restedPlayer);
-                }
-
-                playingThisRound = activePlayers.filter(p => !benchedThisRound.some(b => b.id === p.id)).slice(0, playersNeeded);
-                playingThisRound.forEach(p => p.gamesPlayed++);
-
-                let roundCourts = [];
-                let currentRoundCourtAssignments = {};
-
-                const grouped = optimiseRound(playingThisRound, actualCourtsToUse, {
-                    partner: partnerCount, opponent: opponentCount, coPlay: coPlayCount,
-                    consecutive: courtConsecutiveMap, locked: roundLockedPairs, avoid: roundAvoidPairs
-                });
-                grouped.forEach((grp, c) => {
-                    const courtNum = actualCourtsToUse[c];
-                    const t1 = grp.slice(0, 2).sort((p, q) => q.rank - p.rank);
-                    const t2 = grp.slice(2, 4).sort((p, q) => q.rank - p.rank);
-                    const [t1p1, t1p2, t2p1, t2p2] = [t1[0].id, t1[1].id, t2[0].id, t2[1].id];
-                    bump(partnerCount, t1p1, t1p2); bump(partnerCount, t2p1, t2p2);
-                    [t1p1, t1p2].forEach(p => [t2p1, t2p2].forEach(q => bump(opponentCount, p, q)));
-                    const four = [t1p1, t1p2, t2p1, t2p2];
-                    for (let x = 0; x < 4; x++) for (let y = x + 1; y < 4; y++) bump(coPlayCount, four[x], four[y]);
-                    four.forEach(id => { currentRoundCourtAssignments[id] = courtNum; });
-                    roundCourts.push({ courtNum, t1p1, t1p2, t2p1, t2p2 });
-                });
-
-                const leftoverMode = getLeftoverMode();
-                const spareCourts = selectedCourtNumbers.filter(n => !actualCourtsToUse.includes(n));
-                if (leftoverMode !== 'rest' && benchedThisRound.length >= 2 && spareCourts.length > 0) {
-                    let sidePool = [...benchedThisRound].sort((a, b) => b.rank - a.rank);
-                    const sideGames = [];
-                    if (GAME_MODES[leftoverMode]?.kind === 'trio' && sidePool.length === 3) {
-                        sideGames.push({ format: 'trio', rule: 'canadian_king', t1p1: sidePool[0].id, t1p2: "", t2p1: sidePool[1].id, t2p2: sidePool[2].id });
-                    } else {
-                        if (sidePool.length % 2 === 1) {
-                            const minRest = Math.min(...sidePool.map(p => p.restCount));
-                            sidePool.splice(sidePool.findIndex(p => p.restCount === minRest), 1);
-                        }
-                        for (let i = 0; i + 1 < sidePool.length; i += 2) {
-                            sideGames.push({ format: 'singles', rule: GAME_MODES[leftoverMode]?.kind === 'singles' ? leftoverMode : 'cross', t1p1: sidePool[i].id, t1p2: "", t2p1: sidePool[i + 1].id, t2p2: "" });
-                        }
-                    }
-                    const placedIds = new Set();
-                    sideGames.slice(0, spareCourts.length).forEach((sg, i) => {
-                        roundCourts.push({ courtNum: spareCourts[i], ...sg });
-                        [sg.t1p1, sg.t1p2, sg.t2p1, sg.t2p2].filter(Boolean).forEach(id => placedIds.add(id));
-                    });
-                    benchedThisRound = benchedThisRound.filter(p => !placedIds.has(p.id));
-                }
-                benchedThisRound.forEach(p => p.restCount++);
-
-                players.forEach(p => {
-                    const assignedCourt = currentRoundCourtAssignments[p.id];
-                    if (assignedCourt !== undefined) {
-                        if (courtConsecutiveMap[p.id] && courtConsecutiveMap[p.id].courtNum === assignedCourt) {
-                            courtConsecutiveMap[p.id].count++;
-                        } else {
-                            courtConsecutiveMap[p.id] = { courtNum: assignedCourt, count: 1 };
-                        }
-                    } else {
-                        courtConsecutiveMap[p.id] = { courtNum: null, count: 0 };
-                    }
-                });
-
-                const roundObj = { gameTime: prevRounds ? prevRounds[r].gameTime : gameTimeString, courts: roundCourts, benched: benchedThisRound.map(p => p.id) };
-                if (prevRounds) currentRoundsData[r] = roundObj; else currentRoundsData.push(roundObj);
-            }
-
-            renderTournamentDisplay(!prevRounds);
-        }
-
-        function renderTournamentDisplay(scroll = false) {
-            const resultsArea = document.getElementById('resultsArea');
-            let fullHtml = `<button id="copyBtn" class="whatsapp-btn" onclick="copyToWhatsApp()">📋 Copy Match Schedule for WhatsApp</button>`;
-            if (navigator.share) fullHtml += `<button type="button" class="secondary" style="margin:0 0 10px 0" onclick="shareSchedule()">📤 Share Schedule</button>`;
-            let activePlayerIds = players.filter(p => p.active).map(p => p.id);
-            const optHtml = (selId) => activePlayerIds.map(id => {
-                const o = players.find(p => p.id === id);
-                return `<option value="${id}" ${id === selId ? 'selected' : ''}>${esc(o?.name)} (${o?.rank})</option>`;
-            }).join('');
-
-            currentRoundsData.forEach((round, rIdx) => {
-                let assignedCounts = {};
-
-                round.courts.forEach(c => { 
-                    [c.t1p1, c.t1p2, c.t2p1, c.t2p2].forEach(id => { 
-                        if (id) {
-                            assignedCounts[id] = (assignedCounts[id] || 0) + 1;
-                        }
-                    }); 
-                });
-
-                round.benched.forEach(id => {
-                    if (id) {
-                        assignedCounts[id] = (assignedCounts[id] || 0) + 1;
-                    }
-                });
-
-                fullHtml += `<div class="round-container"><h2 class="round-title">Game ${rIdx + 1} (${round.gameTime}) <button type="button" class="redo-btn" onclick="regenerateRound(${rIdx})" title="Redo just this game">🔄</button></h2><div class="courts-grid">`;
-
-                round.courts.forEach((c, cIdx) => {
-                    const getSelectClass = (id, baseClass) => (assignedCounts[id] > 1) ? `${baseClass} duplicate-error` : baseClass;
-                    const p1R = players.find(p => p.id === c.t1p1)?.rank || 0;
-                    const p2R = players.find(p => p.id === c.t1p2)?.rank || 0;
-                    const p3R = players.find(p => p.id === c.t2p1)?.rank || 0;
-                    const p4R = players.find(p => p.id === c.t2p2)?.rank || 0;
-                    
-                    const t1Eff = c.t1p2 ? getEffectiveTeamRating(p1R, p2R) : p1R;
-                    const t2Eff = c.t2p2 ? getEffectiveTeamRating(p3R, p4R) : p3R;
-                    const diff = Math.abs(t1Eff - t2Eff).toFixed(1);
-
-                    const gap1 = c.t1p2 ? Math.abs(p1R - p2R) : 0;
-                    const gap2 = c.t2p2 ? Math.abs(p3R - p4R) : 0;
-
-                    let t1IsLocked = lockedPartnerships.some(lp => lp.type !== 'avoid' && (lp.round === 'ALL' || String(lp.round) === String(rIdx + 1)) && getPairKey(c.t1p1, c.t1p2) === getPairKey(lp.id1, lp.id2));
-                    let t2IsLocked = lockedPartnerships.some(lp => lp.type !== 'avoid' && (lp.round === 'ALL' || String(lp.round) === String(rIdx + 1)) && getPairKey(c.t2p1, c.t2p2) === getPairKey(lp.id1, lp.id2));
-
-                    const md = c.rule ? GAME_MODES[c.rule] : null;
-                    const modeLabel = md ? ` - ${md.icon} ${md.label}` : '';
-                    const rulesHtml = md ? `
-                        <details class="rules-box">
-                            <summary>📖 Rules: ${esc(md.short)}</summary>
-                            <ul>${md.rules.map(r => `<li>${esc(r)}</li>`).join('')}</ul>
-                            <button type="button" class="rules-card-copy-btn" onclick="copyGameRulesToWhatsApp('${c.rule}')">📋 Copy This Game's Rules to WhatsApp</button>
-                        </details>` : '';
-
-                    fullHtml += `
-                        <div class="court">
-                            <h3 class="court-title">Court ${c.courtNum}${modeLabel}</h3>
-                            ${rulesHtml}
-                            <div class="balance-summary">⚖️ T1 Rating: ${t1Eff.toFixed(1)} | T2 Rating: ${t2Eff.toFixed(1)} (Diff: ${diff})</div>
-                            <div class="team-box">
-                                <select class="${getSelectClass(c.t1p1, 'player-select')}" onchange="handlePlayerSwap(${rIdx}, ${cIdx}, 't1p1', this.value)">
-                                    ${optHtml(c.t1p1)}
-                                </select>
-                                ${c.t1p2 ? `<select class="${getSelectClass(c.t1p2, 'player-select')}" onchange="handlePlayerSwap(${rIdx},${cIdx}, 't1p2', this.value)">
-                                    ${optHtml(c.t1p2)}
-                                </select>` : ''}
-                                ${c.format === 'trio' ? `<div class="locked-tag">👑 Solo Server</div>` : ''}
-                                ${t1IsLocked ? `<div class="locked-tag">🔒 Predetermined Pair</div>` : ''}
-                                ${gap1 > MAX_SKILL_GAP_LIMIT ? `<div class="gap-warning-badge">⚠️ Large Skill Gap (${gap1.toFixed(1)})</div>` : ''}
-                            </div>
-                            <div class="vs">VS</div>
-                            <div class="team-box">
-                                <select class="${getSelectClass(c.t2p1, 'player-select team-two-select')}" onchange="handlePlayerSwap(${rIdx}, ${cIdx}, 't2p1', this.value)">
-                                    ${optHtml(c.t2p1)}
-                                </select>
-                                ${c.t2p2 ? `<select class="${getSelectClass(c.t2p2, 'player-select team-two-select')}" onchange="handlePlayerSwap(${rIdx},${cIdx}, 't2p2', this.value)">
-                                    ${optHtml(c.t2p2)}
-                                </select>` : ''}
-                                ${c.format === 'trio' ? `<div class="locked-tag">Challengers / Pair</div>` : ''}
-                                ${t2IsLocked ? `<div class="locked-tag">🔒 Predetermined Pair</div>` : ''}
-                                ${gap2 > MAX_SKILL_GAP_LIMIT ? `<div class="gap-warning-badge">⚠️ Large Skill Gap (${gap2.toFixed(1)})</div>` : ''}
-                            </div>
-                        </div>`;
-                });
-
-                fullHtml += `</div>`; 
-
-                let missingPlayers = activePlayerIds.filter(id => !assignedCounts[id]);
-                let duplicatePlayers = Object.keys(assignedCounts).filter(id => assignedCounts[id] > 1);
-
-                if (duplicatePlayers.length > 0 || missingPlayers.length > 0) {
-                    let warnMsg = [];
-                    if (duplicatePlayers.length > 0) warnMsg.push(`⚠️ Duplicate player assigned: ${duplicatePlayers.map(id => players.find(p => p.id === id)?.name).join(", ")}`);
-                    if (missingPlayers.length > 0) warnMsg.push(`⚠️ Unassigned player: ${missingPlayers.map(id => players.find(p => p.id === id)?.name).join(", ")}`);
-                    fullHtml += `<div class="warning-banner">${warnMsg.join("<br>")}</div>`;
-                }
-
-                if (round.benched.length > 0) {
-                    const getSelectClass = (id, baseClass) => (assignedCounts[id] > 1) ? `${baseClass} duplicate-error` : baseClass;
-                    
-                    fullHtml += `<div class="benched">
-                        <div class="benched-title">⏱️ Resting this game:</div>
-                        <div class="benched-grid">
-                            ${round.benched.map((benchedId, bIdx) => {
-                                return `
-                                <select class="${getSelectClass(benchedId, 'player-select bench-select')}" onchange="handleBenchedSwap(${rIdx},${bIdx}, this.value)">
-                                    ${optHtml(benchedId)}
-                                </select>`;
-                            }).join('')}
-                        </div>
-                    </div>`;
-                }
-                fullHtml += `</div>`;
-            });
-
-            fullHtml += buildSessionSummary();
-            fullHtml += `<button type="button" class="secondary" onclick="clearSchedule()">🗑️ Clear Schedule</button>`;
-            resultsArea.innerHTML = fullHtml;
-            persistSchedule();
-            if (scroll) setTimeout(() => { resultsArea.scrollIntoView({ behavior: 'smooth' }); }, 100);
-        }
-
-        window.openRosterConfigModal = openRosterConfigModal;
-        window.updateRosterConfigModal = updateRosterConfigModal;
-        window.confirmAndCopyRosterList = confirmAndCopyRosterList;
-        window.hostMoveToReserve = hostMoveToReserve;
-        window.hostPromoteToPlaying = hostPromoteToPlaying;
-        window.hostMoveReservePosition = hostMoveReservePosition;
-        window.hostDropOut = hostDropOut;
-        window.addLockedPairRow = addLockedPairRow;
-        window.removeLockedPairRow = removeLockedPairRow;
-        window.updateLockedPair = updateLockedPair;
-        window.renderLockedPairsList = renderLockedPairsList;
-        window.loadDemoRoster = loadDemoRoster;
-        window.uncheckAllPlayers = uncheckAllPlayers;
-        window.saveChanges = saveChanges;
-        window.undoChanges = undoChanges;
-        window.openCloudSettings = openCloudSettings;
-        window.saveCloudSettings = saveCloudSettings;
-        window.disconnectCloud = disconnectCloud;
-        window.manualLoadFromCloud = manualLoadFromCloud;
-        window.saveToCloud = saveToCloud;
-        window.exportData = exportData;
-        window.importData = importData;
-        window.setPriority = setPriority;
-        window.setRosterFilter = setRosterFilter;
-        window.showControlInfo = showControlInfo;
-        window.closeInfo = closeInfo;
-        window.confirmRestSelection = confirmRestSelection;
-        window.copyAppsScriptCode = copyAppsScriptCode;
-        window.copyGameRulesToWhatsApp = copyGameRulesToWhatsApp;
-        window.openPolicyModal = openPolicyModal;
-        window.saveAndCopyPolicy = saveAndCopyPolicy;
-        window.toggleCohostField = toggleCohostField;
-    </script>
-</body>
-</html>
+            return `<details class="rules-box
