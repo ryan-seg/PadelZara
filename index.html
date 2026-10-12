@@ -3,36 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Padel Organiser Pro</title>
+    <title>Padel Organizer Pro</title>
     <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --accent: #3b82f6;
+            --wa-green: #25D366;
+            --wa-dark: #128C7E;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: var(--bg);
+            color: var(--text-main);
             margin: 0;
             padding: 10px; 
-            font-size: 15px; 
+            font-size: 14px; 
         }
-        h1 { text-align: center; font-size: 24px; margin: 10px 0 15px 0; }
+
+        h1 { text-align: center; font-size: 24px; margin: 8px 0 12px 0; color: #0f172a; }
         
         .personal-note {
             text-align: center;
-            font-size: 15px;
+            font-size: 14px;
             color: #d6336c;
             background: #fff0f6;
-            padding: 10px;
+            padding: 8px 12px;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border: 2px dashed #ff87ab;
             line-height: 1.4;
         }
 
         .card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-            margin-bottom: 15px;
+            background: var(--card-bg);
+            padding: 14px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 12px;
         }
 
         @media (min-width: 900px) {
@@ -43,11 +57,8 @@
                 gap: 20px;
                 align-items: start;
             }
-            .player-list-container {
-                height: 300px !important;
-            }
-            .alphabet-bar {
-                height: 300px !important;
+            .player-list-container, .alphabet-bar {
+                height: 380px !important;
             }
         }
         
@@ -56,32 +67,34 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 12px;
-            background: #eef2f5;
+            background: #f1f5f9;
             padding: 12px;
             border-radius: 8px;
         }
+
         .control-group {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            font-weight: bold;
-            font-size: 13px;
+            font-weight: 600;
+            font-size: 12px;
+            color: #334155;
         }
         .control-group label {
             display: flex;
             align-items: center;
             gap: 4px;
+            margin-bottom: 3px;
         }
         .control-group input[type="number"], .control-group select, .control-group input[type="text"], .control-group input[type="date"], .control-group input[type="time"] {
-            padding: 8px 6px;
-            font-size: 14px;
+            padding: 7px 8px;
+            font-size: 13px;
             width: 100%;
             box-sizing: border-box;
-            margin-top: 4px;
-            border: 1px solid #ccc;
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
             text-align: center;
             background: white;
+            color: #1e293b;
         }
 
         .full-width { grid-column: span 2; }
@@ -92,15 +105,14 @@
             background: #cbd5e1;
             border-radius: 6px;
             padding: 2px;
-            margin-top: 5px;
             box-sizing: border-box;
         }
         .priority-btn {
             flex: 1;
             border: none;
             background: transparent;
-            padding: 8px 4px;
-            font-size: 12px;
+            padding: 7px 4px;
+            font-size: 11px;
             font-weight: bold;
             color: #475569;
             cursor: pointer;
@@ -108,7 +120,7 @@
             transition: all 0.2s ease;
         }
         .priority-btn.active {
-            background: #3b82f6;
+            background: var(--accent);
             color: white;
             box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         }
@@ -119,8 +131,6 @@
             padding: 10px;
             border-radius: 6px;
             border: 1px solid #cbd5e1;
-            margin-top: 2px;
-            width: 100%;
             box-sizing: border-box;
         }
         .court-selection-title {
@@ -167,23 +177,23 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 12px;
             box-sizing: border-box;
         }
         .modal-card {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 18px;
             max-width: 520px;
             width: 100%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
             max-height: 88vh;
             overflow-y: auto;
         }
         .modal-card h3 {
             margin-top: 0;
             color: #0f172a;
-            font-size: 17px;
+            font-size: 16px;
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 6px;
         }
@@ -192,19 +202,6 @@
             line-height: 1.4;
             color: #475569;
             margin: 8px 0;
-        }
-        .modal-card ol { padding-left: 18px; }
-        .modal-card li { margin-bottom: 5px; }
-        .modal-card input[type="text"] {
-            width: 100%;
-            padding: 9px;
-            margin-top: 4px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 13px;
-            text-align: center;
         }
         .code-block {
             background: #0f172a;
@@ -235,20 +232,20 @@
             color: white;
             border: none;
             border-radius: 6px;
-            padding: 9px;
+            padding: 8px 12px;
             font-size: 13px;
             font-weight: bold;
             cursor: pointer;
         }
         .modal-close { background: #64748b; }
-        .modal-save { background: #10b981; }
+        .modal-save { background: var(--primary); }
         .modal-disconnect { background: #ef4444; width: 100%; margin-top: 8px; }
         
         .modal-buttons {
             display: flex;
             justify-content: space-between;
-            gap: 6px;
-            margin-top: 12px;
+            gap: 8px;
+            margin-top: 14px;
         }
 
         .sync-section {
@@ -278,15 +275,6 @@
             border: 1px solid #cbd5e1;
         }
         
-        .sync-group-title {
-            font-size: 10px;
-            font-weight: bold;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 4px 0 3px 2px;
-        }
-        
         .sync-btn-row {
             display: flex;
             gap: 6px;
@@ -295,11 +283,11 @@
 
         .sync-btn {
             flex: 1;
-            padding: 8px 6px;
+            padding: 7px 6px;
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
@@ -323,9 +311,9 @@
             border: 1px solid #e2e8f0;
             align-items: center;
         }
-        .add-player-bar input[type="text"] { flex-grow: 1; padding: 7px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-        .add-player-bar input[type="number"] { width: 65px; padding: 7px 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; text-align: center; }
-        .add-player-bar button { background-color: #3b82f6; color: white; border: none; padding: 7px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; white-space: nowrap; }
+        .add-player-bar input[type="text"] { flex-grow: 1; padding: 7px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+        .add-player-bar input[type="number"] { width: 65px; padding: 7px 4px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; text-align: center; }
+        .add-player-bar button { background-color: var(--accent); color: white; border: none; padding: 7px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; white-space: nowrap; }
 
         .roster-toolbar {
             display: flex;
@@ -341,10 +329,7 @@
             font-size: 13px;
             box-sizing: border-box;
         }
-        .filter-tabs {
-            display: flex;
-            gap: 4px;
-        }
+        .filter-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
         .filter-tab {
             padding: 3px 8px;
             background: #e2e8f0;
@@ -355,10 +340,7 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .filter-tab.active {
-            background: #3b82f6;
-            color: white;
-        }
+        .filter-tab.active { background: var(--accent); color: white; }
 
         .roster-header { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; color: #475569; }
         .roster-controls { display: flex; align-items: center; gap: 4px; }
@@ -381,14 +363,14 @@
         }
         .bottom-save-btn, .bottom-undo-btn {
             flex: 1;
-            padding: 10px;
+            padding: 9px;
             border: none;
             border-radius: 6px;
             font-size: 13px;
             font-weight: bold;
             cursor: pointer;
         }
-        .bottom-save-btn { background-color: #10b981; color: white; }
+        .bottom-save-btn { background-color: var(--primary); color: white; }
         .bottom-undo-btn { background-color: #f59e0b; color: white; }
         
         .counter-box {
@@ -451,7 +433,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            width: 26px;
+            width: 24px;
             height: 380px; 
             background: #f1f5f9;
             border: 1px solid #cbd5e1;
@@ -460,10 +442,9 @@
             box-sizing: border-box;
             user-select: none;
             touch-action: none;
-            -webkit-user-select: none;
         }
         .alpha-letter {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: #475569;
             cursor: pointer;
@@ -477,8 +458,8 @@
             justify-content: center;
         }
         .alpha-letter:hover, .alpha-letter:active {
-            color: #2563eb;
-            font-size: 13px;
+            color: var(--accent);
+            font-size: 12px;
             background: #dbeafe;
             border-radius: 3px;
         }
@@ -487,33 +468,39 @@
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(255,255,255,0.9);
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            font-weight: bold; color: #3b82f6; z-index: 10;
+            font-weight: bold; color: var(--accent); z-index: 10;
         }
 
         .player-row { display: flex; align-items: center; padding: 5px 8px; border-bottom: 1px solid #f1f5f9; gap: 4px; }
         .player-row:last-child { border-bottom: none; }
         .player-row input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; }
-        .player-row input[type="text"] { flex-grow: 1; border: 1px solid transparent; background: transparent; font-size: 14px; padding: 3px; border-radius: 4px; min-width: 80px; }
-        .player-row input[type="text"]:focus { border-color: #3b82f6; background: white; }
-        .player-row input[type="number"] { width: 45px; border: 1px solid transparent; background: transparent; font-size: 14px; text-align: center; padding: 3px; border-radius: 4px; flex-shrink: 0; }
-        .player-row input[type="number"]:focus { border-color: #3b82f6; background: white; }
+        .player-row input[type="text"] { flex-grow: 1; border: 1px solid transparent; background: transparent; font-size: 13px; padding: 3px; border-radius: 4px; min-width: 70px; }
+        .player-row input[type="text"]:focus { border-color: var(--accent); background: white; }
+        .player-row input[type="number"] { width: 45px; border: 1px solid transparent; background: transparent; font-size: 13px; text-align: center; padding: 3px; border-radius: 4px; flex-shrink: 0; }
+        .player-row input[type="number"]:focus { border-color: var(--accent); background: white; }
 
-        .player-row.modified-row {
-            background-color: #fef9c3;
-        }
+        .player-row.modified-row { background-color: #fef9c3; }
         .change-annotation {
             background-color: #fef08a;
             color: #854d0e;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
             padding: 1px 4px;
             border-radius: 4px;
             white-space: nowrap;
             flex-shrink: 0;
         }
-        .change-annotation em {
-            font-style: italic;
+
+        .status-pill {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
+        .status-pill.playing { background: #dcfce7; color: #15803d; }
+        .status-pill.reserve { background: #fef3c7; color: #b45309; }
 
         .add-guest-btn {
             background: #e2e8f0;
@@ -527,39 +514,61 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
-        .add-guest-btn:hover {
-            background: #3b82f6;
-            color: white;
-            border-color: #2563eb;
-        }
 
-        .delete-btn { background: transparent; color: #ef4444; border: none; font-size: 16px; cursor: pointer; font-weight: bold; padding: 1px 4px; flex-shrink: 0; }
+        .delete-btn { background: transparent; color: #ef4444; border: none; font-size: 15px; cursor: pointer; font-weight: bold; padding: 1px 4px; flex-shrink: 0; }
         
-        button.primary { display: block; width: 100%; padding: 14px; background-color: #10b981; color: white; border: none; border-radius: 7px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
-        button.secondary { display: block; width: 100%; padding: 12px; background-color: #6366f1; color: white; border: none; border-radius: 7px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 12px; }
-        .whatsapp-btn { background-color: #25D366; color: white; border: none; border-radius: 7px; padding: 12px; width: 100%; font-size: 15px; font-weight: bold; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        button.primary { display: block; width: 100%; padding: 12px; background-color: var(--primary); color: white; border: none; border-radius: 7px; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 8px; }
+        button.primary:hover { background-color: var(--primary-dark); }
+        button.secondary { display: block; width: 100%; padding: 11px; background-color: #6366f1; color: white; border: none; border-radius: 7px; font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
+        .whatsapp-hub {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .hub-btn {
+            background-color: var(--wa-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 9px 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: background 0.15s;
+        }
+        .hub-btn:hover { background-color: var(--wa-dark); }
+        .hub-btn.policy-variant { background-color: #0284c7; }
+        .hub-btn.policy-variant:hover { background-color: #0369a1; }
+        .hub-btn.rules-variant { background-color: #4f46e5; }
+        .hub-btn.rules-variant:hover { background-color: #4338ca; }
 
-        .round-container { border: 2px solid #333; border-radius: 8px; padding: 10px; margin-bottom: 15px; background: #fff; }
-        .round-title { background: #333; color: white; padding: 6px; margin: -10px -10px 10px -10px; border-radius: 5px 5px 0 0; text-align: center; font-size: 16px; }
-        .courts-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .round-container { border: 2px solid #333; border-radius: 8px; padding: 10px; margin-bottom: 12px; background: #fff; }
+        .round-title { background: #333; color: white; padding: 6px; margin: -10px -10px 10px -10px; border-radius: 5px 5px 0 0; text-align: center; font-size: 15px; }
+        .courts-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
         @media (min-width: 900px) {
-            .courts-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+            .courts-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
         }
         .court { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 7px; padding: 8px; }
-        .court-title { color: #0f172a; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; font-size: 15px; text-align: center; }
-        .balance-summary { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 4px; border-radius: 5px; font-size: 11px; text-align: center; margin-bottom: 8px; font-weight: 600; }
-        .team-box { display: flex; flex-direction: column; gap: 4px; margin: 6px 0; }
-        .player-select { padding: 6px; border-radius: 5px; border: 1px solid #cbd5e1; background: #e0f2fe; font-size: 14px; font-weight: 500; width: 100%; }
+        .court-title { color: #0f172a; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; font-size: 14px; text-align: center; }
+        .balance-summary { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 3px; border-radius: 5px; font-size: 11px; text-align: center; margin-bottom: 6px; font-weight: 600; }
+        .team-box { display: flex; flex-direction: column; gap: 4px; margin: 4px 0; }
+        .player-select { padding: 5px; border-radius: 5px; border: 1px solid #cbd5e1; background: #e0f2fe; font-size: 13px; font-weight: 500; width: 100%; }
         .team-two-select { background: #fce7f3; }
         .bench-select { background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; }
         .player-select.duplicate-error { border: 2px solid #ef4444 !important; background-color: #fee2e2 !important; color: #991b1b !important; font-weight: bold; }
-        .score-row { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #cbd5e1; font-size: 13px; }
-        .score-row input { width: 45px; padding: 4px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; }
+        .score-row { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #cbd5e1; font-size: 12px; }
+        .score-row input { width: 45px; padding: 3px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
         .vs { text-align: center; font-weight: bold; color: #94a3b8; font-size: 11px; }
-        .warning-banner { background: #fee2e2; border: 1px solid #f87171; color: #991b1b; padding: 6px; border-radius: 5px; font-size: 12px; text-align: center; margin-bottom: 8px; font-weight: bold; }
+        .warning-banner { background: #fee2e2; border: 1px solid #f87171; color: #991b1b; padding: 6px; border-radius: 5px; font-size: 11px; text-align: center; margin-bottom: 8px; font-weight: bold; }
         .gap-warning-badge { background: #fef3c7; border: 1px solid #fcd34d; color: #b45309; padding: 2px 4px; border-radius: 4px; font-size: 10px; font-weight: bold; text-align: center; margin-top: 2px; }
-        .benched { background: #fef3c7; color: #92400e; padding: 8px; border-radius: 5px; margin-top: 10px; font-size: 13px; }
-        .benched-title { font-weight: bold; text-align: center; margin-bottom: 6px; }
+        .benched { background: #fef3c7; color: #92400e; padding: 8px; border-radius: 5px; margin-top: 8px; font-size: 12px; }
+        .benched-title { font-weight: bold; text-align: center; margin-bottom: 4px; }
         .benched-grid { display: flex; flex-direction: column; gap: 4px; }
 
         .game-rest-card {
@@ -567,51 +576,67 @@
             border: 1px solid #cbd5e1;
             border-radius: 8px;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .game-rest-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #1e293b;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 4px;
+            padding-bottom: 3px;
         }
         .resting-modal-select {
             width: 100%;
-            padding: 7px;
-            font-size: 13px;
+            padding: 6px;
+            font-size: 12px;
             border-radius: 6px;
             border: 1px solid #cbd5e1;
             margin-top: 2px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             background: #fff;
         }
 
-        .reserve-item {
+        .list-section-header {
+            font-size: 12px;
+            font-weight: bold;
+            color: #0f172a;
+            margin: 8px 0 4px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .manage-player-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: #fff;
-            padding: 6px 10px;
+            padding: 5px 8px;
             border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            border-radius: 5px;
             margin-bottom: 4px;
-            font-size: 13px;
-            cursor: grab;
+            font-size: 12px;
         }
-        .reserve-item:active { cursor: grabbing; background: #e0f2fe; }
-        .reserve-buttons { display: flex; gap: 4px; }
-        .move-btn {
+        .manage-player-item.is-reserve {
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+        .player-actions {
+            display: flex;
+            gap: 3px;
+        }
+        .action-chip-btn {
             background: #e2e8f0;
             border: 1px solid #cbd5e1;
             border-radius: 4px;
-            font-size: 11px;
-            padding: 2px 6px;
-            cursor: pointer;
+            font-size: 10px;
             font-weight: bold;
+            padding: 2px 5px;
+            cursor: pointer;
+            color: #1e293b;
         }
-        .move-btn:hover { background: #cbd5e1; }
+        .action-chip-btn:hover { background: #cbd5e1; }
+        .action-chip-btn.danger { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
 
         .locked-pairs-box {
             grid-column: span 2;
@@ -661,10 +686,68 @@
             text-align: center;
         }
         .hint { font-size: 11px; font-weight: normal; color: #64748b; margin-top: 4px; text-align: center; }
-        .rules-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 5px 8px; margin: 4px 0 8px 0; font-size: 12px; color: #78350f; }
+        .rules-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 6px 9px; margin: 4px 0 8px 0; font-size: 12px; color: #78350f; }
         .rules-box summary { cursor: pointer; font-weight: bold; }
-        .rules-box ul { margin: 6px 0 2px 0; padding-left: 18px; }
+        .rules-box ul { margin: 6px 0 4px 0; padding-left: 18px; }
         .rules-box li { margin-bottom: 3px; line-height: 1.35; }
+        .rules-card-copy-btn {
+            background-color: var(--wa-green);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .rules-card-copy-btn:hover { background-color: var(--wa-dark); }
+
+        .leftover-row {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            align-items: center;
+            margin-top: 4px;
+        }
+        .leftover-row select {
+            flex-grow: 1;
+            margin-top: 0 !important;
+        }
+        .copy-rules-btn {
+            background-color: var(--wa-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 9px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            height: 33px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+        .copy-rules-btn:hover { background-color: var(--wa-dark); }
+
+        #toastNotice {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 2000;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -711,8 +794,8 @@
                     <div class="control-group">
                         <label for="costPerPerson">Cost / Person (€)</label>
                         <input type="number" id="costPerPerson" min="0" step="0.5" value="10">
-                        <label style="font-size: 11px; font-weight: normal; margin-top: 4px; display: flex; align-items: center; gap: 4px;">
-                            <input type="checkbox" id="includeCashLabel" checked> Include "cash"
+                        <label style="font-size: 11px; font-weight: normal; margin-top: 4px; display: flex; align-items: center; gap: 4px;" title="Appends 'cash' to the cost in WhatsApp messages">
+                            <input type="checkbox" id="includeCashLabel" checked> Append "cash" to fee (e.g. €10 cash)
                         </label>
                     </div>
 
@@ -739,17 +822,19 @@
                     <!-- Odd-Player Gameplay Options -->
                     <div class="control-group full-width">
                         <label for="leftoverMode">When Players Don't Divide Evenly by 4</label>
-                        <select id="leftoverMode">
-                            <option value="rest" selected>😴 Standard Rest / Bench Rotation</option>
-                            <optgroup label="3 Players (2 vs 1 Match)">
-                                <option value="king">👑 King of the Court (Fast continuous rotation)</option>
-                                <option value="halfsolo">½ Half-Court Solo (Precision target drill)</option>
-                            </optgroup>
-                            <optgroup label="2 Players (Singles Match)">
-                                <option value="cross">↗️ Cross-Court Singles (Realistic padel geometry)</option>
-                                <option value="half">½ Half-Court Singles (Corridor down-the-line)</option>
-                            </optgroup>
-                        </select>
+                        <div class="leftover-row">
+                            <select id="leftoverMode">
+                                <option value="rest" selected>😴 Standard Rest / Bench Rotation</option>
+                                <optgroup label="3 Players (2 vs 1 Match)">
+                                    <option value="canadian_king">👑 Canadian King (2 vs 1 - Alternating Serve)</option>
+                                </optgroup>
+                                <optgroup label="2 Players (Singles Match)">
+                                    <option value="cross">↗️ Cross-Court Singles (Realistic Padel)</option>
+                                    <option value="half">½ Half-Court Singles (Corridor / Down-the-Line)</option>
+                                </optgroup>
+                            </select>
+                            <button type="button" id="copyGameRulesBtn" class="copy-rules-btn" onclick="copyGameRulesToWhatsApp()" title="Copy rules of selected game mode for WhatsApp">📋 Copy Rules</button>
+                        </div>
                         <div class="hint">Allocates extra players to spare selected courts instead of benching them.</div>
                     </div>
 
@@ -782,7 +867,6 @@
                         <span id="modeBadgeText">📱 Storage Mode: Offline (Local Only)</span>
                     </div>
 
-                    <div class="sync-group-title">☁️ Primary: Google Sheet Cloud Sync</div>
                     <div class="sync-btn-row">
                         <button type="button" class="sync-btn cloud-setup-btn" onclick="openCloudSettings()">⚙️ Connect URL</button>
                         <button type="button" id="cloudLoadBtn" class="sync-btn cloud-load-btn" onclick="manualLoadFromCloud()">📥 Load Cloud</button>
@@ -792,8 +876,7 @@
                         <button type="button" id="cloudSaveBtn" class="sync-btn cloud-save-btn" onclick="saveToCloud()">💾 Save to Cloud</button>
                     </div>
 
-                    <div class="sync-group-title" style="margin-top: 8px;">💾 Backup: Offline File Storage</div>
-                    <div class="sync-btn-row">
+                    <div class="sync-btn-row" style="margin-top: 4px;">
                         <button type="button" class="sync-btn offline-btn" onclick="exportData()">📤 Export Backup</button>
                         <button type="button" class="sync-btn offline-btn" onclick="document.getElementById('importFile').click()">📥 Import Backup</button>
                         <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importData(event)">
@@ -815,8 +898,9 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="filter-tabs">
                             <button type="button" class="filter-tab active" onclick="setRosterFilter('all', this)">All</button>
-                            <button type="button" class="filter-tab" onclick="setRosterFilter('active', this)">Selected</button>
-                            <button type="button" class="filter-tab" onclick="setRosterFilter('inactive', this)">Not Selected</button>
+                            <button type="button" class="filter-tab" onclick="setRosterFilter('playing', this)">Playing</button>
+                            <button type="button" class="filter-tab" onclick="setRosterFilter('reserves', this)">Reserves</button>
+                            <button type="button" class="filter-tab" onclick="setRosterFilter('inactive', this)">Unselected</button>
                         </div>
                         <div class="roster-controls">
                             <button type="button" class="uncheck-btn" onclick="uncheckAllPlayers()">Uncheck All</button>
@@ -845,7 +929,13 @@
                     <button type="button" class="bottom-undo-btn" onclick="undoChanges()">↩️ Undo Edits</button>
                 </div>
 
-                <button id="copyListBtn" class="whatsapp-btn" onclick="openRosterConfigModal()">📋 Copy Sign-Up List to WhatsApp</button>
+                <!-- WhatsApp Messaging Hub -->
+                <div class="whatsapp-hub">
+                    <button type="button" id="copyListBtn" class="hub-btn" onclick="openRosterConfigModal()">📋 Configure & Copy Sign-Up List</button>
+                    <button type="button" id="copyPolicyBtn" class="hub-btn policy-variant" onclick="copySessionPolicyToWhatsApp()">📜 Copy Session Policy & Rules</button>
+                    <button type="button" id="copyHubRulesBtn" class="hub-btn rules-variant" onclick="copyGameRulesToWhatsApp()">📖 Copy Odd-Player Game Rules</button>
+                </div>
+
                 <button type="button" class="primary" id="generateBtn">Generate Matches</button>
             </div>
         </div>
@@ -854,6 +944,9 @@
     <div id="resultsArea"></div>
 
     <textarea id="clipboardHelper" style="position: absolute; left: -9999px; top: 0; opacity: 0;"></textarea>
+
+    <!-- Toast Notification -->
+    <div id="toastNotice"></div>
 
     <!-- Info Modal -->
     <div id="infoModal" class="modal-overlay" onclick="closeInfo(event, 'infoModal')">
@@ -864,27 +957,33 @@
         </div>
     </div>
 
-    <!-- Interactive Pre-Match Roster Setup Modal -->
+    <!-- Host Sign-Up & Reserve Manager Modal -->
     <div id="rosterConfigModal" class="modal-overlay" onclick="closeInfo(event, 'rosterConfigModal')">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <h3>📋 Configure Pre-Match Sign-Up List</h3>
-            <p>Players are sorted chronologically by when they signed up. You can adjust court capacity or reorder reserves:</p>
+            <h3>📋 Host Sign-Up & Reserve Manager</h3>
+            <p style="margin-top: 2px;">Manage court capacity, promote/demote reserves, or handle drop-outs:</p>
             
-            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin-bottom: 12px;">
-                <label style="font-weight: bold; font-size: 13px; display: block; margin-bottom: 4px;">Number of Courts Available:</label>
-                <input type="number" id="modalCourtsCount" min="1" max="20" value="1" onchange="updateRosterConfigModal()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; text-align: center;">
-                <div id="modalCapacitySummary" style="font-size: 12px; color: #64748b; margin-top: 4px; text-align: center;"></div>
+            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+                <label style="font-weight: bold; font-size: 12px; display: block; margin-bottom: 3px;">Courts Available:</label>
+                <input type="number" id="modalCourtsCount" min="1" max="20" value="1" onchange="updateRosterConfigModal(true)" style="width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; text-align: center;">
+                <div id="modalCapacitySummary" style="font-size: 11px; color: #64748b; margin-top: 4px; text-align: center;"></div>
             </div>
 
-            <div id="modalReservesContainer" style="display: none;">
-                <h4 style="margin: 8px 0 4px 0; font-size: 14px; color: #0f172a;">Order Reserve Players (Most Recent Sign-Ups):</h4>
-                <p style="font-size: 11px; color: #64748b; margin-top: 0;">Drag or use arrows to adjust reserve positions if needed:</p>
-                <div id="reservesList" style="max-height: 180px; overflow-y: auto; padding-right: 2px;"></div>
+            <!-- Playing spots list -->
+            <div class="list-section-header">
+                <span>🟢 Confirmed Playing Spots (<span id="playingCountBadge">0</span>)</span>
             </div>
+            <div id="modalPlayingList" style="max-height: 160px; overflow-y: auto; padding-right: 2px; margin-bottom: 8px;"></div>
+
+            <!-- Reserve spots list -->
+            <div class="list-section-header">
+                <span>🟡 Reserves Queue (<span id="reservesCountBadge">0</span>)</span>
+            </div>
+            <div id="modalReservesList" style="max-height: 140px; overflow-y: auto; padding-right: 2px; margin-bottom: 10px;"></div>
 
             <div class="modal-buttons">
                 <button type="button" class="modal-close" onclick="closeInfo(event, 'rosterConfigModal')">Cancel</button>
-                <button type="button" class="modal-save" onclick="confirmAndCopyRosterList()">Copy to WhatsApp</button>
+                <button type="button" class="modal-save" onclick="confirmAndCopyRosterList()">Copy Sign-Up List to WhatsApp</button>
             </div>
         </div>
     </div>
@@ -911,7 +1010,7 @@
             <p>Sync player rosters live using Google Sheets (100% free, zero login for app users).</p>
             
             <ol>
-                <li>Open <a href="https://sheets.new" target="_blank">sheets.new</a>. Set Row 1 headers to: <b>ID</b>, <b>Name</b>, <b>Rank</b>, <b>Active</b>. Rename the bottom tab to <b>Roster</b>.</li>
+                <li>Open <a href="https://sheets.new" target="_blank">sheets.new</a>. Set Row 1 headers to: <b>ID</b>, <b>Name</b>, <b>Rank</b>, <b>Active</b>, <b>SelectedAt</b>. Rename the bottom tab to <b>Roster</b>.</li>
                 <li>In Google Sheets, click <b>Extensions > Apps Script</b>.</li>
                 <li>Delete any code in the editor, paste the script below, and click <b>Save (💾)</b>.</li>
             </ol>
@@ -938,9 +1037,9 @@ function doPost(e) {
         var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Roster");
         if (!sheet) { sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet("Roster"); }
         sheet.clear();
-        sheet.appendRow(["ID", "Name", "Rank", "Active"]);
-        var rows = data.players.map(function(p) { return [p.id, p.name, p.rank, p.active]; });
-        if (rows.length > 0) { sheet.getRange(2, 1, rows.length, 4).setValues(rows); }
+        sheet.appendRow(["ID", "Name", "Rank", "Active", "SelectedAt"]);
+        var rows = data.players.map(function(p) { return [p.id, p.name, p.rank, p.active, p.selectedAt || ""]; });
+        if (rows.length > 0) { sheet.getRange(2, 1, rows.length, 5).setValues(rows); }
       }
     }
     return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
@@ -961,7 +1060,8 @@ function handleRequest() {
             id: String(data[i][0]),
             name: String(data[i][1]),
             rank: parseFloat(data[i][2]) || 5.0,
-            active: data[i][3] === true || String(data[i][3]).toUpperCase() === "TRUE"
+            active: data[i][3] === true || String(data[i][3]).toUpperCase() === "TRUE",
+            selectedAt: data[i][4] ? Number(data[i][4]) : null
           });
         }
       }
@@ -1000,38 +1100,36 @@ function handleRequest() {
         let rosterFilter = 'all';         
         let isDemoLoaded = false;         
         let roundRestPreferences = [];    
-        let modalReservePlayers = [];     
         let lockedPartnerships = [];      
 
-        const MAX_SKILL_GAP_LIMIT = 2.5;
+        let hostPlayingList = [];
+        let hostReserveList = [];
 
+        const MAX_SKILL_GAP_LIMIT = 2.5;
         const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); 
 
-        // Streamlined, distinct mini-game modes (No overlaps)
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotice');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
         const GAME_MODES = {
-            king: { 
+            canadian_king: { 
                 kind: 'trio', 
                 icon: '👑', 
-                label: 'King of the Court',
-                short: '1 King vs 2 Challengers - only the King scores.',
+                label: 'Canadian King (2 vs 1)',
+                short: '1 Solo vs 2 Pair. Solo serves alternating sides. Winning shots only.',
                 rules: [
-                    '1 King defends one side; 2 Challengers play as a pair on the other.',
-                    'King serves every rally. First team to hit a decisive winning shot wins the rally.',
-                    'If King wins: King scores 1 point and stays as King.',
-                    'If Challengers win: The challenger who made the winning shot crosses over to become the new King; the old King joins the challengers.',
-                    'First player to reach 7 points wins.'
-                ] 
-            },
-            halfsolo: { 
-                kind: 'trio', 
-                icon: '½', 
-                label: 'Half-Court Solo',
-                short: 'Solo defends one half-strip (2nd-bounce rule applied).',
-                rules: [
-                    'Solo player defends only one half-strip (e.g., deuce side).',
-                    'Pair must land all balls into the solo’s designated half (first bounce anywhere, second bounce must land inside that half).',
-                    'Solo can attack anywhere on the pair’s full court.',
-                    'Play a mini-tiebreak to 7 points, swapping halves after 4 points.'
+                    '1 Solo vs a Pair of 2. Solo always serves, alternating sides normally (Right, Left, Right, Left).',
+                    'Defending half follows the serve: Serving from Right -> defend Right half; Serving from Left -> defend Left half.',
+                    'The Pair must return into the Solo’s active half. Second Bounce Rule applies (ball is in if 2nd floor bounce lands in Solo’s half).',
+                    'Winning Shots Only (no mistakes switch): Unforced errors award no point and no player switch. Solo simply serves next point from the opposite side.',
+                    'Solo clean winner: Solo scores 1 point and stays to serve.',
+                    'Pair clean winner: 0 points; the player in the pair who hit the winner crosses over to become the new Solo.',
+                    'First to 6 individual points wins.'
                 ] 
             },
             cross: { 
@@ -1065,9 +1163,53 @@ function handleRequest() {
             return el ? el.value : 'rest';
         }
 
-        // ==========================================
-        // HELPER FUNCTIONS & CALCULATIONS
-        // ==========================================
+        function copyGameRulesToWhatsApp(specificModeKey) {
+            const modeKey = specificModeKey || getLeftoverMode();
+            if (modeKey === 'rest' || !GAME_MODES[modeKey]) {
+                showToast("Please choose a 2 or 3-player game mode first!");
+                return;
+            }
+
+            const mode = GAME_MODES[modeKey];
+            let text = `🎾 *Padel Game Rules: ${mode.icon} ${mode.label}* 🎾\n\n`;
+            text += `ℹ️ *Summary:* ${mode.short}\n\n`;
+            text += `*Rules & How to Play:*\n`;
+            mode.rules.forEach((rule, idx) => {
+                text += `${idx + 1}.) ${rule}\n`;
+            });
+
+            const btn = document.getElementById('copyGameRulesBtn');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => showToast(`${mode.label} rules copied!`));
+            } else {
+                fallbackCopyTextToClipboard(text, btn);
+            }
+        }
+
+        function copySessionPolicyToWhatsApp() {
+            let text = `🎾 *Saturday Padel Mix-In: Guidelines & Rules* 🎾\n\n`;
+            text += `Hey everyone! To keep our sessions running smoothly, fairly, and fun for all of us, please take note of our group guidelines:\n\n`;
+            text += `📌 *1. Thursday Mix-In Sheet*\n`;
+            text += `The mix-in sheet and court pairings are posted every Thursday.\n\n`;
+            text += `📌 *2. Friday Cancellations*\n`;
+            text += `Finding replacement players at short notice for Saturday morning is tough. If you pull out on Friday, you will need to find a replacement player or cover your court share so no one misses out.\n\n`;
+            text += `📌 *3. Reserve Response Window*\n`;
+            text += `If a spot opens up, the next reserve has *1 hour* to confirm before we move on to the next person, so nobody is left waiting late into Friday.\n\n`;
+            text += `📌 *4. Payments*\n`;
+            text += `Pay-on-the-day cash at the courts.\n\n`;
+            text += `📌 *5. Co-Hosting / Organising*\n`;
+            text += `If anyone would like to co-host or help run the sessions, you are very welcome—just drop me a message!\n\n`;
+            text += `Thanks so much for helping keep our games fun and well-organised! 🙌🎾`;
+
+            const btn = document.getElementById('copyPolicyBtn');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast("Session guidelines copied!");
+                });
+            } else {
+                fallbackCopyTextToClipboard(text, btn);
+            }
+        }
 
         function getEffectiveTeamRating(r1, r2) {
             const gap = Math.abs(r1 - r2);
@@ -1149,11 +1291,12 @@ function handleRequest() {
 
         function formatDisplayDate(dateStr) {
             if (!dateStr) return '';
-            const d = new Date(dateStr);
-            const weekday = d.toLocaleDateString('en-GB', { weekday: 'long' });
-            const dayNum = d.getDate();
-            const month = d.toLocaleDateString('en-GB', { month: 'long' });
-            return `${weekday} ${dayNum}${getOrdinalSuffix(dayNum)} ${month}`;
+            const [year, month, day] = dateStr.split('-').map(Number);
+            const localDate = new Date(year, month - 1, day);
+            const weekday = localDate.toLocaleDateString('en-GB', { weekday: 'long' });
+            const dayNum = localDate.getDate();
+            const monthName = localDate.toLocaleDateString('en-GB', { month: 'long' });
+            return `${weekday} ${dayNum}${getOrdinalSuffix(dayNum)} ${monthName}`;
         }
 
         function format12HourTime(timeStr) {
@@ -1164,10 +1307,6 @@ function handleRequest() {
             h = h ? h : 12; 
             return m === 0 ? `${h}${ampm}` : `${h}:${String(m).padStart(2, '0')}${ampm}`;
         }
-
-        // ==========================================
-        // PREDETERMINED PARTNERSHIPS
-        // ==========================================
 
         function addLockedPairRow() {
             const activeList = getChronologicalActivePlayers();
@@ -1243,14 +1382,6 @@ function handleRequest() {
             });
         }
 
-        // ==========================================
-        // PRE-MATCH SIGN-UP LIST SETUP & EXPORT
-        // ==========================================
-
-        /**
-         * Returns active players sorted strictly by the time they signed up / checked active.
-         * Earliest signups come first, latest signups come last.
-         */
         function getChronologicalActivePlayers() {
             return players
                 .filter(p => p.active)
@@ -1269,81 +1400,122 @@ function handleRequest() {
             const selectedCourtCBs = Array.from(document.querySelectorAll('.court-select-cb:checked'));
 
             let autoCourtsCount = Math.max(1, Math.ceil(activePlayersList.length / 4));
-            
             if (activePlayersList.length === 0 && selectedCourtCBs.length > 0) {
                 autoCourtsCount = selectedCourtCBs.length;
             }
 
             document.getElementById('modalCourtsCount').value = autoCourtsCount;
-            updateRosterConfigModal();
+            updateRosterConfigModal(true);
             document.getElementById('rosterConfigModal').style.display = 'flex';
         }
 
-        function updateRosterConfigModal() {
+        function updateRosterConfigModal(rebuildFromBaseline = false) {
             const courtsCount = Math.max(1, parseInt(document.getElementById('modalCourtsCount').value) || 1);
             const totalCapacity = courtsCount * 4;
-            const activePlayersList = getChronologicalActivePlayers();
+            const activeList = getChronologicalActivePlayers();
 
-            const summaryEl = document.getElementById('modalCapacitySummary');
-            summaryEl.innerText = `${activePlayersList.length} active players for ${totalCapacity} court spots (${courtsCount} court${courtsCount > 1 ? 's' : ''} x 4).`;
-
-            const reservesContainer = document.getElementById('modalReservesContainer');
-            
-            if (activePlayersList.length > totalCapacity) {
-                reservesContainer.style.display = 'block';
-                // Most recent signups become the reserves
-                modalReservePlayers = activePlayersList.slice(totalCapacity);
-                renderModalReservesList();
+            if (rebuildFromBaseline) {
+                hostPlayingList = activeList.slice(0, totalCapacity);
+                hostReserveList = activeList.slice(totalCapacity);
             } else {
-                reservesContainer.style.display = 'none';
-                modalReservePlayers = [];
+                while (hostPlayingList.length < totalCapacity && hostReserveList.length > 0) {
+                    hostPlayingList.push(hostReserveList.shift());
+                }
+                while (hostPlayingList.length > totalCapacity) {
+                    hostReserveList.unshift(hostPlayingList.pop());
+                }
             }
+
+            const totalConfirmed = hostPlayingList.length + hostReserveList.length;
+            const summaryEl = document.getElementById('modalCapacitySummary');
+            summaryEl.innerText = `${totalConfirmed} active players | ${totalCapacity} court spots (${courtsCount} court${courtsCount > 1 ? 's' : ''} x 4).`;
+
+            document.getElementById('playingCountBadge').innerText = `${hostPlayingList.length} / ${totalCapacity}`;
+            document.getElementById('reservesCountBadge').innerText = `${hostReserveList.length}`;
+
+            renderHostManagerLists();
         }
 
-        function renderModalReservesList() {
-            const listEl = document.getElementById('reservesList');
-            if (!listEl) return;
-            listEl.innerHTML = '';
+        function renderHostManagerLists() {
+            const playingContainer = document.getElementById('modalPlayingList');
+            const reserveContainer = document.getElementById('modalReservesList');
+            playingContainer.innerHTML = '';
+            reserveContainer.innerHTML = '';
 
-            modalReservePlayers.forEach((p, idx) => {
-                const item = document.createElement('div');
-                item.className = 'reserve-item';
-                item.draggable = true;
-                item.dataset.index = idx;
-
-                item.innerHTML = `
-                    <span><b>R${idx + 1}:</b> ${esc(p.name)}</span>
-                    <div class="reserve-buttons">
-                        <button type="button" class="move-btn" onclick="moveReserveItem(${idx}, -1)">▲</button>
-                        <button type="button" class="move-btn" onclick="moveReserveItem(${idx}, 1)">▼</button>
-                    </div>
-                `;
-
-                item.addEventListener('dragstart', (e) => e.dataTransfer.setData('text/plain', idx));
-                item.addEventListener('dragover', (e) => e.preventDefault());
-                item.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
-                    const toIdx = idx;
-                    if (fromIdx !== toIdx) {
-                        const moved = modalReservePlayers.splice(fromIdx, 1)[0];
-                        modalReservePlayers.splice(toIdx, 0, moved);
-                        renderModalReservesList();
-                    }
+            if (hostPlayingList.length === 0) {
+                playingContainer.innerHTML = `<div style="font-size: 11px; color: #94a3b8; font-style: italic; padding: 4px;">No players confirmed yet.</div>`;
+            } else {
+                hostPlayingList.forEach((p, idx) => {
+                    const row = document.createElement('div');
+                    row.className = 'manage-player-item';
+                    row.innerHTML = `
+                        <span><b>${idx + 1}.)</b> ${esc(p.name)}</span>
+                        <div class="player-actions">
+                            <button type="button" class="action-chip-btn" onclick="hostMoveToReserve(${idx})" title="Move to reserves">⬇️ Reserve</button>
+                            <button type="button" class="action-chip-btn danger" onclick="hostDropOut('${p.id}')" title="Drop out player">❌ Drop Out</button>
+                        </div>
+                    `;
+                    playingContainer.appendChild(row);
                 });
+            }
 
-                listEl.appendChild(item);
-            });
+            if (hostReserveList.length === 0) {
+                reserveContainer.innerHTML = `<div style="font-size: 11px; color: #94a3b8; font-style: italic; padding: 4px;">No reserve players currently queued.</div>`;
+            } else {
+                hostReserveList.forEach((p, idx) => {
+                    const row = document.createElement('div');
+                    row.className = 'manage-player-item is-reserve';
+                    row.innerHTML = `
+                        <span><b>R${idx + 1}.)</b> ${esc(p.name)}</span>
+                        <div class="player-actions">
+                            <button type="button" class="action-chip-btn" onclick="hostMoveReservePosition(${idx}, -1)">▲</button>
+                            <button type="button" class="action-chip-btn" onclick="hostMoveReservePosition(${idx}, 1)">▼</button>
+                            <button type="button" class="action-chip-btn" onclick="hostPromoteToPlaying(${idx})" title="Promote into playing list">⬆️ Play</button>
+                            <button type="button" class="action-chip-btn danger" onclick="hostDropOut('${p.id}')" title="Drop out player">❌ Drop Out</button>
+                        </div>
+                    `;
+                    reserveContainer.appendChild(row);
+                });
+            }
         }
 
-        function moveReserveItem(idx, direction) {
-            const targetIdx = idx + direction;
-            if (targetIdx >= 0 && targetIdx < modalReservePlayers.length) {
-                const temp = modalReservePlayers[idx];
-                modalReservePlayers[idx] = modalReservePlayers[targetIdx];
-                modalReservePlayers[targetIdx] = temp;
-                renderModalReservesList();
+        function hostMoveToReserve(playingIdx) {
+            const p = hostPlayingList.splice(playingIdx, 1)[0];
+            hostReserveList.unshift(p);
+            updateRosterConfigModal(false);
+        }
+
+        function hostPromoteToPlaying(reserveIdx) {
+            const p = hostReserveList.splice(reserveIdx, 1)[0];
+            hostPlayingList.push(p);
+            updateRosterConfigModal(false);
+        }
+
+        function hostMoveReservePosition(idx, dir) {
+            const target = idx + dir;
+            if (target >= 0 && target < hostReserveList.length) {
+                const temp = hostReserveList[idx];
+                hostReserveList[idx] = hostReserveList[target];
+                hostReserveList[target] = temp;
+                renderHostManagerLists();
             }
+        }
+
+        function hostDropOut(playerId) {
+            let p = players.find(x => x.id === playerId);
+            if (!p) return;
+            
+            p.active = false;
+            p.selectedAt = null;
+
+            hostPlayingList = hostPlayingList.filter(x => x.id !== playerId);
+            hostReserveList = hostReserveList.filter(x => x.id !== playerId);
+
+            savePlayers();
+            updatePlayerCounter();
+            renderPlayers();
+            updateRosterConfigModal(false);
+            showToast(`${p.name} marked as dropped out.`);
         }
 
         function confirmAndCopyRosterList() {
@@ -1358,10 +1530,6 @@ function handleRequest() {
 
             const courtsCount = Math.max(1, parseInt(document.getElementById('modalCourtsCount').value) || 1);
             const totalCapacity = courtsCount * 4;
-
-            // Sort chronologically by sign-up timestamp
-            const activePlayersList = getChronologicalActivePlayers();
-            const mainPlayingList = activePlayersList.slice(0, totalCapacity);
 
             let headerTitle = location ? `🎾 Padel @ ${location} 🎾` : `🎾 Padel Session 🎾`;
             let text = `${headerTitle}\n\n`;
@@ -1384,39 +1552,31 @@ function handleRequest() {
                 text += `€${cost}${includeCash ? ' cash' : ''}\n\n`;
             }
 
-            // Numbered spots populated strictly in order of sign-up
             for (let i = 1; i <= totalCapacity; i++) {
-                const player = mainPlayingList[i - 1];
+                const player = hostPlayingList[i - 1];
                 if (player) {
                     text += `${i}.) ${player.name}\n`;
                 } else {
-                    text += `${i}.)🎾\n`;
+                    text += `${i}.) 🎾\n`;
                 }
             }
 
-            // Append Reserve list populated strictly in order of most recent sign-ups
-            if (modalReservePlayers.length > 0) {
-                text += `\n*Reserves:*\n`;
-                modalReservePlayers.forEach((p, idx) => {
+            text += `\n*Reserves:*\n`;
+            if (hostReserveList.length > 0) {
+                hostReserveList.forEach((p, idx) => {
                     text += `${idx + 1}.) ${p.name}\n`;
                 });
+            } else {
+                text += `1.) 🎾 (Available)\n2.) 🎾 (Available)\n`;
             }
 
             const btn = document.getElementById('copyListBtn');
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => showRosterCopySuccess(btn)).catch(() => fallbackCopyTextToClipboard(text, btn));
-            } else { fallbackCopyTextToClipboard(text, btn); }
+                navigator.clipboard.writeText(text).then(() => showToast("Sign-up list copied to clipboard!"));
+            } else {
+                fallbackCopyTextToClipboard(text, btn);
+            }
         }
-
-        function showRosterCopySuccess(btn) {
-            btn.innerHTML = "✅ Sign-Up List Copied!";
-            btn.style.backgroundColor = "#128C7E";
-            setTimeout(() => { btn.innerHTML = "📋 Copy Sign-Up List to WhatsApp"; btn.style.backgroundColor = "#25D366"; }, 2000);
-        }
-
-        // ==========================================
-        // INITIALIZATION & EVENT LISTENERS
-        // ==========================================
 
         document.addEventListener("DOMContentLoaded", () => {
             const dateInput = document.getElementById('sessionDate');
@@ -1494,6 +1654,7 @@ function handleRequest() {
                 savePlayers();
                 commitBaselineState();
                 renderPlayers();
+                showToast("Changes saved locally.");
             }
         }
 
@@ -1510,11 +1671,8 @@ function handleRequest() {
             });
 
             renderPlayers();
+            showToast("Edits reverted.");
         }
-
-        // ==========================================
-        // ALPHABET SIDEBAR NAVIGATION
-        // ==========================================
 
         function buildAlphabetBar() {
             const bar = document.getElementById('alphabetBar');
@@ -1555,10 +1713,7 @@ function handleRequest() {
                 }
             });
 
-            const clearPointer = (e) => {
-                if (bar.hasPointerCapture(e.pointerId)) {
-                    bar.releasePointerCapture(e.pointerId);
-                }
+            const clearPointer = () => {
                 activeLetter = null;
             };
 
@@ -1602,10 +1757,6 @@ function handleRequest() {
             }
         }
 
-        // ==========================================
-        // CLOUD & STORAGE SYNC
-        // ==========================================
-
         function copyAppsScriptCode(btn) {
             const codeText = document.getElementById('scriptCodeBlock').innerText;
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1630,10 +1781,10 @@ function handleRequest() {
             document.getElementById('cloudModal').style.display = 'none';
             updateModeBadge();
             if (scriptUrl) {
-                alert("Connected to Google Apps Script!");
+                showToast("Connected to Google Apps Script!");
                 loadFromCloud();
             } else {
-                alert("Cloud sync disabled. Switched to offline local storage.");
+                showToast("Switched to offline local storage.");
             }
         }
 
@@ -1643,7 +1794,7 @@ function handleRequest() {
                 localStorage.removeItem('padel_script_url');
                 document.getElementById('cloudModal').style.display = 'none';
                 updateModeBadge();
-                alert("Disconnected from Cloud. Now in Offline Mode.");
+                showToast("Disconnected from Cloud.");
             }
         }
 
@@ -1653,7 +1804,7 @@ function handleRequest() {
                 return;
             }
             await loadFromCloud();
-            alert("Roster successfully loaded from Google Sheet!");
+            showToast("Roster reloaded from Google Sheet!");
         }
 
         async function loadFromCloud() {
@@ -1672,7 +1823,7 @@ function handleRequest() {
                                 const l = local.find(x => x.id === p.id); 
                                 if (l) {
                                     p.active = l.active;
-                                    p.selectedAt = l.selectedAt || (p.active ? Date.now() : null);
+                                    p.selectedAt = p.selectedAt || l.selectedAt || (p.active ? Date.now() : null);
                                 }
                             });
                         } catch (e) {}
@@ -1729,6 +1880,7 @@ function handleRequest() {
 
                 commitBaselineState();
                 renderPlayers();
+                showToast("Saved to Google Sheet!");
 
                 if (btn) {
                     btn.innerText = "✅ Saved!";
@@ -1740,9 +1892,10 @@ function handleRequest() {
             } catch (error) {
                 console.error(error);
                 renderPlayers();
+                showToast("Saved locally (cloud sync error).");
 
                 if (btn) {
-                    btn.innerText = "⚠️ Cloud save failed (kept locally)";
+                    btn.innerText = "⚠️ Cloud save failed";
                     setTimeout(() => {
                         btn.disabled = false;
                         btn.innerText = "💾 Save to Cloud";
@@ -1781,11 +1934,8 @@ function handleRequest() {
             commitBaselineState();
             renderPlayers();
             renderLockedPairsList();
+            showToast("Demo roster loaded.");
         }
-
-        // ==========================================
-        // ROSTER MANAGEMENT
-        // ==========================================
 
         function addGuest(hostPlayerId) {
             const host = players.find(p => p.id === hostPlayerId);
@@ -1808,6 +1958,7 @@ function handleRequest() {
 
             renderPlayers();
             renderLockedPairsList();
+            showToast(`Guest added for ${host.name}`);
         }
 
         function uncheckAllPlayers() {
@@ -1824,9 +1975,10 @@ function handleRequest() {
             let player = players.find(p => p.id === id);
             if (player) {
                 player.active = isChecked;
-                player.selectedAt = isChecked ? Date.now() : null; // Record sign-up timestamp
+                player.selectedAt = isChecked ? Date.now() : null;
                 savePlayers();
                 updatePlayerCounter();
+                renderPlayers();
                 renderLockedPairsList();
             }
         }
@@ -1901,7 +2053,7 @@ function handleRequest() {
                         badgeEl.innerText = `Need ${targetCount - active} more`;
                         badgeEl.classList.add('warn-needed');
                     } else {
-                        badgeEl.innerText = `${active - targetCount} too many`;
+                        badgeEl.innerText = `${active - targetCount} in reserve`;
                         badgeEl.classList.add('warn-excess');
                     }
                 } else {
@@ -1943,7 +2095,7 @@ function handleRequest() {
                             commitBaselineState();
                             renderPlayers();
                             renderLockedPairsList();
-                            alert("Successfully imported player roster!");
+                            showToast("Backup imported successfully!");
                         } else { alert("Invalid backup file format."); }
                     } catch (error) { alert("Could not read file."); }
                 };
@@ -1956,28 +2108,28 @@ function handleRequest() {
 
             const searchTerm = (document.getElementById('rosterSearch')?.value || '').toLowerCase();
 
-            // When viewing active players, sort by sign-up timestamp; otherwise alphabetical
-            if (rosterFilter === 'active') {
-                players.sort((a, b) => {
-                    const timeA = a.selectedAt || 0;
-                    const timeB = b.selectedAt || 0;
-                    if (timeA !== timeB) return timeA - timeB;
-                    return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
-                });
-            } else {
-                players.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
-            }
+            const selectedCourtsCount = document.querySelectorAll('.court-select-cb:checked').length;
+            const targetCapacity = selectedCourtsCount * 4;
+            const chronoActive = getChronologicalActivePlayers();
+            const playingIds = new Set(chronoActive.slice(0, targetCapacity).map(p => p.id));
+            const reserveRankMap = new Map();
+            chronoActive.slice(targetCapacity).forEach((p, idx) => {
+                reserveRankMap.set(p.id, idx + 1);
+            });
+
+            players.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
 
             let filteredPlayers = players.filter(p => {
                 const matchesSearch = p.name.toLowerCase().includes(searchTerm);
-                if (rosterFilter === 'active') return matchesSearch && p.active;
+                if (rosterFilter === 'playing') return matchesSearch && p.active && playingIds.has(p.id);
+                if (rosterFilter === 'reserves') return matchesSearch && p.active && reserveRankMap.has(p.id);
                 if (rosterFilter === 'inactive') return matchesSearch && !p.active;
                 return matchesSearch;
             });
 
             if (filteredPlayers.length === 0 && document.getElementById('loadingOverlay').style.display === 'none') {
                 const empty = document.createElement('div');
-                empty.style.textAlign = 'center'; empty.style.color = '#888'; empty.style.padding = '20px'; empty.style.fontSize = '14px';
+                empty.style.textAlign = 'center'; empty.style.color = '#888'; empty.style.padding = '20px'; empty.style.fontSize = '13px';
                 empty.innerText = players.length === 0 ? 'No players yet. Add someone above or click 🎭 Load Example!' : 'No matching players found.';
                 container.appendChild(empty);
                 updatePlayerCounter();
@@ -2005,6 +2157,15 @@ function handleRequest() {
                     }
                 }
 
+                let statusBadgeHtml = '';
+                if (player.active) {
+                    if (playingIds.has(player.id)) {
+                        statusBadgeHtml = `<span class="status-pill playing">Playing</span>`;
+                    } else if (reserveRankMap.has(player.id)) {
+                        statusBadgeHtml = `<span class="status-pill reserve">Res #${reserveRankMap.get(player.id)}</span>`;
+                    }
+                }
+
                 const playerIsGuest = isGuest(player);
                 const guestBtnHtml = playerIsGuest ? '' : `<button type="button" class="add-guest-btn" onclick="addGuest('${player.id}')" title="Add a guest for this player">+ Guest</button>`;
 
@@ -2015,6 +2176,7 @@ function handleRequest() {
                     <input type="checkbox" ${isChecked} onchange="togglePlayerSelection('${player.id}', this.checked)">
                     <input type="text" value="${esc(player.name)}" onchange="syncTableInputsToMemory(); renderPlayers();">
                     <input type="number" value="${player.rank}" min="0" max="10" step="0.1" onchange="syncTableInputsToMemory(); renderPlayers();">
+                    ${statusBadgeHtml}
                     ${annotationHtml}
                     ${guestBtnHtml}
                     <button type="button" class="delete-btn" onclick="removePlayer('${player.id}')" title="Delete">✖</button>
@@ -2043,20 +2205,17 @@ function handleRequest() {
             nameInput.value = '';
             rankInput.value = '5.0';
             nameInput.focus();
+            showToast(`${newName} added to roster.`);
         }
 
         window.removePlayer = function(id) {
-            if (confirm("Remove this player?")) {
+            if (confirm("Remove this player from the roster?")) {
                 players = players.filter(p => p.id !== id);
                 lockedPartnerships = lockedPartnerships.filter(p => p.id1 !== id && p.id2 !== id);
                 renderPlayers();
                 renderLockedPairsList();
             }
         };
-
-        // ==========================================
-        // MATCH & REST GENERATION
-        // ==========================================
 
         window.handlePlayerSwap = function(roundIdx, courtIdx, slotKey, selectedPlayerId) {
             currentRoundsData[roundIdx].courts[courtIdx][slotKey] = selectedPlayerId;
@@ -2192,11 +2351,7 @@ function handleRequest() {
             const cost = document.getElementById('costPerPerson').value;
             const includeCash = document.getElementById('includeCashLabel').checked;
 
-            let formattedDate = rawDate;
-            if (rawDate) {
-                const d = new Date(rawDate);
-                formattedDate = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            }
+            let formattedDate = rawDate ? formatDisplayDate(rawDate) : '';
 
             let text = "🎾 *Padel Match Schedule* 🎾\n";
             if (location) text += `📍 *Location:* ${location}\n`;
@@ -2224,7 +2379,7 @@ function handleRequest() {
 
             const btn = document.getElementById('copyBtn');
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => showCopySuccess(btn)).catch(() => fallbackCopyTextToClipboard(text, btn));
+                navigator.clipboard.writeText(text).then(() => showToast("Match schedule copied!"));
             } else { fallbackCopyTextToClipboard(text, btn); }
         };
 
@@ -2232,25 +2387,15 @@ function handleRequest() {
             const helper = document.getElementById('clipboardHelper');
             helper.value = text; helper.style.display = 'block'; helper.focus(); helper.select();
             try {
-                if (document.execCommand('copy')) showCopySuccess(btn);
+                if (document.execCommand('copy')) showToast("Copied to clipboard!");
                 else alert("Could not copy automatically.");
             } catch (err) { alert("Clipboard access not supported."); }
             helper.style.display = 'none';
         }
 
-        function showCopySuccess(btn) {
-            btn.innerHTML = "✅ Copied to Clipboard!";
-            btn.style.backgroundColor = "#128C7E";
-            setTimeout(() => { btn.innerHTML = "📋 Copy Match Schedule for WhatsApp"; btn.style.backgroundColor = "#25D366"; }, 2000);
-        }
-
         function getPairKey(p1, p2) {
             return [p1, p2].sort().join('-');
         }
-
-        // ==========================================
-        // MAIN MATCH GENERATION ALGORITHM
-        // ==========================================
 
         function generateTournament() {
             window._rankingsApplied = false;
@@ -2347,7 +2492,7 @@ function handleRequest() {
                 if (mixPriorityValue === 0) {
                     pool.sort((a, b) => b.rank - a.rank);
                 } else {
-                    const tries = mixPriorityValue === 100 ? 300 : 1;
+                    const tries = mixPriorityValue === 100 ? Math.min(250, actualCourtsToUse.length * 50) : 1;
                     let best = pool, bestScore = Infinity;
                     for (let t = 0; t < tries; t++) {
                         const cand = [...unassignedPlaying].sort(() => Math.random() - 0.5);
@@ -2474,14 +2619,13 @@ function handleRequest() {
                     roundCourts.push({ courtNum, t1p1, t1p2, t2p1, t2p2, scoreT1: "", scoreT2: "" });
                 }
 
-                // Side games for extra players (2 vs 1 or Singles)
                 const leftoverMode = getLeftoverMode();
                 const spareCourts = selectedCourtNumbers.filter(n => !actualCourtsToUse.includes(n));
                 if (leftoverMode !== 'rest' && benchedThisRound.length >= 2 && spareCourts.length > 0) {
                     let sidePool = [...benchedThisRound].sort((a, b) => b.rank - a.rank);
                     const sideGames = [];
                     if (GAME_MODES[leftoverMode]?.kind === 'trio' && sidePool.length === 3) {
-                        sideGames.push({ format: 'trio', rule: leftoverMode, t1p1: sidePool[0].id, t1p2: "", t2p1: sidePool[1].id, t2p2: sidePool[2].id });
+                        sideGames.push({ format: 'trio', rule: 'canadian_king', t1p1: sidePool[0].id, t1p2: "", t2p1: sidePool[1].id, t2p2: sidePool[2].id });
                     } else {
                         if (sidePool.length % 2 === 1) {
                             const minRest = Math.min(...sidePool.map(p => p.restCount));
@@ -2536,10 +2680,6 @@ function handleRequest() {
             renderTournamentDisplay(true);
         }
 
-        // ==========================================
-        // RESULTS DISPLAY & RANKING UPDATES
-        // ==========================================
-
         function renderTournamentDisplay(scroll = false) {
             const resultsArea = document.getElementById('resultsArea');
             let fullHtml = `<button id="copyBtn" class="whatsapp-btn" onclick="copyToWhatsApp()">📋 Copy Match Schedule for WhatsApp</button>`;
@@ -2587,7 +2727,12 @@ function handleRequest() {
 
                     const md = c.rule ? GAME_MODES[c.rule] : null;
                     const modeLabel = md ? ` - ${md.icon} ${md.label}` : '';
-                    const rulesHtml = md ? `<details class="rules-box"><summary>📖 Rules: ${esc(md.short)}</summary><ul>${md.rules.map(r => `<li>${esc(r)}</li>`).join('')}</ul></details>` : '';
+                    const rulesHtml = md ? `
+                        <details class="rules-box">
+                            <summary>📖 Rules: ${esc(md.short)}</summary>
+                            <ul>${md.rules.map(r => `<li>${esc(r)}</li>`).join('')}</ul>
+                            <button type="button" class="rules-card-copy-btn" onclick="copyGameRulesToWhatsApp('${c.rule}')">📋 Copy This Game's Rules to WhatsApp</button>
+                        </details>` : '';
 
                     fullHtml += `
                         <div class="court">
@@ -2601,7 +2746,7 @@ function handleRequest() {
                                 ${c.t1p2 ? `<select class="${getSelectClass(c.t1p2, 'player-select')}" onchange="handlePlayerSwap(${rIdx},${cIdx}, 't1p2', this.value)">
                                     ${optHtml(c.t1p2)}
                                 </select>` : ''}
-                                ${c.format === 'trio' ? `<div class="locked-tag">${c.rule === 'king' ? '👑 King' : '🧍 Solo'}</div>` : ''}
+                                ${c.format === 'trio' ? `<div class="locked-tag">👑 Solo Server</div>` : ''}
                                 ${t1IsLocked ? `<div class="locked-tag">🔒 Predetermined Pair</div>` : ''}
                                 ${gap1 > MAX_SKILL_GAP_LIMIT ? `<div class="gap-warning-badge">⚠️ Large Skill Gap (${gap1.toFixed(1)})</div>` : ''}
                             </div>
@@ -2613,7 +2758,7 @@ function handleRequest() {
                                 ${c.t2p2 ? `<select class="${getSelectClass(c.t2p2, 'player-select team-two-select')}" onchange="handlePlayerSwap(${rIdx},${cIdx}, 't2p2', this.value)">
                                     ${optHtml(c.t2p2)}
                                 </select>` : ''}
-                                ${c.format === 'trio' ? `<div class="locked-tag">${c.rule === 'king' ? 'Challengers' : 'Pair'}</div>` : ''}
+                                ${c.format === 'trio' ? `<div class="locked-tag">Challengers / Pair</div>` : ''}
                                 ${t2IsLocked ? `<div class="locked-tag">🔒 Predetermined Pair</div>` : ''}
                                 ${gap2 > MAX_SKILL_GAP_LIMIT ? `<div class="gap-warning-badge">⚠️ Large Skill Gap (${gap2.toFixed(1)})</div>` : ''}
                             </div>
@@ -2695,14 +2840,16 @@ function handleRequest() {
             
             commitBaselineState();
             renderPlayers();
-            alert(`Success! Updated rankings for ${updatedCount} players.`);
+            showToast(`Rankings updated for ${updatedCount} players!`);
         };
 
-        // Explicitly expose functions to the window object to prevent onclick reference errors
         window.openRosterConfigModal = openRosterConfigModal;
         window.updateRosterConfigModal = updateRosterConfigModal;
         window.confirmAndCopyRosterList = confirmAndCopyRosterList;
-        window.moveReserveItem = moveReserveItem;
+        window.hostMoveToReserve = hostMoveToReserve;
+        window.hostPromoteToPlaying = hostPromoteToPlaying;
+        window.hostMoveReservePosition = hostMoveReservePosition;
+        window.hostDropOut = hostDropOut;
         window.addLockedPairRow = addLockedPairRow;
         window.removeLockedPairRow = removeLockedPairRow;
         window.updateLockedPair = updateLockedPair;
@@ -2724,6 +2871,8 @@ function handleRequest() {
         window.closeInfo = closeInfo;
         window.confirmRestSelection = confirmRestSelection;
         window.copyAppsScriptCode = copyAppsScriptCode;
+        window.copyGameRulesToWhatsApp = copyGameRulesToWhatsApp;
+        window.copySessionPolicyToWhatsApp = copySessionPolicyToWhatsApp;
     </script>
 </body>
 </html>
